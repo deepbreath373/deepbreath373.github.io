@@ -34,7 +34,7 @@
     <url>/2020/05/07/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AC%AC%E4%B8%80%E5%A4%A9/</url>
     <content><![CDATA[<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">System.out.println(<span class="string">&quot;Hello World!&quot;</span>);</span><br></pre></td></tr></table></figure>
 
-<p><img src="../images/Frist.gif"></p>
+<p><img src="/images/Frist.gif"></p>
 ]]></content>
       <categories>
         <category>随心</category>
