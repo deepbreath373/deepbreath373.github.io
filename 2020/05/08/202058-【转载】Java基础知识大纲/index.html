@@ -1,27 +1,297 @@
-<?xml version="1.0" encoding="utf-8"?>
-<search>
-  <entry>
-    <title>博客搭建第一天</title>
-    <url>/2020/05/07/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AC%AC%E4%B8%80%E5%A4%A9/</url>
-    <content><![CDATA[<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">System.out.println(<span class="string">&quot;Hello World!&quot;</span>);</span><br></pre></td></tr></table></figure>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
 
-<p><img src="/images/Frist.gif"></p>
-]]></content>
-      <categories>
-        <category>随心</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>【转载】Java基础知识大纲</title>
-    <url>/2020/05/08/202058-%E3%80%90%E8%BD%AC%E8%BD%BD%E3%80%91Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E5%A4%A7%E7%BA%B2/</url>
-    <content><![CDATA[<p>JavaGuide哥整理的一些基础知识问答</p>
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/koroneko.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/koroneko.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/koroneko.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;example.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.5.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:1,&quot;unescape&quot;:false,&quot;preload&quot;:false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="JavaGuide哥整理的一些基础知识问答">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【转载】Java基础知识大纲">
+<meta property="og:url" content="http://example.com/2020/05/08/202058-%E3%80%90%E8%BD%AC%E8%BD%BD%E3%80%91Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E5%A4%A7%E7%BA%B2/index.html">
+<meta property="og:site_name" content="深海学者">
+<meta property="og:description" content="JavaGuide哥整理的一些基础知识问答">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/Java%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E8%BF%87%E7%A8%8B.png">
+<meta property="og:image" content="http://example.com/images/Java%E5%90%84%E7%B1%BB%E5%9E%8B%E5%A4%A7%E5%B0%8F.png">
+<meta property="og:image" content="http://example.com/images/java%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF-%E9%87%8D%E8%BD%BD.jpg">
+<meta property="og:image" content="http://example.com/images/Java%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%8A%B6%E6%80%81.png">
+<meta property="og:image" content="http://example.com/images/Java%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E5%8F%98%E8%BF%81.png">
+<meta property="og:image" content="http://example.com/images/RUNNABLE-VS-RUNNING.png">
+<meta property="og:image" content="http://example.com/images/java%E5%BC%82%E5%B8%B8%E7%B1%BB%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84%E5%9B%BE.jpg">
+<meta property="og:image" content="http://example.com/images/java%E5%BC%82%E5%B8%B8%E7%B1%BB%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84%E5%9B%BE%E4%BA%8C.png">
+<meta property="og:image" content="http://example.com/images/IO-%E6%93%8D%E4%BD%9C%E6%96%B9%E5%BC%8F%E5%88%86%E7%B1%BB.jpg">
+<meta property="og:image" content="http://example.com/images/IO-%E6%93%8D%E4%BD%9C%E5%AF%B9%E8%B1%A1%E5%88%86%E7%B1%BB.jpg">
+<meta property="og:image" content="http://example.com/images/java-deep-and-shallow-copy.jpg">
+<meta property="og:image" content="http://example.com/images/JavaGuide.jpg">
+<meta property="article:published_time" content="2020-05-08T02:33:21.000Z">
+<meta property="article:modified_time" content="2021-06-02T08:03:15.093Z">
+<meta property="article:author" content="QTLin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/Java%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E8%BF%87%E7%A8%8B.png">
+
+
+<link rel="canonical" href="http://example.com/2020/05/08/202058-%E3%80%90%E8%BD%AC%E8%BD%BD%E3%80%91Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E5%A4%A7%E7%BA%B2/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;2020&#x2F;05&#x2F;08&#x2F;202058-%E3%80%90%E8%BD%AC%E8%BD%BD%E3%80%91Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E5%A4%A7%E7%BA%B2&#x2F;&quot;,&quot;path&quot;:&quot;2020&#x2F;05&#x2F;08&#x2F;202058-【转载】Java基础知识大纲&#x2F;&quot;,&quot;title&quot;:&quot;【转载】Java基础知识大纲&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>【转载】Java基础知识大纲 | 深海学者</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">深海学者</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">More Knowledge!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%92%8C%E9%9D%A2%E5%90%91%E8%BF%87%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">1. 面向对象和面向过程的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Java-%E8%AF%AD%E8%A8%80%E6%9C%89%E5%93%AA%E4%BA%9B%E7%89%B9%E7%82%B9"><span class="nav-text">2. Java 语言有哪些特点?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%85%B3%E4%BA%8E-JVM-JDK-%E5%92%8C-JRE-%E6%9C%80%E8%AF%A6%E7%BB%86%E9%80%9A%E4%BF%97%E7%9A%84%E8%A7%A3%E7%AD%94"><span class="nav-text">3. 关于 JVM JDK 和 JRE 最详细通俗的解答</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JVM"><span class="nav-text">JVM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JDK-%E5%92%8C-JRE"><span class="nav-text">JDK 和 JRE</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Oracle-JDK-%E5%92%8C-OpenJDK-%E7%9A%84%E5%AF%B9%E6%AF%94"><span class="nav-text">4. Oracle JDK 和 OpenJDK 的对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-Java-%E5%92%8C-C-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">5. Java 和 C++的区别?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E4%BB%80%E4%B9%88%E6%98%AF-Java-%E7%A8%8B%E5%BA%8F%E7%9A%84%E4%B8%BB%E7%B1%BB-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%92%8C%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84%E4%B8%BB%E7%B1%BB%E6%9C%89%E4%BD%95%E4%B8%8D%E5%90%8C"><span class="nav-text">6. 什么是 Java 程序的主类 应用程序和小程序的主类有何不同?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-Java-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E4%B8%8E%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B9%8B%E9%97%B4%E6%9C%89%E5%93%AA%E4%BA%9B%E5%B7%AE%E5%88%AB"><span class="nav-text">7. Java 应用程序与小程序之间有哪些差别?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%B8%B8%E9%87%8F%E5%92%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%B8%B8%E9%87%8F%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">8. 字符型常量和字符串常量的区别?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-%E6%9E%84%E9%80%A0%E5%99%A8-Constructor-%E6%98%AF%E5%90%A6%E5%8F%AF%E8%A2%AB-override"><span class="nav-text">9. 构造器 Constructor 是否可被 override?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-%E9%87%8D%E8%BD%BD%E5%92%8C%E9%87%8D%E5%86%99%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">10. 重载和重写的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%87%8D%E8%BD%BD"><span class="nav-text">重载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%87%8D%E5%86%99"><span class="nav-text">重写</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-Java-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B%E4%B8%89%E5%A4%A7%E7%89%B9%E6%80%A7-%E5%B0%81%E8%A3%85-%E7%BB%A7%E6%89%BF-%E5%A4%9A%E6%80%81"><span class="nav-text">11. Java 面向对象编程三大特性: 封装 继承 多态</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%81%E8%A3%85"><span class="nav-text">封装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%A7%E6%89%BF"><span class="nav-text">继承</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E6%80%81"><span class="nav-text">多态</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-String-StringBuffer-%E5%92%8C-StringBuilder-%E7%9A%84%E5%8C%BA%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88-String-%E4%B8%BA%E4%BB%80%E4%B9%88%E6%98%AF%E4%B8%8D%E5%8F%AF%E5%8F%98%E7%9A%84"><span class="nav-text">12. String StringBuffer 和 StringBuilder 的区别是什么? String 为什么是不可变的?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#13-%E8%87%AA%E5%8A%A8%E8%A3%85%E7%AE%B1%E4%B8%8E%E6%8B%86%E7%AE%B1"><span class="nav-text">13. 自动装箱与拆箱</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-%E5%9C%A8%E4%B8%80%E4%B8%AA%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95%E5%86%85%E8%B0%83%E7%94%A8%E4%B8%80%E4%B8%AA%E9%9D%9E%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E4%B8%BA%E4%BB%80%E4%B9%88%E6%98%AF%E9%9D%9E%E6%B3%95%E7%9A%84"><span class="nav-text">14. 在一个静态方法内调用一个非静态成员为什么是非法的?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-%E5%9C%A8-Java-%E4%B8%AD%E5%AE%9A%E4%B9%89%E4%B8%80%E4%B8%AA%E4%B8%8D%E5%81%9A%E4%BA%8B%E4%B8%94%E6%B2%A1%E6%9C%89%E5%8F%82%E6%95%B0%E7%9A%84%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-text">15. 在 Java 中定义一个不做事且没有参数的构造方法的作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#16-import-java-%E5%92%8C-javax-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-text">16. import java 和 javax 有什么区别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#17-%E6%8E%A5%E5%8F%A3%E5%92%8C%E6%8A%BD%E8%B1%A1%E7%B1%BB%E7%9A%84%E5%8C%BA%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-text">17. 接口和抽象类的区别是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#18-%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E4%B8%8E%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E7%9A%84%E5%8C%BA%E5%88%AB%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="nav-text">18. 成员变量与局部变量的区别有哪些？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#19-%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%AF%B9%E8%B1%A1%E7%94%A8%E4%BB%80%E4%B9%88%E8%BF%90%E7%AE%97%E7%AC%A6-%E5%AF%B9%E8%B1%A1%E5%AE%9E%E4%BD%93%E4%B8%8E%E5%AF%B9%E8%B1%A1%E5%BC%95%E7%94%A8%E6%9C%89%E4%BD%95%E4%B8%8D%E5%90%8C"><span class="nav-text">19. 创建一个对象用什么运算符?对象实体与对象引用有何不同?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#20-%E4%BB%80%E4%B9%88%E6%98%AF%E6%96%B9%E6%B3%95%E7%9A%84%E8%BF%94%E5%9B%9E%E5%80%BC-%E8%BF%94%E5%9B%9E%E5%80%BC%E5%9C%A8%E7%B1%BB%E7%9A%84%E6%96%B9%E6%B3%95%E9%87%8C%E7%9A%84%E4%BD%9C%E7%94%A8%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-text">20. 什么是方法的返回值?返回值在类的方法里的作用是什么?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#21-%E4%B8%80%E4%B8%AA%E7%B1%BB%E7%9A%84%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95%E7%9A%84%E4%BD%9C%E7%94%A8%E6%98%AF%E4%BB%80%E4%B9%88-%E8%8B%A5%E4%B8%80%E4%B8%AA%E7%B1%BB%E6%B2%A1%E6%9C%89%E5%A3%B0%E6%98%8E%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95%EF%BC%8C%E8%AF%A5%E7%A8%8B%E5%BA%8F%E8%83%BD%E6%AD%A3%E7%A1%AE%E6%89%A7%E8%A1%8C%E5%90%97-%E4%B8%BA%E4%BB%80%E4%B9%88"><span class="nav-text">21. 一个类的构造方法的作用是什么? 若一个类没有声明构造方法，该程序能正确执行吗? 为什么?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#22-%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95%E6%9C%89%E5%93%AA%E4%BA%9B%E7%89%B9%E6%80%A7%EF%BC%9F"><span class="nav-text">22. 构造方法有哪些特性？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#23-%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95%E5%92%8C%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95%E6%9C%89%E4%BD%95%E4%B8%8D%E5%90%8C"><span class="nav-text">23. 静态方法和实例方法有何不同</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#24-%E5%AF%B9%E8%B1%A1%E7%9A%84%E7%9B%B8%E7%AD%89%E4%B8%8E%E6%8C%87%E5%90%91%E4%BB%96%E4%BB%AC%E7%9A%84%E5%BC%95%E7%94%A8%E7%9B%B8%E7%AD%89-%E4%B8%A4%E8%80%85%E6%9C%89%E4%BB%80%E4%B9%88%E4%B8%8D%E5%90%8C"><span class="nav-text">24. 对象的相等与指向他们的引用相等,两者有什么不同?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#25-%E5%9C%A8%E8%B0%83%E7%94%A8%E5%AD%90%E7%B1%BB%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95%E4%B9%8B%E5%89%8D%E4%BC%9A%E5%85%88%E8%B0%83%E7%94%A8%E7%88%B6%E7%B1%BB%E6%B2%A1%E6%9C%89%E5%8F%82%E6%95%B0%E7%9A%84%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95-%E5%85%B6%E7%9B%AE%E7%9A%84%E6%98%AF"><span class="nav-text">25. 在调用子类构造方法之前会先调用父类没有参数的构造方法,其目的是?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#26-%E4%B8%8E-equals-%E9%87%8D%E8%A6%81"><span class="nav-text">26. &#x3D;&#x3D; 与 equals(重要)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#27-hashCode-%E4%B8%8E-equals-%E9%87%8D%E8%A6%81"><span class="nav-text">27. hashCode 与 equals (重要)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#hashCode%EF%BC%88%EF%BC%89%E4%BB%8B%E7%BB%8D"><span class="nav-text">hashCode（）介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E6%9C%89-hashCode"><span class="nav-text">为什么要有 hashCode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hashCode%EF%BC%88%EF%BC%89%E4%B8%8E-equals%EF%BC%88%EF%BC%89%E7%9A%84%E7%9B%B8%E5%85%B3%E8%A7%84%E5%AE%9A"><span class="nav-text">hashCode（）与 equals（）的相关规定</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#28-%E4%B8%BA%E4%BB%80%E4%B9%88-Java-%E4%B8%AD%E5%8F%AA%E6%9C%89%E5%80%BC%E4%BC%A0%E9%80%92%EF%BC%9F"><span class="nav-text">28. 为什么 Java 中只有值传递？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#29-%E7%AE%80%E8%BF%B0%E7%BA%BF%E7%A8%8B%E3%80%81%E7%A8%8B%E5%BA%8F%E3%80%81%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E3%80%82%E4%BB%A5%E5%8F%8A%E4%BB%96%E4%BB%AC%E4%B9%8B%E9%97%B4%E5%85%B3%E7%B3%BB%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-text">29. 简述线程、程序、进程的基本概念。以及他们之间关系是什么?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#30-%E7%BA%BF%E7%A8%8B%E6%9C%89%E5%93%AA%E4%BA%9B%E5%9F%BA%E6%9C%AC%E7%8A%B6%E6%80%81"><span class="nav-text">30. 线程有哪些基本状态?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#31-%E5%85%B3%E4%BA%8E-final-%E5%85%B3%E9%94%AE%E5%AD%97%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%BB%E7%BB%93"><span class="nav-text">31 关于 final 关键字的一些总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#32-Java-%E4%B8%AD%E7%9A%84%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="nav-text">32 Java 中的异常处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Java-%E5%BC%82%E5%B8%B8%E7%B1%BB%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84%E5%9B%BE"><span class="nav-text">Java 异常类层次结构图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Throwable-%E7%B1%BB%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-text">Throwable 类常用方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E6%80%BB%E7%BB%93"><span class="nav-text">异常处理总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#33-Java-%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%AD%E5%A6%82%E6%9E%9C%E6%9C%89%E4%BA%9B%E5%AD%97%E6%AE%B5%E4%B8%8D%E6%83%B3%E8%BF%9B%E8%A1%8C%E5%BA%8F%E5%88%97%E5%8C%96%EF%BC%8C%E6%80%8E%E4%B9%88%E5%8A%9E%EF%BC%9F"><span class="nav-text">33 Java 序列化中如果有些字段不想进行序列化，怎么办？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#34-%E8%8E%B7%E5%8F%96%E7%94%A8%E9%94%AE%E7%9B%98%E8%BE%93%E5%85%A5%E5%B8%B8%E7%94%A8%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95"><span class="nav-text">34 获取用键盘输入常用的两种方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#35-Java-%E4%B8%AD-IO-%E6%B5%81"><span class="nav-text">35 Java 中 IO 流</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Java-%E4%B8%AD-IO-%E6%B5%81%E5%88%86%E4%B8%BA%E5%87%A0%E7%A7%8D"><span class="nav-text">Java 中 IO 流分为几种?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A2%E7%84%B6%E6%9C%89%E4%BA%86%E5%AD%97%E8%8A%82%E6%B5%81-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%98%E8%A6%81%E6%9C%89%E5%AD%97%E7%AC%A6%E6%B5%81"><span class="nav-text">既然有了字节流,为什么还要有字符流?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BIO-NIO-AIO-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB"><span class="nav-text">BIO,NIO,AIO 有什么区别?</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#36-%E5%B8%B8%E8%A7%81%E5%85%B3%E9%94%AE%E5%AD%97%E6%80%BB%E7%BB%93-static-final-this-super"><span class="nav-text">36. 常见关键字总结:static,final,this,super</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#37-Collections-%E5%B7%A5%E5%85%B7%E7%B1%BB%E5%92%8C-Arrays-%E5%B7%A5%E5%85%B7%E7%B1%BB%E5%B8%B8%E8%A7%81%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93"><span class="nav-text">37. Collections 工具类和 Arrays 工具类常见方法总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#38-%E6%B7%B1%E6%8B%B7%E8%B4%9D-vs-%E6%B5%85%E6%8B%B7%E8%B4%9D"><span class="nav-text">38. 深拷贝 vs 浅拷贝</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-text">参考</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AC%E4%BC%97%E5%8F%B7"><span class="nav-text">公众号</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">QTLin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/deepbreath373" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;deepbreath373" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:qitao_lin@163.com" title="E-Mail → mailto:qitao_lin@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/05/08/202058-%E3%80%90%E8%BD%AC%E8%BD%BD%E3%80%91Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E5%A4%A7%E7%BA%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="QTLin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="深海学者">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【转载】Java基础知识大纲
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-05-08 10:33:21" itemprop="dateCreated datePublished" datetime="2020-05-08T10:33:21+08:00">2020-05-08</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-06-02 16:03:15" itemprop="dateModified" datetime="2021-06-02T16:03:15+08:00">2021-06-02</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/%E7%9F%A5%E8%AF%86%E6%95%B4%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">知识整理</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>JavaGuide哥整理的一些基础知识问答</p>
 <span id="more"></span>
 
 <h2 id="1-面向对象和面向过程的区别"><a href="#1-面向对象和面向过程的区别" class="headerlink" title="1. 面向对象和面向过程的区别"></a>1. 面向对象和面向过程的区别</h2><ul>
 <li><strong>面向过程</strong> ：<strong>面向过程性能比面向对象高。</strong> 因为类调用时需要实例化，开销比较大，比较消耗资源，所以当性能是最重要的考量因素的时候，比如单片机、嵌入式开发、Linux/Unix 等一般采用面向过程开发。但是，<strong>面向过程没有面向对象易维护、易复用、易扩展。</strong></li>
 <li><strong>面向对象</strong> ：<strong>面向对象易维护、易复用、易扩展。</strong> 因为面向对象有封装、继承、多态性的特性，所以可以设计出低耦合的系统，使系统更加灵活、更加易于维护。但是，<strong>面向对象性能比面向过程低</strong>。</li>
 </ul>
-<p>参见 issue : <a href="https://github.com/Snailclimb/JavaGuide/issues/431">面向过程 ：面向过程性能比面向对象高？？</a></p>
+<p>参见 issue : <a target="_blank" rel="noopener" href="https://github.com/Snailclimb/JavaGuide/issues/431">面向过程 ：面向过程性能比面向对象高？？</a></p>
 <blockquote>
 <p>这个并不是根本原因，面向过程也需要分配内存，计算内存偏移量，Java 性能差的主要原因并不是因为它是面向对象语言，而是 Java 是半编译语言，最终的执行代码并不是可以直接被 CPU 执行的二进制机械码。</p>
 <p>而面向过程语言大多都是直接编译成机械码在电脑上执行，并且其它一些面向过程的脚本语言性能也并不一定比 Java 好。</p>
@@ -37,7 +307,7 @@
 <li>编译与解释并存；</li>
 </ol>
 <blockquote>
-<p>修正（参见： <a href="https://github.com/Snailclimb/JavaGuide/issues/544">issue#544</a>）：C++11 开始（2011 年的时候）,C++就引入了多线程库，在 windows、linux、macos 都可以使用<code>std::thread</code>和<code>std::async</code>来创建线程。参考链接：<a href="http://www.cplusplus.com/reference/thread/thread/?kw=thread">http://www.cplusplus.com/reference/thread/thread/?kw=thread</a></p>
+<p>修正（参见： <a target="_blank" rel="noopener" href="https://github.com/Snailclimb/JavaGuide/issues/544">issue#544</a>）：C++11 开始（2011 年的时候）,C++就引入了多线程库，在 windows、linux、macos 都可以使用<code>std::thread</code>和<code>std::async</code>来创建线程。参考链接：<a target="_blank" rel="noopener" href="http://www.cplusplus.com/reference/thread/thread/?kw=thread">http://www.cplusplus.com/reference/thread/thread/?kw=thread</a></p>
 </blockquote>
 <h2 id="3-关于-JVM-JDK-和-JRE-最详细通俗的解答"><a href="#3-关于-JVM-JDK-和-JRE-最详细通俗的解答" class="headerlink" title="3. 关于 JVM JDK 和 JRE 最详细通俗的解答"></a>3. 关于 JVM JDK 和 JRE 最详细通俗的解答</h2><h3 id="JVM"><a href="#JVM" class="headerlink" title="JVM"></a>JVM</h3><p>Java 虚拟机（JVM）是运行 Java 字节码的虚拟机。JVM 有针对不同系统的特定实现（Windows，Linux，macOS），目的是使用相同的字节码，它们都会给出相同的结果。</p>
 <p><strong>什么是字节码?采用字节码的好处是什么?</strong></p>
@@ -63,7 +333,7 @@
 </blockquote>
 <p><strong>总结：</strong></p>
 <ol>
-<li>Oracle JDK 大概每 6 个月发一次主要版本，而 OpenJDK 版本大概每三个月发布一次。但这不是固定的，我觉得了解这个没啥用处。详情参见：<a href="https://blogs.oracle.com/java-platform-group/update-and-faq-on-the-java-se-release-cadence">https://blogs.oracle.com/java-platform-group/update-and-faq-on-the-java-se-release-cadence</a> 。</li>
+<li>Oracle JDK 大概每 6 个月发一次主要版本，而 OpenJDK 版本大概每三个月发布一次。但这不是固定的，我觉得了解这个没啥用处。详情参见：<a target="_blank" rel="noopener" href="https://blogs.oracle.com/java-platform-group/update-and-faq-on-the-java-se-release-cadence">https://blogs.oracle.com/java-platform-group/update-and-faq-on-the-java-se-release-cadence</a> 。</li>
 <li>OpenJDK 是一个参考模型并且是完全开源的，而 Oracle JDK 是 OpenJDK 的一个实现，并不是完全开源的；</li>
 <li>Oracle JDK 比 OpenJDK 更稳定。OpenJDK 和 Oracle JDK 的代码几乎相同，但 Oracle JDK 有更多的类和一些错误修复。因此，如果您想开发企业/商业软件，我建议您选择 Oracle JDK，因为它经过了彻底的测试和稳定。某些情况下，有些人提到在使用 OpenJDK 可能会遇到了许多应用程序崩溃的问题，但是，只需切换到 Oracle JDK 就可以解决问题；</li>
 <li>在响应性和 JVM 性能方面，Oracle JDK 与 OpenJDK 相比提供了更好的性能；</li>
@@ -76,7 +346,7 @@
 <li>Java 不提供指针来直接访问内存，程序内存更加安全</li>
 <li>Java 的类是单继承的，C++ 支持多重继承；虽然 Java 的类不可以多继承，但是接口可以多继承。</li>
 <li>Java 有自动内存管理机制，不需要程序员手动释放无用内存</li>
-<li><strong>在 C 语言中，字符串或字符数组最后都会有一个额外的字符‘\0’来表示结束。但是，Java 语言中没有结束符这一概念。</strong> 这是一个值得深度思考的问题，具体原因推荐看这篇文章： <a href="https://blog.csdn.net/sszgg2006/article/details/49148189">https://blog.csdn.net/sszgg2006/article/details/49148189</a></li>
+<li><strong>在 C 语言中，字符串或字符数组最后都会有一个额外的字符‘\0’来表示结束。但是，Java 语言中没有结束符这一概念。</strong> 这是一个值得深度思考的问题，具体原因推荐看这篇文章： <a target="_blank" rel="noopener" href="https://blog.csdn.net/sszgg2006/article/details/49148189">https://blog.csdn.net/sszgg2006/article/details/49148189</a></li>
 </ul>
 <h2 id="6-什么是-Java-程序的主类-应用程序和小程序的主类有何不同"><a href="#6-什么是-Java-程序的主类-应用程序和小程序的主类有何不同" class="headerlink" title="6. 什么是 Java 程序的主类 应用程序和小程序的主类有何不同?"></a>6. 什么是 Java 程序的主类 应用程序和小程序的主类有何不同?</h2><p>一个程序中可以有多个类，但只能有一个类是主类。在 Java 应用程序中，这个主类是指包含 main（）方法的类。而在 Java 小程序中，这个主类是一个继承自系统类 JApplet 或 Applet 的子类。应用程序的主类不一定要求是 public 类，但小程序的主类要求必须是 public 类。主类是 Java 程序执行的入口点。</p>
 <h2 id="7-Java-应用程序与小程序之间有哪些差别"><a href="#7-Java-应用程序与小程序之间有哪些差别" class="headerlink" title="7. Java 应用程序与小程序之间有哪些差别?"></a>7. Java 应用程序与小程序之间有哪些差别?</h2><p>简单说应用程序是从主线程启动(也就是 <code>main()</code> 方法)。applet 小程序没有 <code>main()</code> 方法，主要是嵌在浏览器页面上运行(调用<code>init()</code>或者<code>run()</code>来启动)，嵌入浏览器这点跟 flash 的小游戏类似。</p>
@@ -157,11 +427,11 @@
 <h2 id="12-String-StringBuffer-和-StringBuilder-的区别是什么-String-为什么是不可变的"><a href="#12-String-StringBuffer-和-StringBuilder-的区别是什么-String-为什么是不可变的" class="headerlink" title="12. String StringBuffer 和 StringBuilder 的区别是什么? String 为什么是不可变的?"></a>12. String StringBuffer 和 StringBuilder 的区别是什么? String 为什么是不可变的?</h2><p><strong>可变性</strong></p>
 <p>简单的来说：String 类中使用 final 关键字修饰字符数组来保存字符串，<code>private final char value[]</code>，所以 String 对象是不可变的。</p>
 <blockquote>
-<p>补充（来自<a href="https://github.com/Snailclimb/JavaGuide/issues/675">issue 675</a>）：在 Java 9 之后，String 类的实现改用 byte 数组存储字符串 <code>private final byte[] value</code>;</p>
+<p>补充（来自<a target="_blank" rel="noopener" href="https://github.com/Snailclimb/JavaGuide/issues/675">issue 675</a>）：在 Java 9 之后，String 类的实现改用 byte 数组存储字符串 <code>private final byte[] value</code>;</p>
 </blockquote>
 <p>而 StringBuilder 与 StringBuffer 都继承自 AbstractStringBuilder 类，在 AbstractStringBuilder 中也是使用字符数组保存字符串<code>char[]value</code> 但是没有用 final 关键字修饰，所以这两种对象都是可变的。</p>
 <p>StringBuilder 与 StringBuffer 的构造方法都是调用父类构造方法也就是 AbstractStringBuilder 实现的，大家可以自行查阅源码。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">AbstractStringBuilder.java</span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractStringBuilder</span> <span class="keyword">implements</span> <span class="title">Appendable</span>, <span class="title">CharSequence</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * The value is used for character storage.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">char</span>[] value;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * The count is the number of characters used.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">int</span> count;</span><br><span class="line"></span><br><span class="line">    AbstractStringBuilder(<span class="keyword">int</span> capacity) &#123;</span><br><span class="line">        value = <span class="keyword">new</span> <span class="keyword">char</span>[capacity];</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">AbstractStringBuilder.java</span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractStringBuilder</span> <span class="keyword">implements</span> <span class="title">Appendable</span>, <span class="title">CharSequence</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * The value is used for character storage.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">char</span>[] value;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * The count is the number of characters used.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">int</span> count;</span><br><span class="line"></span><br><span class="line">    AbstractStringBuilder(<span class="keyword">int</span> capacity) &#123;</span><br><span class="line">        value = <span class="keyword">new</span> <span class="keyword">char</span>[capacity];</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 
 <p><strong>线程安全性</strong></p>
 <p>String 中的对象是不可变的，也就可以理解为常量，线程安全。AbstractStringBuilder 是 StringBuilder 与 StringBuffer 的公共父类，定义了一些字符串的基本操作，如 expandCapacity、append、insert、indexOf 等公共方法。StringBuffer 对方法加了同步锁或者对调用的方法加了同步锁，所以是线程安全的。StringBuilder 并没有对方法进行加同步锁，所以是非线程安全的。</p>
@@ -177,7 +447,7 @@
 <li><strong>装箱</strong>：将基本类型用它们对应的引用类型包装起来；</li>
 <li><strong>拆箱</strong>：将包装类型转换为基本数据类型；</li>
 </ul>
-<p>更多内容见：<a href="https://www.cnblogs.com/dolphin0520/p/3780005.html">深入剖析 Java 中的装箱和拆箱</a></p>
+<p>更多内容见：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/dolphin0520/p/3780005.html">深入剖析 Java 中的装箱和拆箱</a></p>
 <h2 id="14-在一个静态方法内调用一个非静态成员为什么是非法的"><a href="#14-在一个静态方法内调用一个非静态成员为什么是非法的" class="headerlink" title="14. 在一个静态方法内调用一个非静态成员为什么是非法的?"></a>14. 在一个静态方法内调用一个非静态成员为什么是非法的?</h2><p>由于静态方法可以不通过对象进行调用，因此在静态方法里，不能调用其他非静态变量，也不可以访问非静态变量成员。</p>
 <h2 id="15-在-Java-中定义一个不做事且没有参数的构造方法的作用"><a href="#15-在-Java-中定义一个不做事且没有参数的构造方法的作用" class="headerlink" title="15. 在 Java 中定义一个不做事且没有参数的构造方法的作用"></a>15. 在 Java 中定义一个不做事且没有参数的构造方法的作用</h2><p>Java 程序在执行子类的构造方法之前，如果没有用 <code>super()</code>来调用父类特定的构造方法，则会调用父类中“没有参数的构造方法”。因此，如果父类中只定义了有参数的构造方法，而在子类的构造方法中又没有用 <code>super()</code>来调用父类中特定的构造方法，则编译时将发生错误，因为 Java 程序在父类中找不到没有参数的构造方法可供执行。解决办法是在父类里加上一个不做事且没有参数的构造方法。</p>
 <h2 id="16-import-java-和-javax-有什么区别？"><a href="#16-import-java-和-javax-有什么区别？" class="headerlink" title="16. import java 和 javax 有什么区别？"></a>16. import java 和 javax 有什么区别？</h2><p>刚开始的时候 JavaAPI 所必需的包是 java 开头的包，javax 当时只是扩展 API 包来使用。然而随着时间的推移，javax 逐渐地扩展成为 Java API 的组成部分。但是，将扩展从 javax 包移动到 java 包确实太麻烦了，最终会破坏一堆现有的代码。因此，最终决定 javax 包将成为标准 API 的一部分。</p>
@@ -191,10 +461,10 @@
 </ol>
 <p>备注：</p>
 <ol>
-<li>在 JDK8 中，接口也可以定义静态方法，可以直接用接口名调用。实现类和实现是不可以调用的。如果同时实现两个接口，接口中定义了一样的默认方法，则必须重写，不然会报错。(详见 issue:<a href="https://github.com/Snailclimb/JavaGuide/issues/146%E3%80%82">https://github.com/Snailclimb/JavaGuide/issues/146。</a></li>
+<li>在 JDK8 中，接口也可以定义静态方法，可以直接用接口名调用。实现类和实现是不可以调用的。如果同时实现两个接口，接口中定义了一样的默认方法，则必须重写，不然会报错。(详见 issue:<a target="_blank" rel="noopener" href="https://github.com/Snailclimb/JavaGuide/issues/146%E3%80%82">https://github.com/Snailclimb/JavaGuide/issues/146。</a></li>
 <li>jdk9 的接口被允许定义私有方法 。</li>
 </ol>
-<p>总结一下 jdk7~jdk9 Java 中接口概念的变化（<a href="https://www.geeksforgeeks.org/private-methods-java-9-interfaces/">相关阅读</a>）：</p>
+<p>总结一下 jdk7~jdk9 Java 中接口概念的变化（<a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/private-methods-java-9-interfaces/">相关阅读</a>）：</p>
 <ol>
 <li>在 jdk 7 或更早版本中，接口里面只能有常量变量和抽象方法。这些接口方法必须由选择实现接口的类实现。</li>
 <li>jdk8 的时候接口可以有默认方法和静态方法功能。</li>
@@ -227,7 +497,7 @@
 <li>情况 2：类覆盖了 equals() 方法。一般，我们都覆盖 equals() 方法来比较两个对象的内容是否相等；若它们的内容相等，则返回 true (即，认为这两个对象相等)。</li>
 </ul>
 <p><strong>举个例子：</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">test1</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        String a = <span class="keyword">new</span> String(<span class="string">&quot;ab&quot;</span>); <span class="comment">// a 为一个引用</span></span><br><span class="line">        String b = <span class="keyword">new</span> String(<span class="string">&quot;ab&quot;</span>); <span class="comment">// b为另一个引用,对象的内容一样</span></span><br><span class="line">        String aa = <span class="string">&quot;ab&quot;</span>; <span class="comment">// 放在常量池中</span></span><br><span class="line">        String bb = <span class="string">&quot;ab&quot;</span>; <span class="comment">// 从常量池中查找</span></span><br><span class="line">        <span class="keyword">if</span> (aa == bb) <span class="comment">// true</span></span><br><span class="line">            System.out.println(<span class="string">&quot;aa==bb&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (a == b) <span class="comment">// false，非同一对象</span></span><br><span class="line">            System.out.println(<span class="string">&quot;a==b&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (a.equals(b)) <span class="comment">// true</span></span><br><span class="line">            System.out.println(<span class="string">&quot;aEQb&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (<span class="number">42</span> == <span class="number">42.0</span>) &#123; <span class="comment">// true</span></span><br><span class="line">            System.out.println(<span class="string">&quot;true&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">test1</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        String a = <span class="keyword">new</span> String(<span class="string">&quot;ab&quot;</span>); <span class="comment">// a 为一个引用</span></span><br><span class="line">        String b = <span class="keyword">new</span> String(<span class="string">&quot;ab&quot;</span>); <span class="comment">// b为另一个引用,对象的内容一样</span></span><br><span class="line">        String aa = <span class="string">&quot;ab&quot;</span>; <span class="comment">// 放在常量池中</span></span><br><span class="line">        String bb = <span class="string">&quot;ab&quot;</span>; <span class="comment">// 从常量池中查找</span></span><br><span class="line">        <span class="keyword">if</span> (aa == bb) <span class="comment">// true</span></span><br><span class="line">            System.out.println(<span class="string">&quot;aa==bb&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (a == b) <span class="comment">// false，非同一对象</span></span><br><span class="line">            System.out.println(<span class="string">&quot;a==b&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (a.equals(b)) <span class="comment">// true</span></span><br><span class="line">            System.out.println(<span class="string">&quot;aEQb&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (<span class="number">42</span> == <span class="number">42.0</span>) &#123; <span class="comment">// true</span></span><br><span class="line">            System.out.println(<span class="string">&quot;true&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><strong>说明：</strong></p>
 <ul>
@@ -246,8 +516,8 @@
 <li><strong>因此，equals 方法被覆盖过，则 hashCode 方法也必须被覆盖</strong></li>
 <li>hashCode() 的默认行为是对堆上的对象产生独特值。如果没有重写 hashCode()，则该 class 的两个对象无论如何都不会相等（即使这两个对象指向相同的数据）</li>
 </ol>
-<p>推荐阅读：<a href="https://www.cnblogs.com/skywang12345/p/3324958.html">Java hashCode() 和 equals()的若干问题解答</a></p>
-<h2 id="28-为什么-Java-中只有值传递？"><a href="#28-为什么-Java-中只有值传递？" class="headerlink" title="28. 为什么 Java 中只有值传递？"></a>28. 为什么 Java 中只有值传递？</h2><p><a href="https://juejin.im/post/5e18879e6fb9a02fc63602e2">为什么 Java 中只有值传递？</a></p>
+<p>推荐阅读：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/skywang12345/p/3324958.html">Java hashCode() 和 equals()的若干问题解答</a></p>
+<h2 id="28-为什么-Java-中只有值传递？"><a href="#28-为什么-Java-中只有值传递？" class="headerlink" title="28. 为什么 Java 中只有值传递？"></a>28. 为什么 Java 中只有值传递？</h2><p><a target="_blank" rel="noopener" href="https://juejin.im/post/5e18879e6fb9a02fc63602e2">为什么 Java 中只有值传递？</a></p>
 <h2 id="29-简述线程、程序、进程的基本概念。以及他们之间关系是什么"><a href="#29-简述线程、程序、进程的基本概念。以及他们之间关系是什么" class="headerlink" title="29. 简述线程、程序、进程的基本概念。以及他们之间关系是什么?"></a>29. 简述线程、程序、进程的基本概念。以及他们之间关系是什么?</h2><p><strong>线程</strong>与进程相似，但线程是一个比进程更小的执行单位。一个进程在其执行的过程中可以产生多个线程。与进程不同的是同类的多个线程共享同一块内存空间和一组系统资源，所以系统在产生一个线程，或是在各个线程之间作切换工作时，负担要比进程小得多，也正因为如此，线程也被称为轻量级进程。</p>
 <p><strong>程序</strong>是含有指令和数据的文件，被存储在磁盘或其他的数据存储设备中，也就是说程序是静态的代码。</p>
 <p><strong>进程</strong>是程序的一次执行过程，是系统运行程序的基本单位，因此进程是动态的。系统运行一个程序即是一个进程从创建，运行到消亡的过程。简单来说，一个进程就是一个执行中的程序，它在计算机中一个指令接着一个指令地执行着，同时，每个进程还占有某些系统资源如 CPU 时间，内存空间，文件，输入输出设备的使用权等等。换句话说，当程序在执行时，将会被操作系统载入内存中。 线程是进程划分成的更小的运行单位。线程和进程最大的不同在于基本上各进程是独立的，而各线程则不一定，因为同一进程中的线程极有可能会相互影响。从另一角度来说，进程属于操作系统的范畴，主要是同一段时间内，可以同时执行一个以上的程序，而线程则是在同一程序内几乎同时执行一个以上的程序段。</p>
@@ -258,7 +528,7 @@
 <p>由上图可以看出：</p>
 <p>线程创建之后它将处于 <strong>NEW（新建）</strong> 状态，调用 <code>start()</code> 方法后开始运行，线程这时候处于 <strong>READY（可运行）</strong> 状态。可运行状态的线程获得了 cpu 时间片（timeslice）后就处于 <strong>RUNNING（运行）</strong> 状态。</p>
 <blockquote>
-<p>操作系统隐藏 Java 虚拟机（JVM）中的 READY 和 RUNNING 状态，它只能看到 RUNNABLE 状态（图源：<a href="https://howtodoinjava.com/">HowToDoInJava</a>：<a href="https://howtodoinjava.com/java/multi-threading/java-thread-life-cycle-and-thread-states/">Java Thread Life Cycle and Thread States</a>），所以 Java 系统一般将这两个状态统称为 <strong>RUNNABLE（运行中）</strong> 状态 。</p>
+<p>操作系统隐藏 Java 虚拟机（JVM）中的 READY 和 RUNNING 状态，它只能看到 RUNNABLE 状态（图源：<a target="_blank" rel="noopener" href="https://howtodoinjava.com/">HowToDoInJava</a>：<a target="_blank" rel="noopener" href="https://howtodoinjava.com/java/multi-threading/java-thread-life-cycle-and-thread-states/">Java Thread Life Cycle and Thread States</a>），所以 Java 系统一般将这两个状态统称为 <strong>RUNNABLE（运行中）</strong> 状态 。</p>
 </blockquote>
 <p><img src="/images/RUNNABLE-VS-RUNNING.png" alt="RUNNABLE-VS-RUNNING"></p>
 <p>当线程执行 <code>wait()</code>方法之后，线程进入 <strong>WAITING（等待）</strong>状态。进入等待状态的线程需要依靠其他线程的通知才能够返回到运行状态，而 <strong>TIME_WAITING(超时等待)</strong> 状态相当于在等待状态的基础上增加了超时限制，比如通过 <code>sleep（long millis）</code>方法或 <code>wait（long millis）</code>方法可以将 Java 线程置于 TIMED WAITING 状态。当超时时间到达后 Java 线程将会返回到 RUNNABLE 状态。当线程调用同步方法时，在没有获取到锁的情况下，线程将会进入到 <strong>BLOCKED（阻塞）</strong> 状态。线程在执行 Runnable 的<code>run()</code>方法之后将会进入到 <strong>TERMINATED（终止）</strong> 状态。</p>
@@ -269,9 +539,9 @@
 <li>使用 final 方法的原因有两个。第一个原因是把方法锁定，以防任何继承类修改它的含义；第二个原因是效率。在早期的 Java 实现版本中，会将 final 方法转为内嵌调用。但是如果方法过于庞大，可能看不到内嵌调用带来的任何性能提升（现在的 Java 版本已经不需要使用 final 方法进行这些优化了）。类中所有的 private 方法都隐式地指定为 final。</li>
 </ol>
 <h2 id="32-Java-中的异常处理"><a href="#32-Java-中的异常处理" class="headerlink" title="32 Java 中的异常处理"></a>32 Java 中的异常处理</h2><h3 id="Java-异常类层次结构图"><a href="#Java-异常类层次结构图" class="headerlink" title="Java 异常类层次结构图"></a>Java 异常类层次结构图</h3><p><img src="/images/java%E5%BC%82%E5%B8%B8%E7%B1%BB%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84%E5%9B%BE.jpg" alt="Java异常类层次结构图"></p>
-<p>图片来自：<a href="https://simplesnippets.tech/exception-handling-in-java-part-1/">https://simplesnippets.tech/exception-handling-in-java-part-1/</a></p>
+<p>图片来自：<a target="_blank" rel="noopener" href="https://simplesnippets.tech/exception-handling-in-java-part-1/">https://simplesnippets.tech/exception-handling-in-java-part-1/</a></p>
 <p><img src="/images/java%E5%BC%82%E5%B8%B8%E7%B1%BB%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84%E5%9B%BE%E4%BA%8C.png" alt="Java异常类层次结构图"></p>
-<p>图片来自：<a href="https://chercher.tech/java-programming/exceptions-java">https://chercher.tech/java-programming/exceptions-java</a></p>
+<p>图片来自：<a target="_blank" rel="noopener" href="https://chercher.tech/java-programming/exceptions-java">https://chercher.tech/java-programming/exceptions-java</a></p>
 <p>在 Java 中，所有的异常都有一个共同的祖先 java.lang 包中的 <strong>Throwable 类</strong>。Throwable： 有两个重要的子类：<strong>Exception（异常）</strong> 和 <strong>Error（错误）</strong> ，二者都是 Java 异常处理的重要子类，各自都包含大量子类。</p>
 <p><strong>Error（错误）:是程序无法处理的错误</strong>，表示运行应用程序中较严重问题。大多数错误与代码编写者执行的操作无关，而表示代码运行时 JVM（Java 虚拟机）出现的问题。例如，Java 虚拟机运行错误（Virtual MachineError），当 JVM 不再有继续执行操作所需的内存资源时，将出现 OutOfMemoryError。这些异常发生时，Java 虚拟机（JVM）一般会选择线程终止。</p>
 <p>这些错误表示故障发生于虚拟机自身、或者发生在虚拟机试图执行应用时，如 Java 虚拟机运行错误（Virtual MachineError）、类定义错误（NoClassDefFoundError）等。这些错误是不可查的，因为它们在应用程序的控制和处理能力之 外，而且绝大多数是程序运行时不允许出现的状况。对于设计合理的应用程序来说，即使确实发生了错误，本质上也不应该试图去处理它所引起的异常状况。在 Java 中，错误通过 Error 的子类描述。</p>
@@ -295,18 +565,18 @@
 <li>程序所在的线程死亡。</li>
 <li>关闭 CPU。</li>
 </ol>
-<p>下面这部分内容来自 issue:<a href="https://github.com/Snailclimb/JavaGuide/issues/190%E3%80%82">https://github.com/Snailclimb/JavaGuide/issues/190。</a></p>
+<p>下面这部分内容来自 issue:<a target="_blank" rel="noopener" href="https://github.com/Snailclimb/JavaGuide/issues/190%E3%80%82">https://github.com/Snailclimb/JavaGuide/issues/190。</a></p>
 <p><strong>注意：</strong> 当 try 语句和 finally 语句中都有 return 语句时，在方法返回之前，finally 语句的内容将被执行，并且 finally 语句的返回值将会覆盖原始的返回值。如下：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> value * value;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (value == <span class="number">2</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> value * value;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (value == <span class="number">2</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>如果调用 <code>f(2)</code>，返回值将是 0，因为 finally 语句的返回值覆盖了 try 语句块的返回值。</p>
 <h2 id="33-Java-序列化中如果有些字段不想进行序列化，怎么办？"><a href="#33-Java-序列化中如果有些字段不想进行序列化，怎么办？" class="headerlink" title="33 Java 序列化中如果有些字段不想进行序列化，怎么办？"></a>33 Java 序列化中如果有些字段不想进行序列化，怎么办？</h2><p>对于不想进行序列化的变量，使用 transient 关键字修饰。</p>
 <p>transient 关键字的作用是：阻止实例中那些用此关键字修饰的的变量序列化；当对象被反序列化时，被 transient 修饰的变量值不会被持久化和恢复。transient 只能修饰变量，不能修饰类和方法。</p>
 <h2 id="34-获取用键盘输入常用的两种方法"><a href="#34-获取用键盘输入常用的两种方法" class="headerlink" title="34 获取用键盘输入常用的两种方法"></a>34 获取用键盘输入常用的两种方法</h2><p>方法 1：通过 Scanner</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Scanner input = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">String s  = input.nextLine();</span><br><span class="line">input.close();</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Scanner input = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">String s  = input.nextLine();</span><br><span class="line">input.close();</span><br></pre></td></tr></table></figure>
 
 <p>方法 2：通过 BufferedReader</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">BufferedReader input = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(System.in));</span><br><span class="line">String s = input.readLine();</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">BufferedReader input = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(System.in));</span><br><span class="line">String s = input.readLine();</span><br></pre></td></tr></table></figure>
 
 <h2 id="35-Java-中-IO-流"><a href="#35-Java-中-IO-流" class="headerlink" title="35 Java 中 IO 流"></a>35 Java 中 IO 流</h2><h3 id="Java-中-IO-流分为几种"><a href="#Java-中-IO-流分为几种" class="headerlink" title="Java 中 IO 流分为几种?"></a>Java 中 IO 流分为几种?</h3><ul>
 <li>按照流的流向分，可以分为输入流和输出流；</li>
@@ -329,27 +599,88 @@
 <li><strong>NIO (Non-blocking/New I/O):</strong> NIO 是一种同步非阻塞的 I/O 模型，在 Java 1.4 中引入了 NIO 框架，对应 java.nio 包，提供了 Channel , Selector，Buffer 等抽象。NIO 中的 N 可以理解为 Non-blocking，不单纯是 New。它支持面向缓冲的，基于通道的 I/O 操作方法。 NIO 提供了与传统 BIO 模型中的 <code>Socket</code> 和 <code>ServerSocket</code> 相对应的 <code>SocketChannel</code> 和 <code>ServerSocketChannel</code> 两种不同的套接字通道实现,两种通道都支持阻塞和非阻塞两种模式。阻塞模式使用就像传统中的支持一样，比较简单，但是性能和可靠性都不好；非阻塞模式正好与之相反。对于低负载、低并发的应用程序，可以使用同步阻塞 I/O 来提升开发速率和更好的维护性；对于高负载、高并发的（网络）应用，应使用 NIO 的非阻塞模式来开发</li>
 <li><strong>AIO (Asynchronous I/O):</strong> AIO 也就是 NIO 2。在 Java 7 中引入了 NIO 的改进版 NIO 2,它是异步非阻塞的 IO 模型。异步 IO 是基于事件和回调机制实现的，也就是应用操作之后会直接返回，不会堵塞在那里，当后台处理完成，操作系统会通知相应的线程进行后续的操作。AIO 是异步 IO 的缩写，虽然 NIO 在网络操作中，提供了非阻塞的方法，但是 NIO 的 IO 行为还是同步的。对于 NIO 来说，我们的业务线程是在 IO 操作准备好时，得到通知，接着就由这个线程自行进行 IO 操作，IO 操作本身是同步的。查阅网上相关资料，我发现就目前来说 AIO 的应用还不是很广泛，Netty 之前也尝试使用过 AIO，不过又放弃了。</li>
 </ul>
-<h2 id="36-常见关键字总结-static-final-this-super"><a href="#36-常见关键字总结-static-final-this-super" class="headerlink" title="36. 常见关键字总结:static,final,this,super"></a>36. 常见关键字总结:static,final,this,super</h2><p>详见笔主的这篇文章: <a href="https://snailclimb.gitee.io/javaguide/#/docs/java/basic/final,static,this,super">https://snailclimb.gitee.io/javaguide/#/docs/java/basic/final,static,this,super</a></p>
-<h2 id="37-Collections-工具类和-Arrays-工具类常见方法总结"><a href="#37-Collections-工具类和-Arrays-工具类常见方法总结" class="headerlink" title="37. Collections 工具类和 Arrays 工具类常见方法总结"></a>37. Collections 工具类和 Arrays 工具类常见方法总结</h2><p>详见笔主的这篇文章: <a href="https://gitee.com/SnailClimb/JavaGuide/blob/master/docs/java/basic/Arrays,CollectionsCommonMethods.md">https://gitee.com/SnailClimb/JavaGuide/blob/master/docs/java/basic/Arrays,CollectionsCommonMethods.md</a></p>
+<h2 id="36-常见关键字总结-static-final-this-super"><a href="#36-常见关键字总结-static-final-this-super" class="headerlink" title="36. 常见关键字总结:static,final,this,super"></a>36. 常见关键字总结:static,final,this,super</h2><p>详见笔主的这篇文章: <a target="_blank" rel="noopener" href="https://snailclimb.gitee.io/javaguide/#/docs/java/basic/final,static,this,super">https://snailclimb.gitee.io/javaguide/#/docs/java/basic/final,static,this,super</a></p>
+<h2 id="37-Collections-工具类和-Arrays-工具类常见方法总结"><a href="#37-Collections-工具类和-Arrays-工具类常见方法总结" class="headerlink" title="37. Collections 工具类和 Arrays 工具类常见方法总结"></a>37. Collections 工具类和 Arrays 工具类常见方法总结</h2><p>详见笔主的这篇文章: <a target="_blank" rel="noopener" href="https://gitee.com/SnailClimb/JavaGuide/blob/master/docs/java/basic/Arrays,CollectionsCommonMethods.md">https://gitee.com/SnailClimb/JavaGuide/blob/master/docs/java/basic/Arrays,CollectionsCommonMethods.md</a></p>
 <h2 id="38-深拷贝-vs-浅拷贝"><a href="#38-深拷贝-vs-浅拷贝" class="headerlink" title="38. 深拷贝 vs 浅拷贝"></a>38. 深拷贝 vs 浅拷贝</h2><ol>
 <li><strong>浅拷贝</strong>：对基本数据类型进行值传递，对引用数据类型进行引用传递般的拷贝，此为浅拷贝。</li>
 <li><strong>深拷贝</strong>：对基本数据类型进行值传递，对引用数据类型，创建一个新的对象，并复制其内容，此为深拷贝。</li>
 </ol>
 <p><img src="/images/java-deep-and-shallow-copy.jpg" alt="deep and shallow copy"></p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a href="https://stackoverflow.com/questions/1906445/what-is-the-difference-between-jdk-and-jre">https://stackoverflow.com/questions/1906445/what-is-the-difference-between-jdk-and-jre</a></li>
-<li><a href="https://www.educba.com/oracle-vs-openjdk/">https://www.educba.com/oracle-vs-openjdk/</a></li>
-<li><a href="https://stackoverflow.com/questions/22358071/differences-between-oracle-jdk-and-openjdk?answertab=active#tab-top">https://stackoverflow.com/questions/22358071/differences-between-oracle-jdk-and-openjdk?answertab=active#tab-top</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/1906445/what-is-the-difference-between-jdk-and-jre">https://stackoverflow.com/questions/1906445/what-is-the-difference-between-jdk-and-jre</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.educba.com/oracle-vs-openjdk/">https://www.educba.com/oracle-vs-openjdk/</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/22358071/differences-between-oracle-jdk-and-openjdk?answertab=active#tab-top">https://stackoverflow.com/questions/22358071/differences-between-oracle-jdk-and-openjdk?answertab=active#tab-top</a></li>
 </ul>
 <h2 id="公众号"><a href="#公众号" class="headerlink" title="公众号"></a>公众号</h2><p>如果大家想要实时关注我更新的文章以及分享的干货的话，可以关注我的公众号。</p>
 <p><strong>《Java 面试突击》:</strong> 由本文档衍生的专为面试而生的《Java 面试突击》V2.0 PDF 版本<a href="#%E5%85%AC%E4%BC%97%E5%8F%B7">公众号</a>后台回复 <strong>“Java 面试突击”</strong> 即可免费领取！</p>
 <p><strong>Java 工程师必备学习资源:</strong> 一些 Java 工程师常用学习资源公众号后台回复关键字 <strong>“1”</strong> 即可免费无套路获取。</p>
 <p><img src="/images/JavaGuide.jpg" alt="我的公众号"></p>
-<p><strong>全文转载自：</strong><a href="https://github.com/Snailclimb/JavaGuide/blob/master/docs/java/Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.md">https://github.com/Snailclimb/JavaGuide/blob/master/docs/java/Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.md</a></p>
-]]></content>
-      <categories>
-        <category>Java</category>
-        <category>知识整理</category>
-      </categories>
-  </entry>
-</search>
+<p><strong>全文转载自：</strong><a target="_blank" rel="noopener" href="https://github.com/Snailclimb/JavaGuide/blob/master/docs/java/Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.md">https://github.com/Snailclimb/JavaGuide/blob/master/docs/java/Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.md</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/05/07/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AC%AC%E4%B8%80%E5%A4%A9/" rel="prev" title="博客搭建第一天">
+                  <i class="fa fa-chevron-left"></i> 博客搭建第一天
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">QTLin</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
