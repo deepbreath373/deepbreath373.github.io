@@ -93,17 +93,6 @@
       </categories>
   </entry>
   <entry>
-    <title>博客搭建第一天</title>
-    <url>/2020/05/07/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AC%AC%E4%B8%80%E5%A4%A9/</url>
-    <content><![CDATA[<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">System.out.println(<span class="string">&quot;Hello World!&quot;</span>);</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/Frist.gif"></p>
-]]></content>
-      <categories>
-        <category>随心</category>
-      </categories>
-  </entry>
-  <entry>
     <title>MySQL基础语法</title>
     <url>/2020/05/24/2020524-MySQL%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</url>
     <content><![CDATA[<p>对数据库进行操作的基本SQL(DDL DML DQL DCL)</p>
@@ -186,6 +175,17 @@
 ]]></content>
       <categories>
         <category>MySQL</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>博客搭建第一天</title>
+    <url>/2020/05/07/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AC%AC%E4%B8%80%E5%A4%A9/</url>
+    <content><![CDATA[<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">System.out.println(<span class="string">&quot;Hello World!&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Frist.gif"></p>
+]]></content>
+      <categories>
+        <category>随心</category>
       </categories>
   </entry>
   <entry>
@@ -528,6 +528,314 @@
       <categories>
         <category>Java</category>
         <category>知识整理</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Java内存划分</title>
+    <url>/2020/05/29/2020529-Java%E5%86%85%E5%AD%98%E5%88%92%E5%88%86/</url>
+    <content><![CDATA[<p>简要的指明Java中内存有哪些区域</p>
+<h2 id="1-栈（Stack）"><a href="#1-栈（Stack）" class="headerlink" title="1. 栈（Stack）"></a>1. 栈（Stack）</h2><p><strong>存放的都是方法中的<code>局部变量</code></strong></p>
+<p><strong>方法的运行一定要在栈中运行</strong></p>
+<p>局部变量：方法的参数，或者是方法 {方法体} 内部的变量。</p>
+<p>作用域：一旦超出作用域，立刻从栈内存中消失。</p>
+<h2 id="2-堆（Heap）"><a href="#2-堆（Heap）" class="headerlink" title="2. 堆（Heap）"></a>2. 堆（Heap）</h2><p><strong>凡是 new 出来的<code>对象实例</code>，均存放在堆中</strong></p>
+<p>堆内存里面的东西都有一个地址值：以 16 进制编写</p>
+<p>堆内存里面的数据，都有默认值：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>整数</td>
+<td>0</td>
+</tr>
+<tr>
+<td>浮点数</td>
+<td>0.0</td>
+</tr>
+<tr>
+<td>字符</td>
+<td>‘\u0000’</td>
+</tr>
+<tr>
+<td>布尔</td>
+<td>false</td>
+</tr>
+<tr>
+<td>引用类型</td>
+<td>null</td>
+</tr>
+</tbody></table>
+<h2 id="3-方法区（Method-Area）"><a href="#3-方法区（Method-Area）" class="headerlink" title="3. 方法区（Method Area）"></a>3. 方法区（Method Area）</h2><p><strong>存储 <code>.class</code> 相关信息，包含<code>方法</code>的信息</strong></p>
+<p>即为 JVM 加载的<strong>类</strong>、<strong>常量</strong>及<strong>静态变量</strong>等信息</p>
+<h2 id="4-本地方法栈（Native-Method-Stack）"><a href="#4-本地方法栈（Native-Method-Stack）" class="headerlink" title="4. 本地方法栈（Native Method Stack）"></a>4. 本地方法栈（Native Method Stack）</h2><p><strong>与<code>操作系统</code>相关</strong></p>
+<h2 id="5-寄存器（PC-Register）"><a href="#5-寄存器（PC-Register）" class="headerlink" title="5. 寄存器（PC Register）"></a>5. 寄存器（PC Register）</h2><p><strong>与<code>CPU</code>相关</strong></p>
+]]></content>
+      <categories>
+        <category>Java</category>
+        <category>知识整理</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>HTML基础知识</title>
+    <url>/2020/05/30/2020530-HTML%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</url>
+    <content><![CDATA[<p>HTML的快速入门</p>
+<span id="more"></span>
+
+<h2 id="概念："><a href="#概念：" class="headerlink" title="概念："></a><strong>概念</strong>：</h2><p><strong>是最基础的网页开发语言</strong></p>
+<ul>
+<li>Hyper Text Markup Language 超文本标记语言<ul>
+<li>超文本:<ul>
+<li>超文本是用超链接的方法，将各种不同空间的文字信息组织在一起的网状文本.</li>
+</ul>
+</li>
+<li>标记语言:<ul>
+<li>由标签构成的语言。&lt;标签名称&gt; 如 html，xml</li>
+<li>标记语言不是编程语言</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="快速入门："><a href="#快速入门：" class="headerlink" title="快速入门："></a>快速入门：</h2><ul>
+<li>语法：<ol>
+<li>html文档后缀名 .html 或者 .htm</li>
+<li>标签分为<ol>
+<li><strong>围堵</strong>标签：有开始标签和结束标签。如 <html> </html></li>
+<li><strong>自闭和</strong>标签：开始标签和结束标签在一起。如</li>
+</ol>
+</li>
+<li>标签可以嵌套： 需要正确嵌套，不能你中有我，我中有你<br>错误：<b></b> 正确：<b></b></li>
+<li>在开始标签中可以定义属性。<br>属性是由键值对构成，值需要用引号(单双都可)引起</li>
+<li>html的标签不区分大小写，但是建议使用小写。</li>
+</ol>
+</li>
+<li>代码：</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">title</span>&gt;</span>title<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">FONT</span> <span class="attr">color</span>=<span class="string">&#x27;red&#x27;</span>&gt;</span>Hello World<span class="tag">&lt;/<span class="name">font</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">font</span> <span class="attr">color</span>=<span class="string">&#x27;green&#x27;</span>&gt;</span>Hello World<span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="标签学习："><a href="#标签学习：" class="headerlink" title="标签学习："></a>标签学习：</h2><ol>
+<li><p>文件标签</p>
+<p>：构成html最基本的标签</p>
+<ul>
+<li>html:html文档的根标签</li>
+<li>head：头标签。用于指定html文档的一些属性。引入外部的资源</li>
+<li>title：标题标签。</li>
+<li>body：体标签</li>
+<li><? DOCTYPE html>：html5中定义该文档是html文档</li>
+</ul>
+</li>
+<li><p>文本标签</p>
+<p>：和文本有关的标签</p>
+<ul>
+<li>注释：<!-- 注释内容 --></li>
+<li><h1> ~ <h6>：标题标签 * h1~h6:字体大小逐渐递减</li>
+<li><p>：段落标签</li>
+<li><br>：换行标签</li>
+<li><hr>：展示一条水平线
+ \* 属性：
+            \* color：颜色 
+            \* width：宽度 
+            \* size：高度 
+            \* align：对其方式
+            \* center：居中 
+            \* left：左对齐 
+            \* right：右对齐​</li>
+<li><b>：字体加粗</li>
+<li><i>：字体斜体</li>
+<li><font>:字体标签</li>
+<li><center>:文本居中 
+\* 属性： 
+    \* color：颜色 
+    \* size：大小 
+    \* face：字体​</li>
+<li>属性定义：<ul>
+<li>color：<ol>
+<li>英文单词：red,green,blue</li>
+<li>rgb(值1，值2，值3)：值的范围：0~255 如 rgb(0,0,255)</li>
+<li>#值1值2值3：值的范围：00~FF(十六进制)之间。如： #FF00FF</li>
+</ol>
+</li>
+<li>width：<ol>
+<li>数值：width=’20’ ,数值的单位，默认是 px(像素)</li>
+<li>数值%：占比相对于父元素的比例</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>图片标签：</p>
+<ul>
+<li>img：展示图片<ul>
+<li>属性：<ul>
+<li>src：指定图片的位置</li>
+</ul>
+</li>
+<li>代码： <!--展示一张图片 img--> <!-- 相对路径 
+       \* 以.开头的路径 ：
+             \* ./：代表当前目录
+             \* ../:代表上一级目录 --></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>列表标签：</p>
+<ul>
+<li>有序列表：<ol><li>内容<li></ol></li>
+<li>无序列表：<ul><li>内容<li></ul></li>
+</ul>
+</li>
+<li><p>链接标签：</p>
+<ul>
+<li><a>:定义一个超链接</li>
+</ul>
+</li>
+<li><p>div和span：</p>
+<ul>
+<li>div: 每一个div占满一整行（有换行）。块级标签</li>
+<li>span: 文本信息在一行展示（无换行）。行内标签 内联标签</li>
+</ul>
+</li>
+<li><p>语义化标签：</p>
+<p> html5中为了提高程序的可读性，提供了一些标签。</p>
+<ol>
+<li>：<header>页眉</li>
+<li>：<footer>页脚</li>
+</ol>
+</li>
+<li><p>表格标签：</p>
+<ul>
+<li><p>table：定义表格</p>
+<ul>
+<li><p>width：宽度</p>
+</li>
+<li><p>border：边框</p>
+</li>
+<li><p>cellpadding：定义内容和单元格的距离</p>
+</li>
+<li><p>cellspacing：定义单元格之间的距离。如果指定为0，则单元格的线会合为一条、</p>
+</li>
+<li><p>bgcolor：背景色</p>
+</li>
+<li><p>align：对齐方式</p>
+</li>
+</ul>
+</li>
+<li><p>tr：定义行</p>
+<ul>
+<li>bgcolor：背景色</li>
+<li>align：对齐方式</li>
+</ul>
+</li>
+<li><p>td：定义单元格</p>
+<ul>
+<li>colspan：合并列</li>
+<li>rowspan：合并行</li>
+</ul>
+</li>
+<li><p>th：定义表头单元格</p>
+</li>
+<li><caption>：表格标题</li>
+<li><thead>：表示表格的头部分</li>
+<li><tbody>：表示表格的体部分</li>
+<li><tfoot>：表示表格的脚部分</li>
+</ul>
+</li>
+<li><p><strong>表单标签</strong></p>
+</li>
+</ol>
+<ul>
+<li><p>表单：</p>
+<ul>
+<li><p>概念：用于<strong>采集用户输入的数据</strong>。用于和服务器进行交互。</p>
+</li>
+<li><p>form：用于定义表单的。可以定义一个范围，范围代表采集用户数据的范围</p>
+<ul>
+<li><p>属性：</p>
+<ul>
+<li><p>action：指定提交数据的URL</p>
+</li>
+<li><p>method: 指定提交方式</p>
+<ul>
+<li><p>分类：一共7种，2种比较常用</p>
+</li>
+<li><p>get：</p>
+<ol>
+<li><p>请求参数会在地址栏中<strong>显示</strong>。会封装到请求行中(HTTP协议后讲解)。</p>
+</li>
+<li><p>请求参数大小是有限制的。</p>
+</li>
+<li><p><strong>不太安全</strong>。</p>
+</li>
+</ol>
+</li>
+<li><p>post：</p>
+<ol>
+<li><p>请求参数不会再地址栏中显示。会<strong>封装</strong>在请求体中(HTTP协议后讲解)</p>
+</li>
+<li><p>请求参数的大小没有限制。</p>
+</li>
+<li><p>较为<strong>安全</strong>。</p>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>表单项中的数据要想被提交：<strong>必须指定其name属性</strong></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>表单项标签：<br>* input：可以通过type属性值，改变元素展示的样式</p>
+<pre><code>    \* type属性：
+                 \* text：文本输入框，默认值
+                           \* placeholder：指定输入框的提示信息，当输入框的内容发生变化，会自动清空提示信息
+                 \* password：密码输入框
+                 \* radio:单选框
+                 \* checkbox：复选框
+</code></pre>
+<p>* 注意：</p>
+<ol>
+<li><p>要想让多个单选框实现单选的效果，则多个单选框的name属性值必须一样。</p>
+</li>
+<li><p>一般会给每一个单选框提供value属性，指定其被选中后提交的值</p>
+</li>
+<li><p>checked属性，可以指定默认值<br>* checkbox：复选框<br>* 注意：</p>
+</li>
+<li><p>一般会给每一个单选框提供value属性，指定其被选中后提交的值</p>
+</li>
+<li><p>checked属性，可以指定默认值<br><code>* file：文件选择框 </code><br><code>* hidden：隐藏域，用于提交一些信息。 </code><br><code>* 按钮： </code></p>
+<pre><code>           `* submit：提交按钮。可以提交表单 `
+           `* button：普通按钮 `
+</code></pre>
+<p><code>* image：图片提交按钮 </code></p>
+<pre><code>           `* src属性指定图片的路径 `
+</code></pre>
+<p><code>* label：指定输入项的文字描述信息 </code></p>
+<pre><code>           `* 注意： * label的for属性一般会和 input 的 id属性值 对应。如果对应了，则点击label区域，会让input输入框获取焦点。 `
+</code></pre>
+<p><code>* select: 下拉列表 </code></p>
+<pre><code>            `* 子元素：option，指定列表项 `
+</code></pre>
+<p><code>* textarea：文本域 </code></p>
+<pre><code>           `* cols：指定列数，每一行有多少个字符 `
+           `* rows：默认多少行。`
+</code></pre>
+</li>
+</ol>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>JavaWeb</category>
+        <category>HTML</category>
       </categories>
   </entry>
 </search>
