@@ -1,6 +1,183 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>IO流归纳</title>
+    <url>/2020/05/14/2020514-IO%E6%B5%81%E5%BD%92%E7%BA%B3/</url>
+    <content><![CDATA[<p>因为Java的IO流种类多，名字相似，所以本文针对Java中出现的各种IO流进行了归纳总结</p>
+<span id="more"></span>
+
+<h2 id="字节流"><a href="#字节流" class="headerlink" title="字节流"></a>字节流</h2><h3 id="字节输出流【OutputStream】"><a href="#字节输出流【OutputStream】" class="headerlink" title="字节输出流【OutputStream】"></a>字节输出流【OutputStream】</h3><p>java.io.OutputStream 抽象类是表示字节输出流的所有类的超类，将指定的字节信息写出到目的地。它定义了字节输出流的基本共性功能方法。</p>
+<h5 id="基本方法"><a href="#基本方法" class="headerlink" title="基本方法"></a>基本方法</h5><p><code>public void close()</code>：关闭此输出流并释放与此流相关联的任何系统资源。</p>
+<p><code>public void flush()</code>：刷新此输出流并强制任何缓冲的输出字节被写出。</p>
+<p><code>public void write(byte[] b)</code>：将 b.length字节从指定的字节数组写入此输出流。</p>
+<p><code>public void write(byte[] b, int off, int len)</code>：从指定的字节数组写入 len字节，从偏移量 off开始输出到此输出流。</p>
+<p><code>public abstract void write(int b)</code>：将指定的字节输出流。</p>
+<blockquote>
+<p>close方法，当完成流的操作时，必须调用此方法释放系统资源。</p>
+</blockquote>
+<h4 id="文件输出流【FileOutputStream类】"><a href="#文件输出流【FileOutputStream类】" class="headerlink" title="文件输出流【FileOutputStream类】"></a>文件输出流【FileOutputStream类】</h4><p><code>java.io.FileOutputStream</code> 类文件输出流，是字节输出流<code>OutputStream</code>的子类，用于将数据写出到文件。</p>
+<h5 id="构造方法"><a href="#构造方法" class="headerlink" title="构造方法"></a>构造方法</h5><p><code>public FileOutputStream(File file)</code>：创建文件输出流以写入由指定的 File对象表示的文件。</p>
+<p><code>public FileOutputStream(String name)</code>： 创建文件输出流以指定的名称写入文件。</p>
+<h5 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h5><p>写出字节：<code>write(int b)</code></p>
+<p>写出字节数组：<code>write(byte[] b)</code></p>
+<p>写出指定长度字节数组：<code>write(byte[] b, int off, int len)</code></p>
+<p>数据追加续写：<code>public FileOutputStream(File file, boolean append)</code></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public FileOutputStream(String name, boolean append)</span><br></pre></td></tr></table></figure>
+
+<p>写出换行：<code>\r\n</code>(windows) <code>\n</code>(linux) <code>\r</code>(mac)</p>
+<h3 id="字节输入流【InputStream】"><a href="#字节输入流【InputStream】" class="headerlink" title="字节输入流【InputStream】"></a>字节输入流【InputStream】</h3><p><code>java.io.InputStream</code>抽象类是表示字节输入流的所有类的超类，可以读取字节信息到内存中。它定义了字节输入流的基本共性功能方法。</p>
+<h5 id="基本方法-1"><a href="#基本方法-1" class="headerlink" title="基本方法"></a>基本方法</h5><p><code>public void close()</code>：关闭此输入流并释放与此流相关联的任何系统资源。</p>
+<p><code>public abstract int read()</code>： 从输入流读取数据的下一个字节。</p>
+<p><code>public int read(byte[] b)</code> ： 从输入流中读取一些字节数，并将它们存储到字节数组 b中 。</p>
+<blockquote>
+<p>close方法，当完成流的操作时，必须调用此方法释放系统资源。</p>
+</blockquote>
+<h4 id="文件输入流【FileInputStream类】"><a href="#文件输入流【FileInputStream类】" class="headerlink" title="文件输入流【FileInputStream类】"></a>文件输入流【FileInputStream类】</h4><h5 id="构造方法-1"><a href="#构造方法-1" class="headerlink" title="构造方法"></a>构造方法</h5><p><code>FileInputStream(File file)</code> ： 通过打开与实际文件的连接来创建一个 FileInputStream ，该文件由文件系统中的 File对象 file命名。</p>
+<p><code>FileInputStream(String name)</code>： 通过打开与实际文件的连接来创建一个 FileInputStream ，该文件由文件系统中的路径名 name命名。</p>
+<h5 id="方法-1"><a href="#方法-1" class="headerlink" title="方法"></a>方法</h5><p>读取字节：<code>read()</code></p>
+<p>使用字节数组读取：<code>read(byte[] b)</code></p>
+<h2 id="字符流"><a href="#字符流" class="headerlink" title="字符流"></a>字符流</h2><h3 id="字符输入流【Reader】"><a href="#字符输入流【Reader】" class="headerlink" title="字符输入流【Reader】"></a>字符输入流【Reader】</h3><p><code>java.io.Reader</code>抽象类是表示用于读取字符流的所有类的超类，可以读取字符信息到内存中。它定义了字符输入流的基本共性功能方法。</p>
+<p><code>public void close()</code>：关闭此流并释放与此流相关联的任何系统资源。</p>
+<p><code>public int read()</code>： 从输入流读取一个字符。</p>
+<p><code>public int read(char[] cbuf)</code>： 从输入流中读取一些字符，并将它们存储到字符数组 cbuf中 。</p>
+<h4 id="文件输入流【FileReader类】"><a href="#文件输入流【FileReader类】" class="headerlink" title="文件输入流【FileReader类】"></a>文件输入流【FileReader类】</h4><h5 id="构造方法-2"><a href="#构造方法-2" class="headerlink" title="构造方法"></a>构造方法</h5><p><code>FileReader(File file)</code> ： 创建一个新的 FileReader ，给定要读取的File对象。</p>
+<p><code>FileReader(String fileName)</code> ： 创建一个新的 FileReader ，给定要读取的文件的名称。</p>
+<h5 id="方法-2"><a href="#方法-2" class="headerlink" title="方法"></a>方法</h5><p>读取字符：<code>read()</code></p>
+<p>使用字符数组读取：<code>read(char[] b)</code></p>
+<h3 id="字符输出流【Writer】"><a href="#字符输出流【Writer】" class="headerlink" title="字符输出流【Writer】"></a>字符输出流【Writer】</h3><p><code>java.io.Writer</code>抽象类是表示用于写出字符流的所有类的超类，将指定的字符信息写出到目的地。它定义了字节</p>
+<p>输出流的基本共性功能方法。</p>
+<p><code>void write(int c)</code>写入单个字符。</p>
+<p><code>void write(char[] cbuf)</code>写入字符数组。</p>
+<p><code>abstract void write(char[] cbuf, int off, int len)</code>写入字符数组的某一部分,off数组的开始索引,len 写的字符个数。</p>
+<p><code>void write(String str)</code> 写入字符串。</p>
+<p><code>void write(String str, int off, int len)</code>写入字符串的某一部分,off字符串的开始索引,len写的字符个数。</p>
+<p><code>void flush()</code> 刷新该流的缓冲。</p>
+<p><code>void close()</code>关闭此流，但要先刷新它。</p>
+<h4 id="文件输出流【FileWriter类】"><a href="#文件输出流【FileWriter类】" class="headerlink" title="文件输出流【FileWriter类】"></a>文件输出流【FileWriter类】</h4><h5 id="构造方法-3"><a href="#构造方法-3" class="headerlink" title="构造方法"></a>构造方法</h5><p><code>FileWriter(File file)</code>： 创建一个新的 FileWriter，给定要读取的File对象。</p>
+<p><code>FileWriter(String fileName)</code>： 创建一个新的 FileWriter，给定要读取的文件的名称。</p>
+<h5 id="方法-3"><a href="#方法-3" class="headerlink" title="方法"></a>方法</h5><p>写出字符：<code>write(int b)</code></p>
+<p>写出字符数组：<code>write(char[] cbuf)</code>和 <code>write(char[] cbuf, int off, int len)</code></p>
+<p>写出字符串：<code>write(String str)</code>和<code>write(String str, int off, int len)</code></p>
+<p>续写和换行：操作类似于<code>FileOutputStream</code>。</p>
+<h2 id="缓冲流"><a href="#缓冲流" class="headerlink" title="缓冲流"></a>缓冲流</h2><h3 id="字节缓冲流【BufferedInputStream】"><a href="#字节缓冲流【BufferedInputStream】" class="headerlink" title="字节缓冲流【BufferedInputStream】"></a>字节缓冲流【BufferedInputStream】</h3><h4 id="构造方法-4"><a href="#构造方法-4" class="headerlink" title="构造方法"></a>构造方法</h4><p><code>public BufferedInputStream(InputStream in)</code>：创建一个 新的缓冲输入流。</p>
+<p><code>public BufferedOutputStream(OutputStream out)</code>：创建一个新的缓冲输出流。</p>
+<h3 id="字符缓冲流-【BufferedReader】"><a href="#字符缓冲流-【BufferedReader】" class="headerlink" title="字符缓冲流 【BufferedReader】"></a>字符缓冲流 【BufferedReader】</h3><h4 id="构造方法-5"><a href="#构造方法-5" class="headerlink" title="构造方法"></a>构造方法</h4><p><code>public BufferedReader(Reader in)</code>：创建一个 新的缓冲输入流。</p>
+<p><code>public BufferedWriter(Writer out)</code>： 创建一个新的缓冲输出流。</p>
+<h4 id="特有方法"><a href="#特有方法" class="headerlink" title="特有方法"></a>特有方法</h4><p><strong>BufffferedReader</strong>：<code>public String readLine()</code>: 读一行文字。</p>
+<p><strong>BufffferedWriter</strong>：<code>public void newLine()</code>: 写一行行分隔符,由系统属性定义符号。</p>
+<h2 id="转换流"><a href="#转换流" class="headerlink" title="转换流"></a>转换流</h2><h3 id="InputStreamReader类"><a href="#InputStreamReader类" class="headerlink" title="InputStreamReader类"></a>InputStreamReader类</h3><p><code>InputStreamReader(InputStream in)</code>: 创建一个使用默认字符集的字符流。 <code>InputStreamReader(InputStream in, String charsetName)</code>: 创建一个指定字符集(UTF-8, UTF-16, GBK)的字符流。</p>
+<h3 id="OutputStreamWriter类"><a href="#OutputStreamWriter类" class="headerlink" title="OutputStreamWriter类"></a>OutputStreamWriter类</h3><p><code>OutputStreamWriter(OutputStream in)</code>: 创建一个使用默认字符集的字符流。 <code>OutputStreamWriter(OutputStream in, String charsetName)</code>: 创建一个指定字符集(UTF-8, UTF-16, GBK)的字符流。</p>
+<h2 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a>序列化</h2><h3 id="ObjectOutputStream类"><a href="#ObjectOutputStream类" class="headerlink" title="ObjectOutputStream类"></a>ObjectOutputStream类</h3><p><code>public ObjectOutputStream(OutputStream out)</code>：创建一个指定OutputStream的ObjectOutputStream。</p>
+<h4 id="序列化操作"><a href="#序列化操作" class="headerlink" title="序列化操作"></a>序列化操作</h4><p>1.一个对象要想序列化，必须满足两个条件: 该类必须实现<code>java.io.Serializable</code>接口， <code>Serializable</code> 是一个<strong>标记接口</strong>，不实现此接口的类将不会使任 何状态序列化或反序列化，会抛出 <code>NotSerializableException</code>。 该类的所有属性必须是可序列化的。如果有一个<strong>属性不需要可序列化</strong>的，则该属性必须注明是瞬态的，使用 <code>transient</code>关键字修饰。</p>
+<p>2.写出对象方法<code>public final void writeObject (Object obj)</code> : 将指定的对象写出。</p>
+<h3 id="ObjectInputStream类"><a href="#ObjectInputStream类" class="headerlink" title="ObjectInputStream类"></a>ObjectInputStream类</h3><p><code>public ObjectInputStream(InputStream in)</code> ： 创建一个指定InputStream的ObjectInputStream。</p>
+<h4 id="反序列化操作1"><a href="#反序列化操作1" class="headerlink" title="反序列化操作1"></a>反序列化操作1</h4><p>如果能找到一个对象的class文件，我们可以进行反序列化操作，调用 ObjectInputStream 读取对象的方法：<code>public final Object readObject ()</code>: 读取一个对象。</p>
+<p>对于JVM可以反序列化对象，它必须是能够找到class文件的类。如果找不到该类的class文件，则抛出一个 <code>ClassNotFoundException</code>异常。</p>
+<h4 id="反序列化操作2"><a href="#反序列化操作2" class="headerlink" title="反序列化操作2"></a>反序列化操作2</h4><p>另外，当JVM反序列化对象时，能找到class文件，但是class文件在序列化对象之后发生了修改，那么反序列化操 作也会失败，抛出一个 InvalidClassException 异常。</p>
+<p>发生这个异常的原因如下：</p>
+<ul>
+<li>该类的序列版本号与从流中读取的类描述符的版本号不匹配</li>
+<li>该类包含未知数据类型</li>
+<li>该类没有可访问的无参数构造方法 Serializable 接口给需要序列化的类，提供了一个序列版本号</li>
+</ul>
+<p>serialVersionUID 该版本号的目的在于验证序 列化的对象和对应类是否版本匹配。</p>
+<h2 id="打印流"><a href="#打印流" class="headerlink" title="打印流"></a>打印流</h2><p>平时我们在控制台打印输出，是调用 <code>print</code> 方法和 <code>println</code>方法完成的，这两个方法都来自于<code>java.io.PrintStream</code> 类，该类能够方便地打印各种数据类型的值，是一种便捷的输出方式。</p>
+<h3 id="PrintStream类"><a href="#PrintStream类" class="headerlink" title="PrintStream类"></a>PrintStream类</h3><h4 id="构造方法-6"><a href="#构造方法-6" class="headerlink" title="构造方法"></a>构造方法</h4><p><code>public PrintStream(String fileName)</code>： 使用指定的文件名创建一个新的打印流。</p>
+<h4 id="改变打印流向"><a href="#改变打印流向" class="headerlink" title="改变打印流向"></a>改变打印流向</h4><p>System.out 就是 PrintStream 类型的，只不过它的流向是系统规定的，打印在控制台上。不过，既然是流对象， 我们就可以玩一个”小把戏”，改变它的流向。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PrintDemo</span></span>&#123;</span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException</span>&#123;</span><br><span class="line">             <span class="comment">// 调用系统的打印流,控制台直接输出97</span></span><br><span class="line">             System.out.println(<span class="number">97</span>);</span><br><span class="line">             <span class="comment">// 创建打印流,指定文件的名称</span></span><br><span class="line">             PrintStream ps = <span class="keyword">new</span> PrintStream(<span class="string">&quot;ps.txt&quot;</span>);</span><br><span class="line">             <span class="comment">// 设置系统的打印流流向,输出到ps.txt</span></span><br><span class="line">             System.setOut(ps);</span><br><span class="line">             <span class="comment">// 调用系统的打印流,ps.txt中输出97</span></span><br><span class="line">             System.out.println(<span class="number">97</span>);</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Java</category>
+        <category>知识整理</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>MySQL基础语法</title>
+    <url>/2020/05/24/2020524-MySQL%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</url>
+    <content><![CDATA[<p>对数据库进行操作的基本SQL(DDL DML DQL DCL)</p>
+<span id="more"></span>
+
+<h2 id="什么是SQL"><a href="#什么是SQL" class="headerlink" title="什么是SQL"></a>什么是SQL</h2><p>Structured Query Language 结构化查询语言</p>
+<h2 id="SQL分类"><a href="#SQL分类" class="headerlink" title="SQL分类"></a>SQL分类</h2><ol>
+<li><p>Data Definition Language (DDL 数据定义语言) 如：建库，建表</p>
+</li>
+<li><p>Data Manipulation Language(DML 数据操纵语言)如：对表中的记录操作增删改</p>
+</li>
+<li><p>Data Query Language(DQL 数据查询语言)如：对表中的查询操作</p>
+</li>
+<li><p>Data Control Language(DCL 数据控制语言)如：对用户权限的设置</p>
+</li>
+</ol>
+<h2 id="DDL"><a href="#DDL" class="headerlink" title="DDL"></a>DDL</h2><h3 id="对库操作"><a href="#对库操作" class="headerlink" title="对库操作"></a>对库操作</h3><ul>
+<li><strong>创建数据库</strong><br><code>CREATE DATABASE 数据库名;</code><br><strong>判断</strong>数据库是否已经存在，不存在则创建数据库<br><code>CREATE DATABASE IF NOT EXISTS 数据库名;</code><br>创建数据库并<strong>指定字符集</strong><br><code>CREATE DATABASE 数据库名 CHARACTER SET 字符集;</code></li>
+<li><strong>查看数据库</strong><br>– 查看<strong>所有</strong>的数据库 <code>show databases;</code><br>– 查看<strong>某个</strong>数据库的定义信息 <code>show create database db3;</code></li>
+<li><strong>修改数据库</strong><br>修改数据库默认的<strong>字符集</strong><br><code>ALTER DATABASE 数据库名 DEFAULT CHARACTER SET 字符集;</code></li>
+<li><strong>删除数据库</strong><br><code>DROP DATABASE 数据库名;</code></li>
+<li><strong>使用数据库</strong><br><strong>查看</strong>正在使用的数据库 <code>SELECT DATABASE();</code><br>使用的一个 MySQL中的全局函数 <strong>使用</strong>/<strong>切换</strong>数据库 <code>USE 数据库名;</code></li>
+</ul>
+<h3 id="对表操作"><a href="#对表操作" class="headerlink" title="对表操作"></a>对表操作</h3><ul>
+<li><strong>创建表</strong><br><code>CREATE TABLE 表名 ( 字段名 1 字段类型 1, 字段名 2 字段类型 2 --最后一个字段无分号 );</code><br>快速创建一个<strong>表结构相同</strong>的表<br><code>CREATE TABLE 新表名 LIKE 旧表名;</code></li>
+<li><strong>查看表</strong><br>查看某个数据库中的<strong>所有表</strong><br><code>SHOW TABLES;</code><br>查看<strong>表结构</strong><br><code>DESC 表名;</code><br><strong>查看创建表</strong><br><code>SHOW CREATE TABLE 表名;</code></li>
+<li><strong>删除表</strong><br><strong>直接</strong>删除表 <code>DROP TABLE 表名;</code><br><strong>判断</strong>表是否存在，如果存在则删除表<br><code>DROP TABLE IF EXISTS 表名;</code></li>
+<li><strong>修改表</strong><br>添加<strong>表列</strong><br><code>ALTER TABLE 表名 ADD 列名 类型;</code><br>修改<strong>列类型</strong><br><code>ALTER TABLE 表名 MODIFY 列名 新的类型;</code><br>修改<strong>列名</strong><br><code>ALTER TABLE 表名 CHANGE 旧列名 新列名 类型;</code><br><strong>删除列</strong><br><code>ALTER TABLE 表名 DROP 列名;</code></li>
+</ul>
+<h2 id="DML"><a href="#DML" class="headerlink" title="DML"></a>DML</h2><h3 id="操作表"><a href="#操作表" class="headerlink" title="操作表"></a>操作表</h3><ul>
+<li><strong>插入记录</strong><br><code>INSERT [INTO] 表名 [字段名] VALUES (字段值);</code><br><code> --INSERT INTO 表名：表示往哪张表中添加数据 (字段名 1, 字段名 2, …)：要给哪些字段设置值 VALUES (值 1, 值 2, …)：设置具体的值</code></li>
+<li><strong>表的复制</strong><br>将表名 2 中的<strong>所有的列复制</strong>到表名 1 中<br><code>INSERT INTO 表名 1 SELECT * FROM 表名 2;</code><br>只复制<strong>部分列</strong><br><code>INSERT INTO 表名 1(列 1, 列 2) SELECT 列 1, 列 2 FROM student;</code></li>
+<li><strong>更新表记录</strong><br><code>UPDATE 表名 SET 列名=值 [WHERE 条件表达式]; </code><br><code>--UPDATE: 需要更新的表名 SET: 修改的列值 WHERE: 符合条件的记录才更新 你可以同时更新一个或多个字段。 你可以在 WHERE 子句中指定任何条件。</code></li>
+<li><strong>删除表记录</strong><br><code>DELETE FROM 表名 [WHERE 条件表达式]</code><br><code>--如果没有指定 WHERE 子句，MySQL 表中的所有记录将被删除。 你可以在 WHERE 子句中指定任何条件</code></li>
+</ul>
+<h2 id="DQL"><a href="#DQL" class="headerlink" title="DQL"></a>DQL</h2><h3 id="查询表"><a href="#查询表" class="headerlink" title="查询表"></a>查询表</h3><ul>
+<li><p>查询表<strong>所有</strong>行和列的数据<br><code>使用*表示所有列</code><br><code>SELECT * FROM 表名;</code></p>
+</li>
+<li><p>查询<strong>指定列</strong>的数据,多个列之间以逗号分隔<br><code>SELECT 字段名 1, 字段名 2, 字段名 3, ... FROM 表名;</code></p>
+</li>
+<li><p>对列指定<strong>别名</strong><br><code>SELECT 字段名 1 AS 别名, 字段名 2 AS 别名... FROM 表名;</code></p>
+</li>
+<li><p>对列和表同时指定<strong>别名</strong><br><code>SELECT 字段名 1 AS 别名, 字段名 2 AS 别名... FROM 表名 AS 表别名;</code></p>
+</li>
+<li><p>查询指定列并且结果<strong>不出现重复数据</strong><br><code>SELECT DISTINCT 字段名 FROM 表名;</code></p>
+</li>
+<li><p>某列数据和固定值<strong>运算</strong><br><code>SELECT 列名 1 + 固定值 FROM 表名;</code></p>
+</li>
+<li><p>某列数据和其他列数据参与<strong>运算</strong><br> <code>SELECT 列名 1 + 列名 2 FROM 表名;</code></p>
+</li>
+<li><p>条件查询</p>
+<p>的语法 </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SELECT 字段名 FROM 表名 WHERE 条件;</span><br></pre></td></tr></table></figure>
+
+<p>流程：取出表中的每条数据，满足条件的记录就返回，不满足条件的记录不返回</p>
+<ul>
+<li><strong>in</strong> 关键字<br><code>SELECT 字段名 FROM 表名 WHERE 字段 in (数据 1, 数据 2...);</code><br>in 里面的每个数据都会作为一次条件，只要满足条件的就会显示</li>
+<li><strong>between</strong> 关键字<br><code>BETWEEN 值 1 AND 值 2;</code><br>表示从值 1 到值 2 范围，包头又包尾 比如：age BETWEEN 80 AND 100 相当于： age&gt;=80 &amp;&amp; age&lt;=100</li>
+<li><strong>like</strong> 关键字<br>LIKE 表示模糊查询<br><code>SELECT * FROM 表名 WHERE 字段名 LIKE &#39;通配符字符串&#39;;</code></li>
+<li>MySQL <strong>通配符</strong><br> <strong>‘%’</strong> 匹配任意<strong>多</strong>个字符串<br><strong>‘_’</strong> 匹配<strong>一</strong>个字符</li>
+</ul>
+</li>
+</ul>
+<h2 id="DCL"><a href="#DCL" class="headerlink" title="DCL"></a>DCL</h2><h3 id="操作用户"><a href="#操作用户" class="headerlink" title="操作用户"></a>操作用户</h3><ul>
+<li><p><strong>创建</strong><br><code>CREATE USER &#39;用户名&#39;@&#39;主机名&#39; IDENTIFIED BY &#39;密码&#39;;</code></p>
+</li>
+<li><p><strong>授权</strong><br><code>GRANT 权限 1, 权限 2... ON 数据库名.表名 TO &#39;用户名&#39;@&#39;主机名&#39;;</code><br><img src="/images/MySQL-Grant.png" alt="MySQL-Grant"></p>
+</li>
+<li><p><strong>撤销授权</strong><br><code>REVOKE 权限 1, 权限 2... ON 数据库.表名 revoke all on test.* from &#39;user1&#39;@&#39;localhost&#39;; </code><br><code>&#39;用户名&#39;@&#39;主机名&#39;;</code></p>
+</li>
+<li><p><strong>查看权限</strong><br><code>SHOW GRANTS FOR &#39;用户名&#39;@&#39;主机名&#39;;</code></p>
+</li>
+<li><p><strong>删除用户</strong><br><code>DROP USER &#39;用户名&#39;@&#39;主机名&#39;;</code></p>
+</li>
+<li><p><strong>修改管理员密码</strong><br><code>mysqladmin -uroot -p password 新密码;</code></p>
+</li>
+<li><p><strong>修改普通用户密码</strong><br><code>set password for &#39;用户名&#39;@&#39;主机名&#39; = password(&#39;新密码&#39;);</code></p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>MySQL</category>
+      </categories>
+  </entry>
+  <entry>
     <title>博客搭建第一天</title>
     <url>/2020/05/07/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AC%AC%E4%B8%80%E5%A4%A9/</url>
     <content><![CDATA[<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">System.out.println(<span class="string">&quot;Hello World!&quot;</span>);</span><br></pre></td></tr></table></figure>

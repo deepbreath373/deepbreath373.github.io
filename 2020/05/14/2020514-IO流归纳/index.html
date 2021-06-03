@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/koroneko.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/koroneko.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/koroneko.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;example.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.5.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:1,&quot;unescape&quot;:false,&quot;preload&quot;:false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="因为Java的IO流种类多，名字相似，所以本文针对Java中出现的各种IO流进行了归纳总结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IO流归纳">
+<meta property="og:url" content="http://example.com/2020/05/14/2020514-IO%E6%B5%81%E5%BD%92%E7%BA%B3/index.html">
+<meta property="og:site_name" content="深海学者">
+<meta property="og:description" content="因为Java的IO流种类多，名字相似，所以本文针对Java中出现的各种IO流进行了归纳总结">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-14T07:18:00.000Z">
+<meta property="article:modified_time" content="2021-06-03T07:03:04.871Z">
+<meta property="article:author" content="QTLin">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2020/05/14/2020514-IO%E6%B5%81%E5%BD%92%E7%BA%B3/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;2020&#x2F;05&#x2F;14&#x2F;2020514-IO%E6%B5%81%E5%BD%92%E7%BA%B3&#x2F;&quot;,&quot;path&quot;:&quot;2020&#x2F;05&#x2F;14&#x2F;2020514-IO流归纳&#x2F;&quot;,&quot;title&quot;:&quot;IO流归纳&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>IO流归纳 | 深海学者</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">深海学者</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">More Knowledge!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E8%8A%82%E6%B5%81"><span class="nav-text">字节流</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E8%8A%82%E8%BE%93%E5%87%BA%E6%B5%81%E3%80%90OutputStream%E3%80%91"><span class="nav-text">字节输出流【OutputStream】</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%96%B9%E6%B3%95"><span class="nav-text">基本方法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E8%BE%93%E5%87%BA%E6%B5%81%E3%80%90FileOutputStream%E7%B1%BB%E3%80%91"><span class="nav-text">文件输出流【FileOutputStream类】</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95"><span class="nav-text">构造方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%96%B9%E6%B3%95"><span class="nav-text">方法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E8%8A%82%E8%BE%93%E5%85%A5%E6%B5%81%E3%80%90InputStream%E3%80%91"><span class="nav-text">字节输入流【InputStream】</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%96%B9%E6%B3%95-1"><span class="nav-text">基本方法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E8%BE%93%E5%85%A5%E6%B5%81%E3%80%90FileInputStream%E7%B1%BB%E3%80%91"><span class="nav-text">文件输入流【FileInputStream类】</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95-1"><span class="nav-text">构造方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%96%B9%E6%B3%95-1"><span class="nav-text">方法</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E6%B5%81"><span class="nav-text">字符流</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E8%BE%93%E5%85%A5%E6%B5%81%E3%80%90Reader%E3%80%91"><span class="nav-text">字符输入流【Reader】</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E8%BE%93%E5%85%A5%E6%B5%81%E3%80%90FileReader%E7%B1%BB%E3%80%91"><span class="nav-text">文件输入流【FileReader类】</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95-2"><span class="nav-text">构造方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%96%B9%E6%B3%95-2"><span class="nav-text">方法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E8%BE%93%E5%87%BA%E6%B5%81%E3%80%90Writer%E3%80%91"><span class="nav-text">字符输出流【Writer】</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E8%BE%93%E5%87%BA%E6%B5%81%E3%80%90FileWriter%E7%B1%BB%E3%80%91"><span class="nav-text">文件输出流【FileWriter类】</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95-3"><span class="nav-text">构造方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%96%B9%E6%B3%95-3"><span class="nav-text">方法</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%93%E5%86%B2%E6%B5%81"><span class="nav-text">缓冲流</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E8%8A%82%E7%BC%93%E5%86%B2%E6%B5%81%E3%80%90BufferedInputStream%E3%80%91"><span class="nav-text">字节缓冲流【BufferedInputStream】</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95-4"><span class="nav-text">构造方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E7%BC%93%E5%86%B2%E6%B5%81-%E3%80%90BufferedReader%E3%80%91"><span class="nav-text">字符缓冲流 【BufferedReader】</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95-5"><span class="nav-text">构造方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%89%B9%E6%9C%89%E6%96%B9%E6%B3%95"><span class="nav-text">特有方法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BD%AC%E6%8D%A2%E6%B5%81"><span class="nav-text">转换流</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#InputStreamReader%E7%B1%BB"><span class="nav-text">InputStreamReader类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OutputStreamWriter%E7%B1%BB"><span class="nav-text">OutputStreamWriter类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-text">序列化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ObjectOutputStream%E7%B1%BB"><span class="nav-text">ObjectOutputStream类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BA%8F%E5%88%97%E5%8C%96%E6%93%8D%E4%BD%9C"><span class="nav-text">序列化操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ObjectInputStream%E7%B1%BB"><span class="nav-text">ObjectInputStream类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%93%8D%E4%BD%9C1"><span class="nav-text">反序列化操作1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%93%8D%E4%BD%9C2"><span class="nav-text">反序列化操作2</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%93%E5%8D%B0%E6%B5%81"><span class="nav-text">打印流</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PrintStream%E7%B1%BB"><span class="nav-text">PrintStream类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95-6"><span class="nav-text">构造方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%94%B9%E5%8F%98%E6%89%93%E5%8D%B0%E6%B5%81%E5%90%91"><span class="nav-text">改变打印流向</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">QTLin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/deepbreath373" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;deepbreath373" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:qitao_lin@163.com" title="E-Mail → mailto:qitao_lin@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/05/14/2020514-IO%E6%B5%81%E5%BD%92%E7%BA%B3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="QTLin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="深海学者">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          IO流归纳
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-05-14 15:18:00" itemprop="dateCreated datePublished" datetime="2020-05-14T15:18:00+08:00">2020-05-14</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-06-03 15:03:04" itemprop="dateModified" datetime="2021-06-03T15:03:04+08:00">2021-06-03</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/%E7%9F%A5%E8%AF%86%E6%95%B4%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">知识整理</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>因为Java的IO流种类多，名字相似，所以本文针对Java中出现的各种IO流进行了归纳总结</p>
+<span id="more"></span>
+
+<h2 id="字节流"><a href="#字节流" class="headerlink" title="字节流"></a>字节流</h2><h3 id="字节输出流【OutputStream】"><a href="#字节输出流【OutputStream】" class="headerlink" title="字节输出流【OutputStream】"></a>字节输出流【OutputStream】</h3><p>java.io.OutputStream 抽象类是表示字节输出流的所有类的超类，将指定的字节信息写出到目的地。它定义了字节输出流的基本共性功能方法。</p>
+<h5 id="基本方法"><a href="#基本方法" class="headerlink" title="基本方法"></a>基本方法</h5><p><code>public void close()</code>：关闭此输出流并释放与此流相关联的任何系统资源。</p>
+<p><code>public void flush()</code>：刷新此输出流并强制任何缓冲的输出字节被写出。</p>
+<p><code>public void write(byte[] b)</code>：将 b.length字节从指定的字节数组写入此输出流。</p>
+<p><code>public void write(byte[] b, int off, int len)</code>：从指定的字节数组写入 len字节，从偏移量 off开始输出到此输出流。</p>
+<p><code>public abstract void write(int b)</code>：将指定的字节输出流。</p>
+<blockquote>
+<p>close方法，当完成流的操作时，必须调用此方法释放系统资源。</p>
+</blockquote>
+<h4 id="文件输出流【FileOutputStream类】"><a href="#文件输出流【FileOutputStream类】" class="headerlink" title="文件输出流【FileOutputStream类】"></a>文件输出流【FileOutputStream类】</h4><p><code>java.io.FileOutputStream</code> 类文件输出流，是字节输出流<code>OutputStream</code>的子类，用于将数据写出到文件。</p>
+<h5 id="构造方法"><a href="#构造方法" class="headerlink" title="构造方法"></a>构造方法</h5><p><code>public FileOutputStream(File file)</code>：创建文件输出流以写入由指定的 File对象表示的文件。</p>
+<p><code>public FileOutputStream(String name)</code>： 创建文件输出流以指定的名称写入文件。</p>
+<h5 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h5><p>写出字节：<code>write(int b)</code></p>
+<p>写出字节数组：<code>write(byte[] b)</code></p>
+<p>写出指定长度字节数组：<code>write(byte[] b, int off, int len)</code></p>
+<p>数据追加续写：<code>public FileOutputStream(File file, boolean append)</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public FileOutputStream(String name, boolean append)</span><br></pre></td></tr></table></figure>
+
+<p>写出换行：<code>\r\n</code>(windows) <code>\n</code>(linux) <code>\r</code>(mac)</p>
+<h3 id="字节输入流【InputStream】"><a href="#字节输入流【InputStream】" class="headerlink" title="字节输入流【InputStream】"></a>字节输入流【InputStream】</h3><p><code>java.io.InputStream</code>抽象类是表示字节输入流的所有类的超类，可以读取字节信息到内存中。它定义了字节输入流的基本共性功能方法。</p>
+<h5 id="基本方法-1"><a href="#基本方法-1" class="headerlink" title="基本方法"></a>基本方法</h5><p><code>public void close()</code>：关闭此输入流并释放与此流相关联的任何系统资源。</p>
+<p><code>public abstract int read()</code>： 从输入流读取数据的下一个字节。</p>
+<p><code>public int read(byte[] b)</code> ： 从输入流中读取一些字节数，并将它们存储到字节数组 b中 。</p>
+<blockquote>
+<p>close方法，当完成流的操作时，必须调用此方法释放系统资源。</p>
+</blockquote>
+<h4 id="文件输入流【FileInputStream类】"><a href="#文件输入流【FileInputStream类】" class="headerlink" title="文件输入流【FileInputStream类】"></a>文件输入流【FileInputStream类】</h4><h5 id="构造方法-1"><a href="#构造方法-1" class="headerlink" title="构造方法"></a>构造方法</h5><p><code>FileInputStream(File file)</code> ： 通过打开与实际文件的连接来创建一个 FileInputStream ，该文件由文件系统中的 File对象 file命名。</p>
+<p><code>FileInputStream(String name)</code>： 通过打开与实际文件的连接来创建一个 FileInputStream ，该文件由文件系统中的路径名 name命名。</p>
+<h5 id="方法-1"><a href="#方法-1" class="headerlink" title="方法"></a>方法</h5><p>读取字节：<code>read()</code></p>
+<p>使用字节数组读取：<code>read(byte[] b)</code></p>
+<h2 id="字符流"><a href="#字符流" class="headerlink" title="字符流"></a>字符流</h2><h3 id="字符输入流【Reader】"><a href="#字符输入流【Reader】" class="headerlink" title="字符输入流【Reader】"></a>字符输入流【Reader】</h3><p><code>java.io.Reader</code>抽象类是表示用于读取字符流的所有类的超类，可以读取字符信息到内存中。它定义了字符输入流的基本共性功能方法。</p>
+<p><code>public void close()</code>：关闭此流并释放与此流相关联的任何系统资源。</p>
+<p><code>public int read()</code>： 从输入流读取一个字符。</p>
+<p><code>public int read(char[] cbuf)</code>： 从输入流中读取一些字符，并将它们存储到字符数组 cbuf中 。</p>
+<h4 id="文件输入流【FileReader类】"><a href="#文件输入流【FileReader类】" class="headerlink" title="文件输入流【FileReader类】"></a>文件输入流【FileReader类】</h4><h5 id="构造方法-2"><a href="#构造方法-2" class="headerlink" title="构造方法"></a>构造方法</h5><p><code>FileReader(File file)</code> ： 创建一个新的 FileReader ，给定要读取的File对象。</p>
+<p><code>FileReader(String fileName)</code> ： 创建一个新的 FileReader ，给定要读取的文件的名称。</p>
+<h5 id="方法-2"><a href="#方法-2" class="headerlink" title="方法"></a>方法</h5><p>读取字符：<code>read()</code></p>
+<p>使用字符数组读取：<code>read(char[] b)</code></p>
+<h3 id="字符输出流【Writer】"><a href="#字符输出流【Writer】" class="headerlink" title="字符输出流【Writer】"></a>字符输出流【Writer】</h3><p><code>java.io.Writer</code>抽象类是表示用于写出字符流的所有类的超类，将指定的字符信息写出到目的地。它定义了字节</p>
+<p>输出流的基本共性功能方法。</p>
+<p><code>void write(int c)</code>写入单个字符。</p>
+<p><code>void write(char[] cbuf)</code>写入字符数组。</p>
+<p><code>abstract void write(char[] cbuf, int off, int len)</code>写入字符数组的某一部分,off数组的开始索引,len 写的字符个数。</p>
+<p><code>void write(String str)</code> 写入字符串。</p>
+<p><code>void write(String str, int off, int len)</code>写入字符串的某一部分,off字符串的开始索引,len写的字符个数。</p>
+<p><code>void flush()</code> 刷新该流的缓冲。</p>
+<p><code>void close()</code>关闭此流，但要先刷新它。</p>
+<h4 id="文件输出流【FileWriter类】"><a href="#文件输出流【FileWriter类】" class="headerlink" title="文件输出流【FileWriter类】"></a>文件输出流【FileWriter类】</h4><h5 id="构造方法-3"><a href="#构造方法-3" class="headerlink" title="构造方法"></a>构造方法</h5><p><code>FileWriter(File file)</code>： 创建一个新的 FileWriter，给定要读取的File对象。</p>
+<p><code>FileWriter(String fileName)</code>： 创建一个新的 FileWriter，给定要读取的文件的名称。</p>
+<h5 id="方法-3"><a href="#方法-3" class="headerlink" title="方法"></a>方法</h5><p>写出字符：<code>write(int b)</code></p>
+<p>写出字符数组：<code>write(char[] cbuf)</code>和 <code>write(char[] cbuf, int off, int len)</code></p>
+<p>写出字符串：<code>write(String str)</code>和<code>write(String str, int off, int len)</code></p>
+<p>续写和换行：操作类似于<code>FileOutputStream</code>。</p>
+<h2 id="缓冲流"><a href="#缓冲流" class="headerlink" title="缓冲流"></a>缓冲流</h2><h3 id="字节缓冲流【BufferedInputStream】"><a href="#字节缓冲流【BufferedInputStream】" class="headerlink" title="字节缓冲流【BufferedInputStream】"></a>字节缓冲流【BufferedInputStream】</h3><h4 id="构造方法-4"><a href="#构造方法-4" class="headerlink" title="构造方法"></a>构造方法</h4><p><code>public BufferedInputStream(InputStream in)</code>：创建一个 新的缓冲输入流。</p>
+<p><code>public BufferedOutputStream(OutputStream out)</code>：创建一个新的缓冲输出流。</p>
+<h3 id="字符缓冲流-【BufferedReader】"><a href="#字符缓冲流-【BufferedReader】" class="headerlink" title="字符缓冲流 【BufferedReader】"></a>字符缓冲流 【BufferedReader】</h3><h4 id="构造方法-5"><a href="#构造方法-5" class="headerlink" title="构造方法"></a>构造方法</h4><p><code>public BufferedReader(Reader in)</code>：创建一个 新的缓冲输入流。</p>
+<p><code>public BufferedWriter(Writer out)</code>： 创建一个新的缓冲输出流。</p>
+<h4 id="特有方法"><a href="#特有方法" class="headerlink" title="特有方法"></a>特有方法</h4><p><strong>BufffferedReader</strong>：<code>public String readLine()</code>: 读一行文字。</p>
+<p><strong>BufffferedWriter</strong>：<code>public void newLine()</code>: 写一行行分隔符,由系统属性定义符号。</p>
+<h2 id="转换流"><a href="#转换流" class="headerlink" title="转换流"></a>转换流</h2><h3 id="InputStreamReader类"><a href="#InputStreamReader类" class="headerlink" title="InputStreamReader类"></a>InputStreamReader类</h3><p><code>InputStreamReader(InputStream in)</code>: 创建一个使用默认字符集的字符流。 <code>InputStreamReader(InputStream in, String charsetName)</code>: 创建一个指定字符集(UTF-8, UTF-16, GBK)的字符流。</p>
+<h3 id="OutputStreamWriter类"><a href="#OutputStreamWriter类" class="headerlink" title="OutputStreamWriter类"></a>OutputStreamWriter类</h3><p><code>OutputStreamWriter(OutputStream in)</code>: 创建一个使用默认字符集的字符流。 <code>OutputStreamWriter(OutputStream in, String charsetName)</code>: 创建一个指定字符集(UTF-8, UTF-16, GBK)的字符流。</p>
+<h2 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a>序列化</h2><h3 id="ObjectOutputStream类"><a href="#ObjectOutputStream类" class="headerlink" title="ObjectOutputStream类"></a>ObjectOutputStream类</h3><p><code>public ObjectOutputStream(OutputStream out)</code>：创建一个指定OutputStream的ObjectOutputStream。</p>
+<h4 id="序列化操作"><a href="#序列化操作" class="headerlink" title="序列化操作"></a>序列化操作</h4><p>1.一个对象要想序列化，必须满足两个条件: 该类必须实现<code>java.io.Serializable</code>接口， <code>Serializable</code> 是一个<strong>标记接口</strong>，不实现此接口的类将不会使任 何状态序列化或反序列化，会抛出 <code>NotSerializableException</code>。 该类的所有属性必须是可序列化的。如果有一个<strong>属性不需要可序列化</strong>的，则该属性必须注明是瞬态的，使用 <code>transient</code>关键字修饰。</p>
+<p>2.写出对象方法<code>public final void writeObject (Object obj)</code> : 将指定的对象写出。</p>
+<h3 id="ObjectInputStream类"><a href="#ObjectInputStream类" class="headerlink" title="ObjectInputStream类"></a>ObjectInputStream类</h3><p><code>public ObjectInputStream(InputStream in)</code> ： 创建一个指定InputStream的ObjectInputStream。</p>
+<h4 id="反序列化操作1"><a href="#反序列化操作1" class="headerlink" title="反序列化操作1"></a>反序列化操作1</h4><p>如果能找到一个对象的class文件，我们可以进行反序列化操作，调用 ObjectInputStream 读取对象的方法：<code>public final Object readObject ()</code>: 读取一个对象。</p>
+<p>对于JVM可以反序列化对象，它必须是能够找到class文件的类。如果找不到该类的class文件，则抛出一个 <code>ClassNotFoundException</code>异常。</p>
+<h4 id="反序列化操作2"><a href="#反序列化操作2" class="headerlink" title="反序列化操作2"></a>反序列化操作2</h4><p>另外，当JVM反序列化对象时，能找到class文件，但是class文件在序列化对象之后发生了修改，那么反序列化操 作也会失败，抛出一个 InvalidClassException 异常。</p>
+<p>发生这个异常的原因如下：</p>
+<ul>
+<li>该类的序列版本号与从流中读取的类描述符的版本号不匹配</li>
+<li>该类包含未知数据类型</li>
+<li>该类没有可访问的无参数构造方法 Serializable 接口给需要序列化的类，提供了一个序列版本号</li>
+</ul>
+<p>serialVersionUID 该版本号的目的在于验证序 列化的对象和对应类是否版本匹配。</p>
+<h2 id="打印流"><a href="#打印流" class="headerlink" title="打印流"></a>打印流</h2><p>平时我们在控制台打印输出，是调用 <code>print</code> 方法和 <code>println</code>方法完成的，这两个方法都来自于<code>java.io.PrintStream</code> 类，该类能够方便地打印各种数据类型的值，是一种便捷的输出方式。</p>
+<h3 id="PrintStream类"><a href="#PrintStream类" class="headerlink" title="PrintStream类"></a>PrintStream类</h3><h4 id="构造方法-6"><a href="#构造方法-6" class="headerlink" title="构造方法"></a>构造方法</h4><p><code>public PrintStream(String fileName)</code>： 使用指定的文件名创建一个新的打印流。</p>
+<h4 id="改变打印流向"><a href="#改变打印流向" class="headerlink" title="改变打印流向"></a>改变打印流向</h4><p>System.out 就是 PrintStream 类型的，只不过它的流向是系统规定的，打印在控制台上。不过，既然是流对象， 我们就可以玩一个”小把戏”，改变它的流向。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PrintDemo</span></span>&#123;</span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException</span>&#123;</span><br><span class="line">             <span class="comment">// 调用系统的打印流,控制台直接输出97</span></span><br><span class="line">             System.out.println(<span class="number">97</span>);</span><br><span class="line">             <span class="comment">// 创建打印流,指定文件的名称</span></span><br><span class="line">             PrintStream ps = <span class="keyword">new</span> PrintStream(<span class="string">&quot;ps.txt&quot;</span>);</span><br><span class="line">             <span class="comment">// 设置系统的打印流流向,输出到ps.txt</span></span><br><span class="line">             System.setOut(ps);</span><br><span class="line">             <span class="comment">// 调用系统的打印流,ps.txt中输出97</span></span><br><span class="line">             System.out.println(<span class="number">97</span>);</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/05/08/202058-%E3%80%90%E8%BD%AC%E8%BD%BD%E3%80%91Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E5%A4%A7%E7%BA%B2/" rel="prev" title="【转载】Java基础知识大纲">
+                  <i class="fa fa-chevron-left"></i> 【转载】Java基础知识大纲
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/05/24/2020524-MySQL%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/" rel="next" title="MySQL基础语法">
+                  MySQL基础语法 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">QTLin</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
