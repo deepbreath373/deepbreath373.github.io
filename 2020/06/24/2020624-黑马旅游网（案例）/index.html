@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/koroneko.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/koroneko.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/koroneko.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;example.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.5.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:1,&quot;unescape&quot;:false,&quot;preload&quot;:false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="基于 tomcat 的简单 JavaWeb 项目(学习用)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="黑马旅游网（案例）">
+<meta property="og:url" content="http://example.com/2020/06/24/2020624-%E9%BB%91%E9%A9%AC%E6%97%85%E6%B8%B8%E7%BD%91%EF%BC%88%E6%A1%88%E4%BE%8B%EF%BC%89/index.html">
+<meta property="og:site_name" content="深海学者">
+<meta property="og:description" content="基于 tomcat 的简单 JavaWeb 项目(学习用)">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/hmTravel/hmTravel1.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/hmTravel2.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/hmTravel3.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/hmTravel4.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/hmTravel5.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/tomcatConf1.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/tomcatConf2.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/tomcatConf3.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/tomcatConf4.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/tomcatException1.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/tomcatException2.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/dbTravel1.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/dbTravel2.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/register1.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/register2.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/mailActive1.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/mailActive2.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/mailActive3.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/mailActive4.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/login1.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/login2.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/login3.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/login4.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/login5.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/login6.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/login7.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/login8.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/login9.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/logout1.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/logout2.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/servlet.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/category.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/category2.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/category3.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/category4.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/category5.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/page1.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/page2.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/page3.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/query1.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/query2.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/query3.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/route1.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/route2.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/favo1.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/favo2.png">
+<meta property="og:image" content="http://example.com/images/hmTravel/favo3.png">
+<meta property="article:published_time" content="2020-06-24T07:58:33.000Z">
+<meta property="article:modified_time" content="2021-06-04T01:44:32.329Z">
+<meta property="article:author" content="QTLin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/hmTravel/hmTravel1.png">
+
+
+<link rel="canonical" href="http://example.com/2020/06/24/2020624-%E9%BB%91%E9%A9%AC%E6%97%85%E6%B8%B8%E7%BD%91%EF%BC%88%E6%A1%88%E4%BE%8B%EF%BC%89/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;2020&#x2F;06&#x2F;24&#x2F;2020624-%E9%BB%91%E9%A9%AC%E6%97%85%E6%B8%B8%E7%BD%91%EF%BC%88%E6%A1%88%E4%BE%8B%EF%BC%89&#x2F;&quot;,&quot;path&quot;:&quot;2020&#x2F;06&#x2F;24&#x2F;2020624-黑马旅游网（案例）&#x2F;&quot;,&quot;title&quot;:&quot;黑马旅游网（案例）&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>黑马旅游网（案例） | 深海学者</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">深海学者</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">More Knowledge!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%89%8D%E6%9C%9F%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C%EF%BC%88%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%EF%BC%89"><span class="nav-text">一、前期准备工作（环境搭建）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%AF%BC%E5%85%A5%E5%B7%B2%E6%9C%89maven%E9%A1%B9%E7%9B%AE"><span class="nav-text">1.导入已有maven项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%85%8D%E7%BD%AEtomcat%E5%90%AF%E5%8A%A8%E6%96%B9%E5%BC%8F"><span class="nav-text">2.配置tomcat启动方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%89%80%E7%94%A8%E6%8A%80%E6%9C%AF"><span class="nav-text">3.所用技术</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%EF%BC%89-Web%E5%B1%82"><span class="nav-text">1） Web层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%EF%BC%89-service%E5%B1%82"><span class="nav-text">2） service层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%EF%BC%89-Dao%E5%B1%82"><span class="nav-text">3） Dao层</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-text">4.创建数据库</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0"><span class="nav-text">二、功能实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%B3%A8%E5%86%8C%E5%8A%9F%E8%83%BD"><span class="nav-text">1.注册功能</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%B3%A8%E5%86%8C"><span class="nav-text">基本注册</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%82%AE%E7%AE%B1%E8%AE%A4%E8%AF%81%E6%BF%80%E6%B4%BB"><span class="nav-text">邮箱认证激活</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%99%BB%E5%BD%95%E5%8A%9F%E8%83%BD"><span class="nav-text">2.登录功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%80%80%E5%87%BA%E5%8A%9F%E8%83%BD"><span class="nav-text">3.退出功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E4%BC%98%E5%8C%96Servlet"><span class="nav-text">4.优化Servlet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%88%86%E7%B1%BB%E6%A0%8F%E5%8A%9F%E8%83%BD"><span class="nav-text">5.分类栏功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E5%88%86%E9%A1%B5%E5%B1%95%E7%A4%BA%E5%8A%9F%E8%83%BD"><span class="nav-text">6.分页展示功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E6%9F%A5%E8%AF%A2%E5%8A%9F%E8%83%BD"><span class="nav-text">7.查询功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-%E7%BA%BF%E8%B7%AF%E8%AF%A6%E6%83%85%E5%8A%9F%E8%83%BD"><span class="nav-text">8.线路详情功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-%E6%94%B6%E8%97%8F%E5%8A%9F%E8%83%BD"><span class="nav-text">9.收藏功能</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E6%94%B6%E8%97%8F%E7%8A%B6%E6%80%81"><span class="nav-text">判断收藏状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E6%94%B6%E8%97%8F"><span class="nav-text">添加收藏</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">QTLin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/deepbreath373" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;deepbreath373" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:qitao_lin@163.com" title="E-Mail → mailto:qitao_lin@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/06/24/2020624-%E9%BB%91%E9%A9%AC%E6%97%85%E6%B8%B8%E7%BD%91%EF%BC%88%E6%A1%88%E4%BE%8B%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="QTLin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="深海学者">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          黑马旅游网（案例）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-06-24 15:58:33" itemprop="dateCreated datePublished" datetime="2020-06-24T15:58:33+08:00">2020-06-24</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-06-04 09:44:32" itemprop="dateModified" datetime="2021-06-04T09:44:32+08:00">2021-06-04</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/%E6%A1%88%E4%BE%8B/" itemprop="url" rel="index"><span itemprop="name">案例</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>基于 tomcat 的简单 JavaWeb 项目(学习用)</p>
+<span id="more"></span>
+
+<h2 id="一、前期准备工作（环境搭建）"><a href="#一、前期准备工作（环境搭建）" class="headerlink" title="一、前期准备工作（环境搭建）"></a>一、前期准备工作（环境搭建）</h2><h3 id="1-导入已有maven项目"><a href="#1-导入已有maven项目" class="headerlink" title="1.导入已有maven项目"></a>1.导入已有maven项目</h3><p><img src="/images/hmTravel/hmTravel1.png" alt="image-20200619084400775"></p>
+<p><img src="/images/hmTravel/hmTravel2.png" alt="image-20200619084434510"></p>
+<p><img src="/images/hmTravel/hmTravel3.png" alt="image-20200619084526823"></p>
+<ul>
+<li>如果依赖部分导入失败可以使用本地 jar 包导入</li>
+</ul>
+<p>右键项目名称，打开如下 OMS</p>
+<p><img src="/images/hmTravel/hmTravel4.png" alt="image-20200619084649260"></p>
+<p>将 jar 包移入对应本地仓库</p>
+<p><img src="/images/hmTravel/hmTravel5.png" alt="image-20200619084841084"></p>
+<p>出现资源载入错误：</p>
+<p>引入bootstrap..min.css的时候出现了URL：bootstrap.min.css.map 404的错误。</p>
+<p>解决方法： 将bootstrap.min.css里的最后一行 /*#sourceMappingURL=bootstrap.min.css.map */删除即可</p>
+<p>把chorme文件的工具–&gt;开发者工具–&gt;设置–&gt;Enable source maps勾去掉，去掉这个勾，jquery就不会去下载source map文件了！</p>
+<h3 id="2-配置tomcat启动方式"><a href="#2-配置tomcat启动方式" class="headerlink" title="2.配置tomcat启动方式"></a>2.配置tomcat启动方式</h3><p><img src="/images/hmTravel/tomcatConf1.png" alt="image-20200619085624762"></p>
+<p><img src="/images/hmTravel/tomcatConf2.png" alt="image-20200619085649754"></p>
+<p><img src="/images/hmTravel/tomcatConf3.png" alt="image-20200619085709027"></p>
+<p>配置完成后，就可以不通过右侧的 maven 点击 plugins 的 tomcat7:run 来启动tomcat服务。右上角可以直接启动 tomcat7:run 。</p>
+<p><img src="/images/hmTravel/tomcatConf4.png" alt="image-20200619085847305"></p>
+<p>异常一：</p>
+<p><img src="/images/hmTravel/tomcatException1.png" alt="image-20200619181104638"></p>
+<p>原因：</p>
+<p>未指定plugin版本号</p>
+<p>解决：</p>
+<p>增加一行<version>x.x.x</version>即可</p>
+<p>异常二：</p>
+<p><img src="/images/hmTravel/tomcatException2.png" alt="image-20200619181256487"></p>
+<p>原因：</p>
+<p>未指定编码方式</p>
+<p>解决：</p>
+<p>在pom.xml文件中添加 <code>&lt;properties&gt;</code> <code>&lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;&lt;/properties&gt;</code></p>
+<h3 id="3-所用技术"><a href="#3-所用技术" class="headerlink" title="3.所用技术"></a>3.所用技术</h3><h4 id="1）-Web层"><a href="#1）-Web层" class="headerlink" title="1） Web层"></a>1） Web层</h4><p>a) Servlet：前端控制器</p>
+<p>b) html：视图</p>
+<p>c) Filter：过滤器</p>
+<p>d) BeanUtils：数据封装</p>
+<p>e) Jackson：json序列化工具</p>
+<h4 id="2）-service层"><a href="#2）-service层" class="headerlink" title="2） service层"></a>2） service层</h4><p>f) Javamail：java发送邮件工具</p>
+<p>g) Redis：nosql内存数据库</p>
+<p>h) Jedis：java的redis客户端</p>
+<h4 id="3）-Dao层"><a href="#3）-Dao层" class="headerlink" title="3） Dao层"></a>3） Dao层</h4><p>i) Mysql：数据库</p>
+<p>j) Druid：数据库连接池</p>
+<p>k)JdbcTemplate：jdbc的工具</p>
+<h3 id="4-创建数据库"><a href="#4-创建数据库" class="headerlink" title="4.创建数据库"></a>4.创建数据库</h3><p><img src="/images/hmTravel/dbTravel1.png" alt="image-20200619092747729"></p>
+<p>tab_user：</p>
+<p><img src="/images/hmTravel/dbTravel2.png" alt="image-20200619092853537"></p>
+<h2 id="二、功能实现"><a href="#二、功能实现" class="headerlink" title="二、功能实现"></a>二、功能实现</h2><h3 id="1-注册功能"><a href="#1-注册功能" class="headerlink" title="1.注册功能"></a>1.注册功能</h3><h4 id="基本注册"><a href="#基本注册" class="headerlink" title="基本注册"></a>基本注册</h4><p><img src="/images/hmTravel/register1.png" alt="image-20200619095200842"></p>
+<p>导入数据库失败，检查JDBCUtils工具类的properties的路径是否正确</p>
+<p><img src="/images/hmTravel/register2.png" alt="image-20200619220726172"></p>
+<h4 id="邮箱认证激活"><a href="#邮箱认证激活" class="headerlink" title="邮箱认证激活"></a>邮箱认证激活</h4><p><img src="/images/hmTravel/mailActive1.png" alt="image-20200619222039161"></p>
+<p>发送认证邮件的配置：</p>
+<p>USER是发件人的邮箱地址；PASSWORD是授权码，不是登录密码；</p>
+<p><img src="/images/hmTravel/mailActive2.png" alt="image-20200619220838419"></p>
+<p><img src="/images/hmTravel/mailActive3.png" alt="image-20200619220938541"></p>
+<p>收件人的邮箱地址:</p>
+<p><img src="/images/hmTravel/mailActive4.png" alt="image-20200619221025469"></p>
+<h3 id="2-登录功能"><a href="#2-登录功能" class="headerlink" title="2.登录功能"></a>2.登录功能</h3><p><img src="/images/hmTravel/login1.png" alt="image-20200620105756465"></p>
+<p>通过登录界面提供的数据，在数据库中查找对应的数据，如果找到，则将数据存在session中，并通过session在登录界面展示姓名</p>
+<p><img src="/images/hmTravel/login2.png" alt="image-20200620110022489"></p>
+<p><img src="/images/hmTravel/login3.png" alt="image-20200620105947460"></p>
+<p><img src="/images/hmTravel/login4.png" alt="img"></p>
+<p><img src="/images/hmTravel/login5.png" alt="image-20200620110131191"></p>
+<p><img src="/images/hmTravel/login6.png" alt="image-20200620110157059"></p>
+<p><img src="/images/hmTravel/login7.png" alt="image-20200620110230663"></p>
+<p><img src="/images/hmTravel/login8.png" alt="image-20200620110308011"></p>
+<p><img src="/images/hmTravel/login9.png" alt="image-20200620110332755"></p>
+<h3 id="3-退出功能"><a href="#3-退出功能" class="headerlink" title="3.退出功能"></a>3.退出功能</h3><p>点击退出，调用exitServlet销毁session记录，重定向到登陆界面</p>
+<p><img src="/images/hmTravel/logout1.png" alt="image-20200620112050048"></p>
+<p><img src="/images/hmTravel/logout2.png" alt="image-20200620112108194"></p>
+<h3 id="4-优化Servlet"><a href="#4-优化Servlet" class="headerlink" title="4.优化Servlet"></a>4.优化Servlet</h3><p>将不同功能但是同一类别的servlet放在同一个servlet中，较少servlet的数量</p>
+<p><img src="/images/hmTravel/servlet.png" alt="image-20200620150505337"></p>
+<h3 id="5-分类栏功能"><a href="#5-分类栏功能" class="headerlink" title="5.分类栏功能"></a>5.分类栏功能</h3><p><img src="/images/hmTravel/category.png" alt="image-20200620211341003"></p>
+<p>使用template从数据库读取数据，写入html页面</p>
+<p>小问题：</p>
+<p>分类的内容不经常改变，所以可以存在缓存中，这样每次页面加载时就不会再次发出请求。减少加载时间的消耗和数据库的压力。</p>
+<p>解决方法：</p>
+<p>通过jedis使用redis</p>
+<p><img src="/images/hmTravel/category2.png" alt="image-20200620221543104"></p>
+<p><img src="/images/hmTravel/category3.png" alt="image-20200620223700926"></p>
+<p>要和服务器一起启动redis程序</p>
+<p><img src="/images/hmTravel/category4.png" alt="image-20200620223922760"></p>
+<p><img src="/images/hmTravel/category5.png" alt="image-20200620223827928"></p>
+<h3 id="6-分页展示功能"><a href="#6-分页展示功能" class="headerlink" title="6.分页展示功能"></a>6.分页展示功能</h3><p>分类和线路是一对多的关系，一个类别下有多个线路。</p>
+<p><img src="/images/hmTravel/page1.png" alt="image-20200621085917484"></p>
+<p>利用分类和线路共有的cid，实现分类</p>
+<p><img src="/images/hmTravel/page2.png" alt="image-20200621093955475"></p>
+<p><img src="/images/hmTravel/page3.png" alt="image-20200621094011588"></p>
+<h3 id="7-查询功能"><a href="#7-查询功能" class="headerlink" title="7.查询功能"></a>7.查询功能</h3><p>更改sql语句查询方式，如果没有查询条件就查询全部</p>
+<p><img src="/images/hmTravel/query1.png" alt="image-20200621172802357"></p>
+<p>利用拼接的方式</p>
+<p>在html页面的load函数，以及每次调用函数都要添加查询条件参数rname</p>
+<p><img src="/images/hmTravel/query2.png" alt="image-20200621174116495"></p>
+<p><img src="/images/hmTravel/query3.png" alt="image-20200621174146362"></p>
+<h3 id="8-线路详情功能"><a href="#8-线路详情功能" class="headerlink" title="8.线路详情功能"></a>8.线路详情功能</h3><p><img src="/images/hmTravel/route1.png" alt="image-20200622091824618"></p>
+<p><img src="/images/hmTravel/route2.png" alt="image-20200622091829391"></p>
+<p>查询一个完整的route对象，有三部分，自身的route对象，img对象，seller对象。分别使用三个对象对应的dao查询并返回给service，再返回给servlet，最终到html。</p>
+<h3 id="9-收藏功能"><a href="#9-收藏功能" class="headerlink" title="9.收藏功能"></a>9.收藏功能</h3><h4 id="判断收藏状态"><a href="#判断收藏状态" class="headerlink" title="判断收藏状态"></a>判断收藏状态</h4><p><img src="/images/hmTravel/favo1.png" alt="image-20200622203734332"></p>
+<p><img src="/images/hmTravel/favo2.png" alt="image-20200622203804745"></p>
+<p>根据收藏与否，改变html上收藏按钮的样式</p>
+<h4 id="添加收藏"><a href="#添加收藏" class="headerlink" title="添加收藏"></a>添加收藏</h4><p><img src="/images/hmTravel/favo3.png" alt="img"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/06/12/2020612-JavaScript%E5%9F%BA%E7%A1%80/" rel="prev" title="JavaScript基础">
+                  <i class="fa fa-chevron-left"></i> JavaScript基础
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">QTLin</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">34k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">31 分钟</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
