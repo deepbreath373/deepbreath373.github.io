@@ -1642,4 +1642,79 @@
         <category>设计模式</category>
       </categories>
   </entry>
+  <entry>
+    <title>MyBatis入门搭建</title>
+    <url>/2020/07/04/202074-MyBatis%E5%85%A5%E9%97%A8%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<p>在Maven中配置一个对MySQL进行CRUD的简单例子</p>
+<span id="more"></span>
+
+<h2 id="一、创建maven工程并导入坐标"><a href="#一、创建maven工程并导入坐标" class="headerlink" title="一、创建maven工程并导入坐标"></a>一、创建maven工程并导入坐标</h2><p>Maven创建时出现：</p>
+<p>Cannot resolve plugin org.apache.maven.plugins:maven-clean-plugin:2.5</p>
+<p>出现插件无法加载，是maven的配置出现问题</p>
+<p><img src="/images/MyBatis/mavenConfig.png" alt="image-20200623100242831"></p>
+<p>导入坐标（依赖）：</p>
+<p><img src="/images/MyBatis/dependence.png" alt="image-20200623103757129"></p>
+<h3 id="二、创建实体类和dao接口"><a href="#二、创建实体类和dao接口" class="headerlink" title="二、创建实体类和dao接口"></a>二、创建实体类和dao接口</h3><p><img src="/images/MyBatis/construction.png" alt="image-20200623103839205"></p>
+<p>实体类中的变量名称和数据库中的保持一致</p>
+<p><img src="/images/MyBatis/attribute.png" alt="image-20200623103907554"></p>
+<p><img src="/images/MyBatis/dbColumn.png" alt="image-20200623103944899"></p>
+<h3 id="三、创建mybatis主配置文件"><a href="#三、创建mybatis主配置文件" class="headerlink" title="三、创建mybatis主配置文件"></a>三、创建mybatis主配置文件</h3><p>SqlMapConfig.xml</p>
+<p><img src="/images/MyBatis/SqlMapConfig.png" alt="image-20200623104114826"></p>
+<p>以及下一步需要的映射配置文件位置</p>
+<p><img src="/images/MyBatis/resource.png" alt="image-20200623104202619"></p>
+<h3 id="四、创建映射配置文件"><a href="#四、创建映射配置文件" class="headerlink" title="四、创建映射配置文件"></a>四、创建映射配置文件</h3><p>IUserDao.xml</p>
+<p><img src="/images/MyBatis/IUserDao.png" alt="image-20200623104244095"></p>
+<p>配置对应的IUserDao中方法于select中</p>
+<p><img src="/images/MyBatis/Sql.png" alt="image-20200623104253901"></p>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><p>环境搭建的注意事项：<br>第一个：创建IUserDao.xml 和 IUserDao.java时名称是为了和我们之前的知识保持一致。 在Mybatis中它把持久层的操作接口名称和映射文件也叫做：Mapper，所以：IUserDao 和 IUserMapper是一样的<br>第二个：在idea中创建目录的时候，它和包是不一样的 包在创建时：com.itheima.dao它是三级结构 目录在创建时：com.itheima.dao是一级目录<br>第三个：mybatis的映射配置文件位置必须和dao接口的包结构相同<br>第四个：映射配置文件的mapper标签namespace属性的取值必须是dao接口的全限定类名<br>第五个：映射配置文件的操作配置（select），id属性的取值必须是dao接口的方法名</p>
+<ul>
+<li>当我们遵从了第三，四，五点之后，我们在开发中就<strong>无须再写dao的实现类。</strong></li>
+</ul>
+<h2 id="入门案例"><a href="#入门案例" class="headerlink" title="入门案例"></a>入门案例</h2><p><img src="/images/MyBatis/error1.png" alt="image-20200623150326980"></p>
+<p>IUserDao.xml 未指定返回类型</p>
+<p><img src="/images/MyBatis/resultType.png" alt="image-20200623150421533"></p>
+<p>指定后返回User类型</p>
+<p><img src="/images/MyBatis/returnResult.png" alt="image-20200623151000236"></p>
+<p><img src="/images/MyBatis/analyze1.png" alt="img"></p>
+<p><img src="/images/MyBatis/analyze2.png" alt="入门案例的分析"></p>
+<h2 id="CRUD"><a href="#CRUD" class="headerlink" title="CRUD"></a>CRUD</h2><h3 id="使用-xml-方式"><a href="#使用-xml-方式" class="headerlink" title="使用 xml 方式"></a>使用 xml 方式</h3><p>在IUserDao接口中写出方法</p>
+<p><img src="/images/MyBatis/IUserDaoClass.png" alt="image-20200625091223684"></p>
+<p>在IUserDao.xml中配置方法</p>
+<p><img src="/images/MyBatis/IUserDaoXml.png" alt="image-20200625091318129"></p>
+<p>在MyBatisTest测试类方法实现</p>
+<p><img src="/images/MyBatis/testSave.png" alt="image-20200625091551914"></p>
+<h3 id="使用注解方式"><a href="#使用注解方式" class="headerlink" title="使用注解方式"></a>使用注解方式</h3><p>在接口方法上标注注解（Select , Insert , Update , Delete）</p>
+<p><img src="/images/MyBatis/explain.png" alt="image-20200628094307199"></p>
+<p>在Test类中编写方法实现</p>
+<p><img src="/images/MyBatis/test.png" alt="image-20200628094431365"></p>
+<p><img src="/images/MyBatis/test2.png" alt="image-20200628094446934"></p>
+<h2 id="出现的问题"><a href="#出现的问题" class="headerlink" title="出现的问题"></a>出现的问题</h2><h3 id="Error-java-不支持发行版本xxx-的问题"><a href="#Error-java-不支持发行版本xxx-的问题" class="headerlink" title="Error : java 不支持发行版本xxx 的问题"></a>Error : java 不支持发行版本xxx 的问题</h3><ol>
+<li><p>配置一 在 Setting-&gt;Java Compiler 中将 Project bytecode version 与 target bytecode version 全部设为与本地版本相同的 version 13。</p>
+</li>
+<li><p>配置二 在 Project Structure-&gt;Modules-&gt;Language level 也设置成 13，与上面配置的版本一致。</p>
+</li>
+<li><p>配置三 我是先根据博客上面说的前面两个步骤来配置，发现还是有问题。其实在进行第二处配置之后，idea 会弹出一个警告：jdk的版本可能会被maven项目覆盖了。于是在 pom.xml 文件中，我们指定编译器的jdk版本： </p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span> </span><br><span class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-compiler-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span>                         <span class="tag">&lt;<span class="name">version</span>&gt;</span>x.x.x<span class="tag">&lt;/<span class="name">version</span>&gt;</span> </span><br><span class="line">	<span class="tag">&lt;<span class="name">configuration</span>&gt;</span> <span class="comment">&lt;!--让编译器使用本地的xx版本jdk--&gt;</span> </span><br><span class="line">		<span class="tag">&lt;<span class="name">source</span>&gt;</span>xx<span class="tag">&lt;/<span class="name">source</span>&gt;</span> 	</span><br><span class="line">		<span class="tag">&lt;<span class="name">target</span>&gt;</span>xx<span class="tag">&lt;/<span class="name">target</span>&gt;</span> </span><br><span class="line">	<span class="tag">&lt;/<span class="name">configuration</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>把上面这一串代码直接丢到</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">plugins</span>&gt;</span> ... <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="实体类名和数据库的列名不匹配"><a href="#实体类名和数据库的列名不匹配" class="headerlink" title="实体类名和数据库的列名不匹配"></a>实体类名和数据库的列名不匹配</h3><h4 id="xml配置中的问题"><a href="#xml配置中的问题" class="headerlink" title="xml配置中的问题"></a>xml配置中的问题</h4><p>第一种方法（起别名，让数据库别名和实体类匹配）</p>
+<p>效率高（直接运行改后的sql），但是麻烦</p>
+<p><img src="/images/MyBatis/%E8%B5%B7%E5%88%AB%E5%90%8D.png" alt="image-20200625095654969"></p>
+<p>第二种方法（配置返回值结果和实体类的关系）</p>
+<p>效率低（二次解析resultMap配置），但是省事可复用</p>
+<p><img src="/images/MyBatis/resultMap.png" alt="image-20200625100006550"></p>
+<h4 id="注解配置中的问题"><a href="#注解配置中的问题" class="headerlink" title="注解配置中的问题"></a>注解配置中的问题</h4><p>第一种方法（起别名，让数据库别名和实体类匹配）</p>
+<p>效率高（直接运行改后的sql），但是麻烦</p>
+<p><img src="/images/MyBatis/%E8%B5%B7%E5%88%AB%E5%90%8D2.png" alt="image-20200625095654969"></p>
+<p>第二种方法在 dao 中加注释</p>
+<p><img src="/images/MyBatis/daoAnotation.png" alt="image-20200628094658908"></p>
+<p><img src="/images/MyBatis/daoAnotation2.png" alt="image-20200628094852512"></p>
+<p><img src="/images/MyBatis/daoAnotation3.png" alt="image-20200628095535721"></p>
+]]></content>
+      <categories>
+        <category>MyBatis</category>
+      </categories>
+  </entry>
 </search>
