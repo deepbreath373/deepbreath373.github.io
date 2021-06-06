@@ -1855,4 +1855,34 @@
         <category>MyBatis</category>
       </categories>
   </entry>
+  <entry>
+    <title>MyBatis的延迟加载</title>
+    <url>/2020/07/14/2020714-MyBatis%E7%9A%84%E5%BB%B6%E8%BF%9F%E5%8A%A0%E8%BD%BD/</url>
+    <content><![CDATA[<p>在进行一对一、一对多、多对多的查询时，不一定在加载用户信息的同时加载它的账户信息。此时，就可以使用延迟加载。</p>
+<span id="more"></span>
+
+<h2 id="什么是延迟加载"><a href="#什么是延迟加载" class="headerlink" title="什么是延迟加载"></a>什么是延迟加载</h2><p><strong>延迟加载</strong>：就是在<strong>需要用到数据时才进行加载</strong>，不需要用到数据时就不加载数据。延迟加载也称懒加载。<br><strong>好处：</strong>先从单表查询，需要时再从关联表去关联查询，大大提高数据库性能，因为查询单表要比关联查询多张表速 度要快。 </p>
+<p><strong>坏处：</strong>因为只有当需要用到数据时，才会进行数据库查询，这样在大批量数据查询时，因为查询工作也要消耗时间，所以可能造成用户等待时间变长，造成用户体验下降。</p>
+<h2 id="具体实现方法"><a href="#具体实现方法" class="headerlink" title="具体实现方法"></a>具体实现方法</h2><p>一对一：</p>
+<p><img src="/images/MyBatis/settins_mybatis.png" alt="image-20200714173529954"></p>
+<p>lazyLoadingEnabled 延迟加载<br>aggressiveLazyLoading 即时加载</p>
+<p>SqlMapConfig.xml :</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--开启延迟加载--&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">&quot;lazyLoadingEnabled&quot;</span> <span class="attr">value</span>=<span class="string">&quot;true&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">&quot;aggressiveLazyLoading&quot;</span> <span class="attr">value</span>=<span class="string">&quot;false&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>一对多：</p>
+<p>在 User 实体类中加入 List<Account> 属性</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line">    <span class="keyword">private</span> Date birthday;</span><br><span class="line">    <span class="keyword">private</span> String sex;</span><br><span class="line">    <span class="keyword">private</span> String address;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> List&lt;Account&gt; accounts;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Account&gt; <span class="title">getAccounts</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> accounts;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAccounts</span><span class="params">(List&lt;Account&gt; accounts)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.accounts = accounts;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">&quot;birthday&quot;</span> <span class="attr">property</span>=<span class="string">&quot;birthday&quot;</span>/&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- collection 是用于建立一对多 中集合属性的对应关系</span></span><br><span class="line"><span class="comment">    ofType用于指定集合元素的数据类型</span></span><br><span class="line"><span class="comment">    select是用于指定查询账户的唯一标识 (账户的dao全限定类名加上方法名称)</span></span><br><span class="line"><span class="comment">    column是用于指定使用哪个字段的值作为条件查询</span></span><br><span class="line"><span class="comment">--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">collection</span> <span class="attr">property</span>= <span class="string">&quot;accounts&quot;</span> <span class="attr">ofType</span>= <span class="string">&quot;account&quot;</span> <span class="attr">select</span>=<span class="string">&quot;com.itheima.dao.IAccountDao.findByUid&quot;</span></span></span><br><span class="line"><span class="tag"><span class="attr">column</span>=<span class="string">&quot;id&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">collection</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--配置查询所有操作--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findAll&quot;</span> <span class="attr">resultMap</span>=<span class="string">&quot;userMap&quot;</span>&gt;</span></span><br><span class="line">select * from user</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><collection>标签：<br>主要用于加载关联的集合对象<br>select 属性：<br>用于指定查询 account 列表的 sql 语句，所以填写的是该 sql 映射的 id<br>column 属性：<br>用于指定 select 属性的 sql 语句的参数来源，上面的参数来自于 user 的 id 列，所以就写成 id 这一个字段名了</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    in = Resources.getResourceAsStream(<span class="string">&quot;SqlMapConfig.xml&quot;</span>);</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>加载同一个配置了延迟加载的配置文件</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>最主要的是在 SqlMapConfig.xml 中开启延迟加载</p>
+]]></content>
+      <categories>
+        <category>MyBatis</category>
+      </categories>
+  </entry>
 </search>
