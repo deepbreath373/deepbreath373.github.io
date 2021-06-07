@@ -178,359 +178,6 @@
       </categories>
   </entry>
   <entry>
-    <title>博客搭建第一天</title>
-    <url>/2020/05/07/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AC%AC%E4%B8%80%E5%A4%A9/</url>
-    <content><![CDATA[<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">System.out.println(<span class="string">&quot;Hello World!&quot;</span>);</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/Frist.gif"></p>
-]]></content>
-      <categories>
-        <category>随心</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>【转载】Java基础知识大纲</title>
-    <url>/2020/05/08/202058-%E3%80%90%E8%BD%AC%E8%BD%BD%E3%80%91Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E5%A4%A7%E7%BA%B2/</url>
-    <content><![CDATA[<p>JavaGuide哥整理的一些基础知识问答</p>
-<p><strong>全文转载自：</strong><a href="https://github.com/Snailclimb/JavaGuide/blob/master/docs/java/Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.md">https://github.com/Snailclimb/JavaGuide/blob/master/docs/java/Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.md</a></p>
-<span id="more"></span>
-
-<h2 id="1-面向对象和面向过程的区别"><a href="#1-面向对象和面向过程的区别" class="headerlink" title="1. 面向对象和面向过程的区别"></a>1. 面向对象和面向过程的区别</h2><ul>
-<li><strong>面向过程</strong> ：<strong>面向过程性能比面向对象高。</strong> 因为类调用时需要实例化，开销比较大，比较消耗资源，所以当性能是最重要的考量因素的时候，比如单片机、嵌入式开发、Linux/Unix 等一般采用面向过程开发。但是，<strong>面向过程没有面向对象易维护、易复用、易扩展。</strong></li>
-<li><strong>面向对象</strong> ：<strong>面向对象易维护、易复用、易扩展。</strong> 因为面向对象有封装、继承、多态性的特性，所以可以设计出低耦合的系统，使系统更加灵活、更加易于维护。但是，<strong>面向对象性能比面向过程低</strong>。</li>
-</ul>
-<p>参见 issue : <a href="https://github.com/Snailclimb/JavaGuide/issues/431">面向过程 ：面向过程性能比面向对象高？？</a></p>
-<blockquote>
-<p>这个并不是根本原因，面向过程也需要分配内存，计算内存偏移量，Java 性能差的主要原因并不是因为它是面向对象语言，而是 Java 是半编译语言，最终的执行代码并不是可以直接被 CPU 执行的二进制机械码。</p>
-<p>而面向过程语言大多都是直接编译成机械码在电脑上执行，并且其它一些面向过程的脚本语言性能也并不一定比 Java 好。</p>
-</blockquote>
-<h2 id="2-Java-语言有哪些特点"><a href="#2-Java-语言有哪些特点" class="headerlink" title="2. Java 语言有哪些特点?"></a>2. Java 语言有哪些特点?</h2><ol>
-<li>简单易学；</li>
-<li>面向对象（封装，继承，多态）；</li>
-<li>平台无关性（ Java 虚拟机实现平台无关性）；</li>
-<li>可靠性；</li>
-<li>安全性；</li>
-<li>支持多线程（ C++ 语言没有内置的多线程机制，因此必须调用操作系统的多线程功能来进行多线程程序设计，而 Java 语言却提供了多线程支持）；</li>
-<li>支持网络编程并且很方便（ Java 语言诞生本身就是为简化网络编程设计的，因此 Java 语言不仅支持网络编程而且很方便）；</li>
-<li>编译与解释并存；</li>
-</ol>
-<blockquote>
-<p>修正（参见： <a href="https://github.com/Snailclimb/JavaGuide/issues/544">issue#544</a>）：C++11 开始（2011 年的时候）,C++就引入了多线程库，在 windows、linux、macos 都可以使用<code>std::thread</code>和<code>std::async</code>来创建线程。参考链接：<a href="http://www.cplusplus.com/reference/thread/thread/?kw=thread">http://www.cplusplus.com/reference/thread/thread/?kw=thread</a></p>
-</blockquote>
-<h2 id="3-关于-JVM-JDK-和-JRE-最详细通俗的解答"><a href="#3-关于-JVM-JDK-和-JRE-最详细通俗的解答" class="headerlink" title="3. 关于 JVM JDK 和 JRE 最详细通俗的解答"></a>3. 关于 JVM JDK 和 JRE 最详细通俗的解答</h2><h3 id="JVM"><a href="#JVM" class="headerlink" title="JVM"></a>JVM</h3><p>Java 虚拟机（JVM）是运行 Java 字节码的虚拟机。JVM 有针对不同系统的特定实现（Windows，Linux，macOS），目的是使用相同的字节码，它们都会给出相同的结果。</p>
-<p><strong>什么是字节码?采用字节码的好处是什么?</strong></p>
-<blockquote>
-<p>在 Java 中，JVM 可以理解的代码就叫做<code>字节码</code>（即扩展名为 <code>.class</code> 的文件），它不面向任何特定的处理器，只面向虚拟机。Java 语言通过字节码的方式，在一定程度上解决了传统解释型语言执行效率低的问题，同时又保留了解释型语言可移植的特点。所以 Java 程序运行时比较高效，而且，由于字节码并不针对一种特定的机器，因此，Java 程序无须重新编译便可在多种不同操作系统的计算机上运行。</p>
-</blockquote>
-<p><strong>Java 程序从源代码到运行一般有下面 3 步：</strong></p>
-<p><img src="/images/Java%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E8%BF%87%E7%A8%8B.png" alt="Java程序运行过程"></p>
-<p>我们需要格外注意的是 .class-&gt;机器码 这一步。在这一步 JVM 类加载器首先加载字节码文件，然后通过解释器逐行解释执行，这种方式的执行速度会相对比较慢。而且，有些方法和代码块是经常需要被调用的(也就是所谓的热点代码)，所以后面引进了 JIT 编译器，而 JIT 属于运行时编译。当 JIT 编译器完成第一次编译后，其会将字节码对应的机器码保存下来，下次可以直接使用。而我们知道，机器码的运行效率肯定是高于 Java 解释器的。这也解释了我们为什么经常会说 Java 是编译与解释共存的语言。</p>
-<blockquote>
-<p>HotSpot 采用了惰性评估(Lazy Evaluation)的做法，根据二八定律，消耗大部分系统资源的只有那一小部分的代码（热点代码），而这也就是 JIT 所需要编译的部分。JVM 会根据代码每次被执行的情况收集信息并相应地做出一些优化，因此执行的次数越多，它的速度就越快。JDK 9 引入了一种新的编译模式 AOT(Ahead of Time Compilation)，它是直接将字节码编译成机器码，这样就避免了 JIT 预热等各方面的开销。JDK 支持分层编译和 AOT 协作使用。但是 ，AOT 编译器的编译质量是肯定比不上 JIT 编译器的。</p>
-</blockquote>
-<p><strong>总结：</strong></p>
-<p>Java 虚拟机（JVM）是运行 Java 字节码的虚拟机。JVM 有针对不同系统的特定实现（Windows，Linux，macOS），目的是使用相同的字节码，它们都会给出相同的结果。字节码和不同系统的 JVM 实现是 Java 语言“一次编译，随处可以运行”的关键所在。</p>
-<h3 id="JDK-和-JRE"><a href="#JDK-和-JRE" class="headerlink" title="JDK 和 JRE"></a>JDK 和 JRE</h3><p>JDK 是 Java Development Kit，它是功能齐全的 Java SDK。它拥有 JRE 所拥有的一切，还有编译器（javac）和工具（如 javadoc 和 jdb）。它能够创建和编译程序。</p>
-<p>JRE 是 Java 运行时环境。它是运行已编译 Java 程序所需的所有内容的集合，包括 Java 虚拟机（JVM），Java 类库，java 命令和其他的一些基础构件。但是，它不能用于创建新程序。</p>
-<p>如果你只是为了运行一下 Java 程序的话，那么你只需要安装 JRE 就可以了。如果你需要进行一些 Java 编程方面的工作，那么你就需要安装 JDK 了。但是，这不是绝对的。有时，即使您不打算在计算机上进行任何 Java 开发，仍然需要安装 JDK。例如，如果要使用 JSP 部署 Web 应用程序，那么从技术上讲，您只是在应用程序服务器中运行 Java 程序。那你为什么需要 JDK 呢？因为应用程序服务器会将 JSP 转换为 Java servlet，并且需要使用 JDK 来编译 servlet。</p>
-<h2 id="4-Oracle-JDK-和-OpenJDK-的对比"><a href="#4-Oracle-JDK-和-OpenJDK-的对比" class="headerlink" title="4. Oracle JDK 和 OpenJDK 的对比"></a>4. Oracle JDK 和 OpenJDK 的对比</h2><p>可能在看这个问题之前很多人和我一样并没有接触和使用过 OpenJDK 。那么 Oracle 和 OpenJDK 之间是否存在重大差异？下面我通过收集到的一些资料，为你解答这个被很多人忽视的问题。</p>
-<p>对于 Java 7，没什么关键的地方。OpenJDK 项目主要基于 Sun 捐赠的 HotSpot 源代码。此外，OpenJDK 被选为 Java 7 的参考实现，由 Oracle 工程师维护。关于 JVM，JDK，JRE 和 OpenJDK 之间的区别，Oracle 博客帖子在 2012 年有一个更详细的答案：</p>
-<blockquote>
-<p>问：OpenJDK 存储库中的源代码与用于构建 Oracle JDK 的代码之间有什么区别？</p>
-<p>答：非常接近 - 我们的 Oracle JDK 版本构建过程基于 OpenJDK 7 构建，只添加了几个部分，例如部署代码，其中包括 Oracle 的 Java 插件和 Java WebStart 的实现，以及一些封闭的源代码派对组件，如图形光栅化器，一些开源的第三方组件，如 Rhino，以及一些零碎的东西，如附加文档或第三方字体。展望未来，我们的目的是开源 Oracle JDK 的所有部分，除了我们考虑商业功能的部分。</p>
-</blockquote>
-<p><strong>总结：</strong></p>
-<ol>
-<li>Oracle JDK 大概每 6 个月发一次主要版本，而 OpenJDK 版本大概每三个月发布一次。但这不是固定的，我觉得了解这个没啥用处。详情参见：<a href="https://blogs.oracle.com/java-platform-group/update-and-faq-on-the-java-se-release-cadence">https://blogs.oracle.com/java-platform-group/update-and-faq-on-the-java-se-release-cadence</a> 。</li>
-<li>OpenJDK 是一个参考模型并且是完全开源的，而 Oracle JDK 是 OpenJDK 的一个实现，并不是完全开源的；</li>
-<li>Oracle JDK 比 OpenJDK 更稳定。OpenJDK 和 Oracle JDK 的代码几乎相同，但 Oracle JDK 有更多的类和一些错误修复。因此，如果您想开发企业/商业软件，我建议您选择 Oracle JDK，因为它经过了彻底的测试和稳定。某些情况下，有些人提到在使用 OpenJDK 可能会遇到了许多应用程序崩溃的问题，但是，只需切换到 Oracle JDK 就可以解决问题；</li>
-<li>在响应性和 JVM 性能方面，Oracle JDK 与 OpenJDK 相比提供了更好的性能；</li>
-<li>Oracle JDK 不会为即将发布的版本提供长期支持，用户每次都必须通过更新到最新版本获得支持来获取最新版本；</li>
-<li>Oracle JDK 根据二进制代码许可协议获得许可，而 OpenJDK 根据 GPL v2 许可获得许可。</li>
-</ol>
-<h2 id="5-Java-和-C-的区别"><a href="#5-Java-和-C-的区别" class="headerlink" title="5. Java 和 C++的区别?"></a>5. Java 和 C++的区别?</h2><p>我知道很多人没学过 C++，但是面试官就是没事喜欢拿咱们 Java 和 C++ 比呀！没办法！！！就算没学过 C++，也要记下来！</p>
-<ul>
-<li>都是面向对象的语言，都支持封装、继承和多态</li>
-<li>Java 不提供指针来直接访问内存，程序内存更加安全</li>
-<li>Java 的类是单继承的，C++ 支持多重继承；虽然 Java 的类不可以多继承，但是接口可以多继承。</li>
-<li>Java 有自动内存管理机制，不需要程序员手动释放无用内存</li>
-<li><strong>在 C 语言中，字符串或字符数组最后都会有一个额外的字符‘\0’来表示结束。但是，Java 语言中没有结束符这一概念。</strong> 这是一个值得深度思考的问题，具体原因推荐看这篇文章： <a href="https://blog.csdn.net/sszgg2006/article/details/49148189">https://blog.csdn.net/sszgg2006/article/details/49148189</a></li>
-</ul>
-<h2 id="6-什么是-Java-程序的主类-应用程序和小程序的主类有何不同"><a href="#6-什么是-Java-程序的主类-应用程序和小程序的主类有何不同" class="headerlink" title="6. 什么是 Java 程序的主类 应用程序和小程序的主类有何不同?"></a>6. 什么是 Java 程序的主类 应用程序和小程序的主类有何不同?</h2><p>一个程序中可以有多个类，但只能有一个类是主类。在 Java 应用程序中，这个主类是指包含 main（）方法的类。而在 Java 小程序中，这个主类是一个继承自系统类 JApplet 或 Applet 的子类。应用程序的主类不一定要求是 public 类，但小程序的主类要求必须是 public 类。主类是 Java 程序执行的入口点。</p>
-<h2 id="7-Java-应用程序与小程序之间有哪些差别"><a href="#7-Java-应用程序与小程序之间有哪些差别" class="headerlink" title="7. Java 应用程序与小程序之间有哪些差别?"></a>7. Java 应用程序与小程序之间有哪些差别?</h2><p>简单说应用程序是从主线程启动(也就是 <code>main()</code> 方法)。applet 小程序没有 <code>main()</code> 方法，主要是嵌在浏览器页面上运行(调用<code>init()</code>或者<code>run()</code>来启动)，嵌入浏览器这点跟 flash 的小游戏类似。</p>
-<h2 id="8-字符型常量和字符串常量的区别"><a href="#8-字符型常量和字符串常量的区别" class="headerlink" title="8. 字符型常量和字符串常量的区别?"></a>8. 字符型常量和字符串常量的区别?</h2><ol>
-<li>形式上: 字符常量是单引号引起的一个字符; 字符串常量是双引号引起的若干个字符</li>
-<li>含义上: 字符常量相当于一个整型值( ASCII 值),可以参加表达式运算; 字符串常量代表一个地址值(该字符串在内存中存放位置)</li>
-<li>占内存大小 字符常量只占 2 个字节; 字符串常量占若干个字节 (<strong>注意： char 在 Java 中占两个字节</strong>)</li>
-</ol>
-<blockquote>
-<p>java 编程思想第四版：2.2.2 节 <img src="/images/Java%E5%90%84%E7%B1%BB%E5%9E%8B%E5%A4%A7%E5%B0%8F.png" alt="img"></p>
-</blockquote>
-<h2 id="9-构造器-Constructor-是否可被-override"><a href="#9-构造器-Constructor-是否可被-override" class="headerlink" title="9. 构造器 Constructor 是否可被 override?"></a>9. 构造器 Constructor 是否可被 override?</h2><p>Constructor 不能被 override（重写）,但是可以 overload（重载）,所以你可以看到一个类中有多个构造函数的情况。</p>
-<h2 id="10-重载和重写的区别"><a href="#10-重载和重写的区别" class="headerlink" title="10. 重载和重写的区别"></a>10. 重载和重写的区别</h2><blockquote>
-<p>重载就是同样的一个方法能够根据输入数据的不同，做出不同的处理</p>
-<p>重写就是当子类继承自父类的相同方法，输入数据一样，但要做出有别于父类的响应时，你就要覆盖父类方法</p>
-</blockquote>
-<h4 id="重载"><a href="#重载" class="headerlink" title="重载"></a>重载</h4><p>发生在同一个类中，方法名必须相同，参数类型不同、个数不同、顺序不同，方法返回值和访问修饰符可以不同。</p>
-<p>下面是《Java 核心技术》对重载这个概念的介绍：</p>
-<p><img src="/images/java%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF-%E9%87%8D%E8%BD%BD.jpg" alt="img"></p>
-<p><strong>综上：重载就是同一个类中多个同名方法根据不同的传参来执行不同的逻辑处理。</strong></p>
-<h4 id="重写"><a href="#重写" class="headerlink" title="重写"></a>重写</h4><p>重写发生在运行期，是子类对父类的允许访问的方法的实现过程进行重新编写。</p>
-<ol>
-<li>返回值类型、方法名、参数列表必须相同，抛出的异常范围小于等于父类，访问修饰符范围大于等于父类。</li>
-<li>如果父类方法访问修饰符为 private/final/static 则子类就不能重写该方法，但是被 static 修饰的方法能够被再次声明。</li>
-<li>构造方法无法被重写</li>
-</ol>
-<p><strong>综上：重写就是子类对父类方法的重新改造，外部样子不能改变，内部逻辑可以改变</strong></p>
-<p><strong>暖心的 Guide 哥最后再来个图标总结一下！</strong></p>
-<table>
-<thead>
-<tr>
-<th>区别点</th>
-<th>重载方法</th>
-<th>重写方法</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>发生范围</td>
-<td>同一个类</td>
-<td>子类 中</td>
-</tr>
-<tr>
-<td>参数列表</td>
-<td>必须修改</td>
-<td>一定不能修改</td>
-</tr>
-<tr>
-<td>返回类型</td>
-<td>可修改</td>
-<td>一定不能修改</td>
-</tr>
-<tr>
-<td>异常</td>
-<td>可修改</td>
-<td>可以减少或删除，一定不能抛出新的或者更广的异常</td>
-</tr>
-<tr>
-<td>访问修饰符</td>
-<td>可修改</td>
-<td>一定不能做更严格的限制（可以降低限制）</td>
-</tr>
-<tr>
-<td>发生阶段</td>
-<td>编译期</td>
-<td>运行期</td>
-</tr>
-</tbody></table>
-<h2 id="11-Java-面向对象编程三大特性-封装-继承-多态"><a href="#11-Java-面向对象编程三大特性-封装-继承-多态" class="headerlink" title="11. Java 面向对象编程三大特性: 封装 继承 多态"></a>11. Java 面向对象编程三大特性: 封装 继承 多态</h2><h3 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h3><p>封装把一个对象的属性私有化，同时提供一些可以被外界访问的属性的方法，如果属性不想被外界访问，我们大可不必提供方法给外界访问。但是如果一个类没有提供给外界访问的方法，那么这个类也没有什么意义了。</p>
-<h3 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h3><p>继承是使用已存在的类的定义作为基础建立新类的技术，新类的定义可以增加新的数据或新的功能，也可以用父类的功能，但不能选择性地继承父类。通过使用继承我们能够非常方便地复用以前的代码。</p>
-<p><strong>关于继承如下 3 点请记住：</strong></p>
-<ol>
-<li>子类拥有父类对象所有的属性和方法（包括私有属性和私有方法），但是父类中的私有属性和方法子类是无法访问，<strong>只是拥有</strong>。</li>
-<li>子类可以拥有自己属性和方法，即子类可以对父类进行扩展。</li>
-<li>子类可以用自己的方式实现父类的方法。（以后介绍）。</li>
-</ol>
-<h3 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h3><p>所谓多态就是指程序中定义的引用变量所指向的具体类型和通过该引用变量发出的方法调用在编程时并不确定，而是在程序运行期间才确定，即一个引用变量到底会指向哪个类的实例对象，该引用变量发出的方法调用到底是哪个类中实现的方法，必须在由程序运行期间才能决定。</p>
-<p>在 Java 中有两种形式可以实现多态：继承（多个子类对同一方法的重写）和接口（实现接口并覆盖接口中同一方法）。</p>
-<h2 id="12-String-StringBuffer-和-StringBuilder-的区别是什么-String-为什么是不可变的"><a href="#12-String-StringBuffer-和-StringBuilder-的区别是什么-String-为什么是不可变的" class="headerlink" title="12. String StringBuffer 和 StringBuilder 的区别是什么? String 为什么是不可变的?"></a>12. String StringBuffer 和 StringBuilder 的区别是什么? String 为什么是不可变的?</h2><p><strong>可变性</strong></p>
-<p>简单的来说：String 类中使用 final 关键字修饰字符数组来保存字符串，<code>private final char value[]</code>，所以 String 对象是不可变的。</p>
-<blockquote>
-<p>补充（来自<a href="https://github.com/Snailclimb/JavaGuide/issues/675">issue 675</a>）：在 Java 9 之后，String 类的实现改用 byte 数组存储字符串 <code>private final byte[] value</code>;</p>
-</blockquote>
-<p>而 StringBuilder 与 StringBuffer 都继承自 AbstractStringBuilder 类，在 AbstractStringBuilder 中也是使用字符数组保存字符串<code>char[]value</code> 但是没有用 final 关键字修饰，所以这两种对象都是可变的。</p>
-<p>StringBuilder 与 StringBuffer 的构造方法都是调用父类构造方法也就是 AbstractStringBuilder 实现的，大家可以自行查阅源码。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">AbstractStringBuilder.java</span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractStringBuilder</span> <span class="keyword">implements</span> <span class="title">Appendable</span>, <span class="title">CharSequence</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * The value is used for character storage.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">char</span>[] value;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * The count is the number of characters used.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">int</span> count;</span><br><span class="line"></span><br><span class="line">    AbstractStringBuilder(<span class="keyword">int</span> capacity) &#123;</span><br><span class="line">        value = <span class="keyword">new</span> <span class="keyword">char</span>[capacity];</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>线程安全性</strong></p>
-<p>String 中的对象是不可变的，也就可以理解为常量，线程安全。AbstractStringBuilder 是 StringBuilder 与 StringBuffer 的公共父类，定义了一些字符串的基本操作，如 expandCapacity、append、insert、indexOf 等公共方法。StringBuffer 对方法加了同步锁或者对调用的方法加了同步锁，所以是线程安全的。StringBuilder 并没有对方法进行加同步锁，所以是非线程安全的。</p>
-<p><strong>性能</strong></p>
-<p>每次对 String 类型进行改变的时候，都会生成一个新的 String 对象，然后将指针指向新的 String 对象。StringBuffer 每次都会对 StringBuffer 对象本身进行操作，而不是生成新的对象并改变对象引用。相同情况下使用 StringBuilder 相比使用 StringBuffer 仅能获得 10%~15% 左右的性能提升，但却要冒多线程不安全的风险。</p>
-<p><strong>对于三者使用的总结：</strong></p>
-<ol>
-<li>操作少量的数据: 适用 String</li>
-<li>单线程操作字符串缓冲区下操作大量数据: 适用 StringBuilder</li>
-<li>多线程操作字符串缓冲区下操作大量数据: 适用 StringBuffer</li>
-</ol>
-<h2 id="13-自动装箱与拆箱"><a href="#13-自动装箱与拆箱" class="headerlink" title="13. 自动装箱与拆箱"></a>13. 自动装箱与拆箱</h2><ul>
-<li><strong>装箱</strong>：将基本类型用它们对应的引用类型包装起来；</li>
-<li><strong>拆箱</strong>：将包装类型转换为基本数据类型；</li>
-</ul>
-<p>更多内容见：<a href="https://www.cnblogs.com/dolphin0520/p/3780005.html">深入剖析 Java 中的装箱和拆箱</a></p>
-<h2 id="14-在一个静态方法内调用一个非静态成员为什么是非法的"><a href="#14-在一个静态方法内调用一个非静态成员为什么是非法的" class="headerlink" title="14. 在一个静态方法内调用一个非静态成员为什么是非法的?"></a>14. 在一个静态方法内调用一个非静态成员为什么是非法的?</h2><p>由于静态方法可以不通过对象进行调用，因此在静态方法里，不能调用其他非静态变量，也不可以访问非静态变量成员。</p>
-<h2 id="15-在-Java-中定义一个不做事且没有参数的构造方法的作用"><a href="#15-在-Java-中定义一个不做事且没有参数的构造方法的作用" class="headerlink" title="15. 在 Java 中定义一个不做事且没有参数的构造方法的作用"></a>15. 在 Java 中定义一个不做事且没有参数的构造方法的作用</h2><p>Java 程序在执行子类的构造方法之前，如果没有用 <code>super()</code>来调用父类特定的构造方法，则会调用父类中“没有参数的构造方法”。因此，如果父类中只定义了有参数的构造方法，而在子类的构造方法中又没有用 <code>super()</code>来调用父类中特定的构造方法，则编译时将发生错误，因为 Java 程序在父类中找不到没有参数的构造方法可供执行。解决办法是在父类里加上一个不做事且没有参数的构造方法。</p>
-<h2 id="16-import-java-和-javax-有什么区别？"><a href="#16-import-java-和-javax-有什么区别？" class="headerlink" title="16. import java 和 javax 有什么区别？"></a>16. import java 和 javax 有什么区别？</h2><p>刚开始的时候 JavaAPI 所必需的包是 java 开头的包，javax 当时只是扩展 API 包来使用。然而随着时间的推移，javax 逐渐地扩展成为 Java API 的组成部分。但是，将扩展从 javax 包移动到 java 包确实太麻烦了，最终会破坏一堆现有的代码。因此，最终决定 javax 包将成为标准 API 的一部分。</p>
-<p>所以，实际上 java 和 javax 没有区别。这都是一个名字。</p>
-<h2 id="17-接口和抽象类的区别是什么？"><a href="#17-接口和抽象类的区别是什么？" class="headerlink" title="17. 接口和抽象类的区别是什么？"></a>17. 接口和抽象类的区别是什么？</h2><ol>
-<li>接口的方法默认是 public，所有方法在接口中不能有实现(Java 8 开始接口方法可以有默认实现），而抽象类可以有非抽象的方法。</li>
-<li>接口中除了 static、final 变量，不能有其他变量，而抽象类中则不一定。</li>
-<li>一个类可以实现多个接口，但只能实现一个抽象类。接口自己本身可以通过 extends 关键字扩展多个接口。</li>
-<li>接口方法默认修饰符是 public，抽象方法可以有 public、protected 和 default 这些修饰符（抽象方法就是为了被重写所以不能使用 private 关键字修饰！）。</li>
-<li>从设计层面来说，抽象是对类的抽象，是一种模板设计，而接口是对行为的抽象，是一种行为的规范。</li>
-</ol>
-<p>备注：</p>
-<ol>
-<li>在 JDK8 中，接口也可以定义静态方法，可以直接用接口名调用。实现类和实现是不可以调用的。如果同时实现两个接口，接口中定义了一样的默认方法，则必须重写，不然会报错。(详见 issue:<a href="https://github.com/Snailclimb/JavaGuide/issues/146%E3%80%82">https://github.com/Snailclimb/JavaGuide/issues/146。</a></li>
-<li>jdk9 的接口被允许定义私有方法 。</li>
-</ol>
-<p>总结一下 jdk7~jdk9 Java 中接口概念的变化（<a href="https://www.geeksforgeeks.org/private-methods-java-9-interfaces/">相关阅读</a>）：</p>
-<ol>
-<li>在 jdk 7 或更早版本中，接口里面只能有常量变量和抽象方法。这些接口方法必须由选择实现接口的类实现。</li>
-<li>jdk8 的时候接口可以有默认方法和静态方法功能。</li>
-<li>Jdk 9 在接口中引入了私有方法和私有静态方法。</li>
-</ol>
-<h2 id="18-成员变量与局部变量的区别有哪些？"><a href="#18-成员变量与局部变量的区别有哪些？" class="headerlink" title="18. 成员变量与局部变量的区别有哪些？"></a>18. 成员变量与局部变量的区别有哪些？</h2><ol>
-<li>从语法形式上看:成员变量是属于类的，而局部变量是在方法中定义的变量或是方法的参数；成员变量可以被 public,private,static 等修饰符所修饰，而局部变量不能被访问控制修饰符及 static 所修饰；但是，成员变量和局部变量都能被 final 所修饰。</li>
-<li>从变量在内存中的存储方式来看:如果成员变量是使用<code>static</code>修饰的，那么这个成员变量是属于类的，如果没有使用<code>static</code>修饰，这个成员变量是属于实例的。而对象存在于堆内存，局部变量则存在于栈内存。</li>
-<li>从变量在内存中的生存时间上看:成员变量是对象的一部分，它随着对象的创建而存在，而局部变量随着方法的调用而自动消失。</li>
-<li>成员变量如果没有被赋初值:则会自动以类型的默认值而赋值（一种情况例外:被 final 修饰的成员变量也必须显式地赋值），而局部变量则不会自动赋值。</li>
-</ol>
-<h2 id="19-创建一个对象用什么运算符-对象实体与对象引用有何不同"><a href="#19-创建一个对象用什么运算符-对象实体与对象引用有何不同" class="headerlink" title="19. 创建一个对象用什么运算符?对象实体与对象引用有何不同?"></a>19. 创建一个对象用什么运算符?对象实体与对象引用有何不同?</h2><p>new 运算符，new 创建对象实例（对象实例在堆内存中），对象引用指向对象实例（对象引用存放在栈内存中）。一个对象引用可以指向 0 个或 1 个对象（一根绳子可以不系气球，也可以系一个气球）;一个对象可以有 n 个引用指向它（可以用 n 条绳子系住一个气球）。</p>
-<h2 id="20-什么是方法的返回值-返回值在类的方法里的作用是什么"><a href="#20-什么是方法的返回值-返回值在类的方法里的作用是什么" class="headerlink" title="20. 什么是方法的返回值?返回值在类的方法里的作用是什么?"></a>20. 什么是方法的返回值?返回值在类的方法里的作用是什么?</h2><p>方法的返回值是指我们获取到的某个方法体中的代码执行后产生的结果！（前提是该方法可能产生结果）。返回值的作用:接收出结果，使得它可以用于其他的操作！</p>
-<h2 id="21-一个类的构造方法的作用是什么-若一个类没有声明构造方法，该程序能正确执行吗-为什么"><a href="#21-一个类的构造方法的作用是什么-若一个类没有声明构造方法，该程序能正确执行吗-为什么" class="headerlink" title="21. 一个类的构造方法的作用是什么? 若一个类没有声明构造方法，该程序能正确执行吗? 为什么?"></a>21. 一个类的构造方法的作用是什么? 若一个类没有声明构造方法，该程序能正确执行吗? 为什么?</h2><p>主要作用是完成对类对象的初始化工作。可以执行。因为一个类即使没有声明构造方法也会有默认的不带参数的构造方法。</p>
-<h2 id="22-构造方法有哪些特性？"><a href="#22-构造方法有哪些特性？" class="headerlink" title="22. 构造方法有哪些特性？"></a>22. 构造方法有哪些特性？</h2><ol>
-<li>名字与类名相同。</li>
-<li>没有返回值，但不能用 void 声明构造函数。</li>
-<li>生成类的对象时自动执行，无需调用。</li>
-</ol>
-<h2 id="23-静态方法和实例方法有何不同"><a href="#23-静态方法和实例方法有何不同" class="headerlink" title="23. 静态方法和实例方法有何不同"></a>23. 静态方法和实例方法有何不同</h2><ol>
-<li>在外部调用静态方法时，可以使用”类名.方法名”的方式，也可以使用”对象名.方法名”的方式。而实例方法只有后面这种方式。也就是说，调用静态方法可以无需创建对象。</li>
-<li>静态方法在访问本类的成员时，只允许访问静态成员（即静态成员变量和静态方法），而不允许访问实例成员变量和实例方法；实例方法则无此限制。</li>
-</ol>
-<h2 id="24-对象的相等与指向他们的引用相等-两者有什么不同"><a href="#24-对象的相等与指向他们的引用相等-两者有什么不同" class="headerlink" title="24. 对象的相等与指向他们的引用相等,两者有什么不同?"></a>24. 对象的相等与指向他们的引用相等,两者有什么不同?</h2><p>对象的相等，比的是内存中存放的内容是否相等。而引用相等，比较的是他们指向的内存地址是否相等。</p>
-<h2 id="25-在调用子类构造方法之前会先调用父类没有参数的构造方法-其目的是"><a href="#25-在调用子类构造方法之前会先调用父类没有参数的构造方法-其目的是" class="headerlink" title="25. 在调用子类构造方法之前会先调用父类没有参数的构造方法,其目的是?"></a>25. 在调用子类构造方法之前会先调用父类没有参数的构造方法,其目的是?</h2><p>帮助子类做初始化工作。</p>
-<h2 id="26-与-equals-重要"><a href="#26-与-equals-重要" class="headerlink" title="26. == 与 equals(重要)"></a>26. == 与 equals(重要)</h2><p><strong>==</strong> : 它的作用是判断两个对象的地址是不是相等。即，判断两个对象是不是同一个对象(基本数据类型==比较的是值，引用数据类型==比较的是内存地址)。</p>
-<p><strong>equals()</strong> : 它的作用也是判断两个对象是否相等。但它一般有两种使用情况：</p>
-<ul>
-<li>情况 1：类没有覆盖 equals() 方法。则通过 equals() 比较该类的两个对象时，等价于通过“==”比较这两个对象。</li>
-<li>情况 2：类覆盖了 equals() 方法。一般，我们都覆盖 equals() 方法来比较两个对象的内容是否相等；若它们的内容相等，则返回 true (即，认为这两个对象相等)。</li>
-</ul>
-<p><strong>举个例子：</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">test1</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        String a = <span class="keyword">new</span> String(<span class="string">&quot;ab&quot;</span>); <span class="comment">// a 为一个引用</span></span><br><span class="line">        String b = <span class="keyword">new</span> String(<span class="string">&quot;ab&quot;</span>); <span class="comment">// b为另一个引用,对象的内容一样</span></span><br><span class="line">        String aa = <span class="string">&quot;ab&quot;</span>; <span class="comment">// 放在常量池中</span></span><br><span class="line">        String bb = <span class="string">&quot;ab&quot;</span>; <span class="comment">// 从常量池中查找</span></span><br><span class="line">        <span class="keyword">if</span> (aa == bb) <span class="comment">// true</span></span><br><span class="line">            System.out.println(<span class="string">&quot;aa==bb&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (a == b) <span class="comment">// false，非同一对象</span></span><br><span class="line">            System.out.println(<span class="string">&quot;a==b&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (a.equals(b)) <span class="comment">// true</span></span><br><span class="line">            System.out.println(<span class="string">&quot;aEQb&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (<span class="number">42</span> == <span class="number">42.0</span>) &#123; <span class="comment">// true</span></span><br><span class="line">            System.out.println(<span class="string">&quot;true&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>说明：</strong></p>
-<ul>
-<li>String 中的 equals 方法是被重写过的，因为 object 的 equals 方法是比较的对象的内存地址，而 String 的 equals 方法比较的是对象的值。</li>
-<li>当创建 String 类型的对象时，虚拟机会在常量池中查找有没有已经存在的值和要创建的值相同的对象，如果有就把它赋给当前引用。如果没有就在常量池中重新创建一个 String 对象。</li>
-</ul>
-<h2 id="27-hashCode-与-equals-重要"><a href="#27-hashCode-与-equals-重要" class="headerlink" title="27. hashCode 与 equals (重要)"></a>27. hashCode 与 equals (重要)</h2><p>面试官可能会问你：“你重写过 hashcode 和 equals 么，为什么重写 equals 时必须重写 hashCode 方法？”</p>
-<h3 id="hashCode（）介绍"><a href="#hashCode（）介绍" class="headerlink" title="hashCode（）介绍"></a>hashCode（）介绍</h3><p>hashCode() 的作用是获取哈希码，也称为散列码；它实际上是返回一个 int 整数。这个哈希码的作用是确定该对象在哈希表中的索引位置。hashCode() 定义在 JDK 的 Object.java 中，这就意味着 Java 中的任何类都包含有 hashCode() 函数。</p>
-<p>散列表存储的是键值对(key-value)，它的特点是：能根据“键”快速的检索出对应的“值”。这其中就利用到了散列码！（可以快速找到所需要的对象）</p>
-<h3 id="为什么要有-hashCode"><a href="#为什么要有-hashCode" class="headerlink" title="为什么要有 hashCode"></a>为什么要有 hashCode</h3><p><strong>我们先以“HashSet 如何检查重复”为例子来说明为什么要有 hashCode：</strong> 当你把对象加入 HashSet 时，HashSet 会先计算对象的 hashcode 值来判断对象加入的位置，同时也会与该位置其他已经加入的对象的 hashcode 值作比较，如果没有相符的 hashcode，HashSet 会假设对象没有重复出现。但是如果发现有相同 hashcode 值的对象，这时会调用 <code>equals()</code>方法来检查 hashcode 相等的对象是否真的相同。如果两者相同，HashSet 就不会让其加入操作成功。如果不同的话，就会重新散列到其他位置。（摘自我的 Java 启蒙书《Head first java》第二版）。这样我们就大大减少了 equals 的次数，相应就大大提高了执行速度。</p>
-<p>通过我们可以看出：<code>hashCode()</code> 的作用就是<strong>获取哈希码</strong>，也称为散列码；它实际上是返回一个 int 整数。这个<strong>哈希码的作用</strong>是确定该对象在哈希表中的索引位置。**<code>hashCode()</code>在散列表中才有用，在其它情况下没用**。在散列表中 hashCode() 的作用是获取对象的散列码，进而确定该对象在散列表中的位置。</p>
-<h3 id="hashCode（）与-equals（）的相关规定"><a href="#hashCode（）与-equals（）的相关规定" class="headerlink" title="hashCode（）与 equals（）的相关规定"></a>hashCode（）与 equals（）的相关规定</h3><ol>
-<li>如果两个对象相等，则 hashcode 一定也是相同的</li>
-<li>两个对象相等,对两个对象分别调用 equals 方法都返回 true</li>
-<li>两个对象有相同的 hashcode 值，它们也不一定是相等的</li>
-<li><strong>因此，equals 方法被覆盖过，则 hashCode 方法也必须被覆盖</strong></li>
-<li>hashCode() 的默认行为是对堆上的对象产生独特值。如果没有重写 hashCode()，则该 class 的两个对象无论如何都不会相等（即使这两个对象指向相同的数据）</li>
-</ol>
-<p>推荐阅读：<a href="https://www.cnblogs.com/skywang12345/p/3324958.html">Java hashCode() 和 equals()的若干问题解答</a></p>
-<h2 id="28-为什么-Java-中只有值传递？"><a href="#28-为什么-Java-中只有值传递？" class="headerlink" title="28. 为什么 Java 中只有值传递？"></a>28. 为什么 Java 中只有值传递？</h2><p><a href="https://juejin.im/post/5e18879e6fb9a02fc63602e2">为什么 Java 中只有值传递？</a></p>
-<h2 id="29-简述线程、程序、进程的基本概念。以及他们之间关系是什么"><a href="#29-简述线程、程序、进程的基本概念。以及他们之间关系是什么" class="headerlink" title="29. 简述线程、程序、进程的基本概念。以及他们之间关系是什么?"></a>29. 简述线程、程序、进程的基本概念。以及他们之间关系是什么?</h2><p><strong>线程</strong>与进程相似，但线程是一个比进程更小的执行单位。一个进程在其执行的过程中可以产生多个线程。与进程不同的是同类的多个线程共享同一块内存空间和一组系统资源，所以系统在产生一个线程，或是在各个线程之间作切换工作时，负担要比进程小得多，也正因为如此，线程也被称为轻量级进程。</p>
-<p><strong>程序</strong>是含有指令和数据的文件，被存储在磁盘或其他的数据存储设备中，也就是说程序是静态的代码。</p>
-<p><strong>进程</strong>是程序的一次执行过程，是系统运行程序的基本单位，因此进程是动态的。系统运行一个程序即是一个进程从创建，运行到消亡的过程。简单来说，一个进程就是一个执行中的程序，它在计算机中一个指令接着一个指令地执行着，同时，每个进程还占有某些系统资源如 CPU 时间，内存空间，文件，输入输出设备的使用权等等。换句话说，当程序在执行时，将会被操作系统载入内存中。 线程是进程划分成的更小的运行单位。线程和进程最大的不同在于基本上各进程是独立的，而各线程则不一定，因为同一进程中的线程极有可能会相互影响。从另一角度来说，进程属于操作系统的范畴，主要是同一段时间内，可以同时执行一个以上的程序，而线程则是在同一程序内几乎同时执行一个以上的程序段。</p>
-<h2 id="30-线程有哪些基本状态"><a href="#30-线程有哪些基本状态" class="headerlink" title="30. 线程有哪些基本状态?"></a>30. 线程有哪些基本状态?</h2><p>Java 线程在运行的生命周期中的指定时刻只可能处于下面 6 种不同状态的其中一个状态（图源《Java 并发编程艺术》4.1.4 节）。</p>
-<p><img src="/images/Java%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%8A%B6%E6%80%81.png" alt="Java线程的状态"></p>
-<p>线程在生命周期中并不是固定处于某一个状态而是随着代码的执行在不同状态之间切换。Java 线程状态变迁如下图所示（图源《Java 并发编程艺术》4.1.4 节）：</p>
-<p><img src="/images/Java%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E5%8F%98%E8%BF%81.png" alt="Java线程状态变迁"></p>
-<p>由上图可以看出：</p>
-<p>线程创建之后它将处于 <strong>NEW（新建）</strong> 状态，调用 <code>start()</code> 方法后开始运行，线程这时候处于 <strong>READY（可运行）</strong> 状态。可运行状态的线程获得了 cpu 时间片（timeslice）后就处于 <strong>RUNNING（运行）</strong> 状态。</p>
-<blockquote>
-<p>操作系统隐藏 Java 虚拟机（JVM）中的 READY 和 RUNNING 状态，它只能看到 RUNNABLE 状态（图源：<a href="https://howtodoinjava.com/">HowToDoInJava</a>：<a href="https://howtodoinjava.com/java/multi-threading/java-thread-life-cycle-and-thread-states/">Java Thread Life Cycle and Thread States</a>），所以 Java 系统一般将这两个状态统称为 <strong>RUNNABLE（运行中）</strong> 状态 。</p>
-</blockquote>
-<p><img src="/images/RUNNABLE-VS-RUNNING.png" alt="RUNNABLE-VS-RUNNING"></p>
-<p>当线程执行 <code>wait()</code>方法之后，线程进入 <strong>WAITING（等待）</strong>状态。进入等待状态的线程需要依靠其他线程的通知才能够返回到运行状态，而 <strong>TIME_WAITING(超时等待)</strong> 状态相当于在等待状态的基础上增加了超时限制，比如通过 <code>sleep（long millis）</code>方法或 <code>wait（long millis）</code>方法可以将 Java 线程置于 TIMED WAITING 状态。当超时时间到达后 Java 线程将会返回到 RUNNABLE 状态。当线程调用同步方法时，在没有获取到锁的情况下，线程将会进入到 <strong>BLOCKED（阻塞）</strong> 状态。线程在执行 Runnable 的<code>run()</code>方法之后将会进入到 <strong>TERMINATED（终止）</strong> 状态。</p>
-<h2 id="31-关于-final-关键字的一些总结"><a href="#31-关于-final-关键字的一些总结" class="headerlink" title="31 关于 final 关键字的一些总结"></a>31 关于 final 关键字的一些总结</h2><p>final 关键字主要用在三个地方：变量、方法、类。</p>
-<ol>
-<li>对于一个 final 变量，如果是基本数据类型的变量，则其数值一旦在初始化之后便不能更改；如果是引用类型的变量，则在对其初始化之后便不能再让其指向另一个对象。</li>
-<li>当用 final 修饰一个类时，表明这个类不能被继承。final 类中的所有成员方法都会被隐式地指定为 final 方法。</li>
-<li>使用 final 方法的原因有两个。第一个原因是把方法锁定，以防任何继承类修改它的含义；第二个原因是效率。在早期的 Java 实现版本中，会将 final 方法转为内嵌调用。但是如果方法过于庞大，可能看不到内嵌调用带来的任何性能提升（现在的 Java 版本已经不需要使用 final 方法进行这些优化了）。类中所有的 private 方法都隐式地指定为 final。</li>
-</ol>
-<h2 id="32-Java-中的异常处理"><a href="#32-Java-中的异常处理" class="headerlink" title="32 Java 中的异常处理"></a>32 Java 中的异常处理</h2><h3 id="Java-异常类层次结构图"><a href="#Java-异常类层次结构图" class="headerlink" title="Java 异常类层次结构图"></a>Java 异常类层次结构图</h3><p><img src="/images/java%E5%BC%82%E5%B8%B8%E7%B1%BB%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84%E5%9B%BE.jpg" alt="Java异常类层次结构图"></p>
-<p>图片来自：<a href="https://simplesnippets.tech/exception-handling-in-java-part-1/">https://simplesnippets.tech/exception-handling-in-java-part-1/</a></p>
-<p><img src="/images/java%E5%BC%82%E5%B8%B8%E7%B1%BB%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84%E5%9B%BE%E4%BA%8C.png" alt="Java异常类层次结构图"></p>
-<p>图片来自：<a href="https://chercher.tech/java-programming/exceptions-java">https://chercher.tech/java-programming/exceptions-java</a></p>
-<p>在 Java 中，所有的异常都有一个共同的祖先 java.lang 包中的 <strong>Throwable 类</strong>。Throwable： 有两个重要的子类：<strong>Exception（异常）</strong> 和 <strong>Error（错误）</strong> ，二者都是 Java 异常处理的重要子类，各自都包含大量子类。</p>
-<p><strong>Error（错误）:是程序无法处理的错误</strong>，表示运行应用程序中较严重问题。大多数错误与代码编写者执行的操作无关，而表示代码运行时 JVM（Java 虚拟机）出现的问题。例如，Java 虚拟机运行错误（Virtual MachineError），当 JVM 不再有继续执行操作所需的内存资源时，将出现 OutOfMemoryError。这些异常发生时，Java 虚拟机（JVM）一般会选择线程终止。</p>
-<p>这些错误表示故障发生于虚拟机自身、或者发生在虚拟机试图执行应用时，如 Java 虚拟机运行错误（Virtual MachineError）、类定义错误（NoClassDefFoundError）等。这些错误是不可查的，因为它们在应用程序的控制和处理能力之 外，而且绝大多数是程序运行时不允许出现的状况。对于设计合理的应用程序来说，即使确实发生了错误，本质上也不应该试图去处理它所引起的异常状况。在 Java 中，错误通过 Error 的子类描述。</p>
-<p><strong>Exception（异常）:是程序本身可以处理的异常</strong>。Exception 类有一个重要的子类 <strong>RuntimeException</strong>。RuntimeException 异常由 Java 虚拟机抛出。<strong>NullPointerException</strong>（要访问的变量没有引用任何对象时，抛出该异常）、<strong>ArithmeticException</strong>（算术运算异常，一个整数除以 0 时，抛出该异常）和 <strong>ArrayIndexOutOfBoundsException</strong> （下标越界异常）。</p>
-<p><strong>注意：异常和错误的区别：异常能被程序本身处理，错误是无法处理。</strong></p>
-<h3 id="Throwable-类常用方法"><a href="#Throwable-类常用方法" class="headerlink" title="Throwable 类常用方法"></a>Throwable 类常用方法</h3><ul>
-<li><strong>public string getMessage()</strong>:返回异常发生时的简要描述</li>
-<li><strong>public string toString()</strong>:返回异常发生时的详细信息</li>
-<li><strong>public string getLocalizedMessage()</strong>:返回异常对象的本地化信息。使用 Throwable 的子类覆盖这个方法，可以生成本地化信息。如果子类没有覆盖该方法，则该方法返回的信息与 getMessage（）返回的结果相同</li>
-<li><strong>public void printStackTrace()</strong>:在控制台上打印 Throwable 对象封装的异常信息</li>
-</ul>
-<h3 id="异常处理总结"><a href="#异常处理总结" class="headerlink" title="异常处理总结"></a>异常处理总结</h3><ul>
-<li><strong>try 块：</strong> 用于捕获异常。其后可接零个或多个 catch 块，如果没有 catch 块，则必须跟一个 finally 块。</li>
-<li><strong>catch 块：</strong> 用于处理 try 捕获到的异常。</li>
-<li><strong>finally 块：</strong> 无论是否捕获或处理异常，finally 块里的语句都会被执行。当在 try 块或 catch 块中遇到 return 语句时，finally 语句块将在方法返回之前被执行。</li>
-</ul>
-<p><strong>在以下 4 种特殊情况下，finally 块不会被执行：</strong></p>
-<ol>
-<li>在 finally 语句块第一行发生了异常。 因为在其他行，finally 块还是会得到执行</li>
-<li>在前面的代码中用了 System.exit(int)已退出程序。 exit 是带参函数 ；若该语句在异常语句之后，finally 会执行</li>
-<li>程序所在的线程死亡。</li>
-<li>关闭 CPU。</li>
-</ol>
-<p>下面这部分内容来自 issue:<a href="https://github.com/Snailclimb/JavaGuide/issues/190%E3%80%82">https://github.com/Snailclimb/JavaGuide/issues/190。</a></p>
-<p><strong>注意：</strong> 当 try 语句和 finally 语句中都有 return 语句时，在方法返回之前，finally 语句的内容将被执行，并且 finally 语句的返回值将会覆盖原始的返回值。如下：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> value * value;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (value == <span class="number">2</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>如果调用 <code>f(2)</code>，返回值将是 0，因为 finally 语句的返回值覆盖了 try 语句块的返回值。</p>
-<h2 id="33-Java-序列化中如果有些字段不想进行序列化，怎么办？"><a href="#33-Java-序列化中如果有些字段不想进行序列化，怎么办？" class="headerlink" title="33 Java 序列化中如果有些字段不想进行序列化，怎么办？"></a>33 Java 序列化中如果有些字段不想进行序列化，怎么办？</h2><p>对于不想进行序列化的变量，使用 transient 关键字修饰。</p>
-<p>transient 关键字的作用是：阻止实例中那些用此关键字修饰的的变量序列化；当对象被反序列化时，被 transient 修饰的变量值不会被持久化和恢复。transient 只能修饰变量，不能修饰类和方法。</p>
-<h2 id="34-获取用键盘输入常用的两种方法"><a href="#34-获取用键盘输入常用的两种方法" class="headerlink" title="34 获取用键盘输入常用的两种方法"></a>34 获取用键盘输入常用的两种方法</h2><p>方法 1：通过 Scanner</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Scanner input = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">String s  = input.nextLine();</span><br><span class="line">input.close();</span><br></pre></td></tr></table></figure>
-
-<p>方法 2：通过 BufferedReader</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">BufferedReader input = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(System.in));</span><br><span class="line">String s = input.readLine();</span><br></pre></td></tr></table></figure>
-
-<h2 id="35-Java-中-IO-流"><a href="#35-Java-中-IO-流" class="headerlink" title="35 Java 中 IO 流"></a>35 Java 中 IO 流</h2><h3 id="Java-中-IO-流分为几种"><a href="#Java-中-IO-流分为几种" class="headerlink" title="Java 中 IO 流分为几种?"></a>Java 中 IO 流分为几种?</h3><ul>
-<li>按照流的流向分，可以分为输入流和输出流；</li>
-<li>按照操作单元划分，可以划分为字节流和字符流；</li>
-<li>按照流的角色划分为节点流和处理流。</li>
-</ul>
-<p>Java Io 流共涉及 40 多个类，这些类看上去很杂乱，但实际上很有规则，而且彼此之间存在非常紧密的联系， Java I0 流的 40 多个类都是从如下 4 个抽象类基类中派生出来的。</p>
-<ul>
-<li>InputStream/Reader: 所有的输入流的基类，前者是字节输入流，后者是字符输入流。</li>
-<li>OutputStream/Writer: 所有输出流的基类，前者是字节输出流，后者是字符输出流。</li>
-</ul>
-<p>按操作方式分类结构图：</p>
-<p><img src="/images/IO-%E6%93%8D%E4%BD%9C%E6%96%B9%E5%BC%8F%E5%88%86%E7%B1%BB.jpg" alt="IO-操作方式分类"></p>
-<p>按操作对象分类结构图：</p>
-<p><img src="/images/IO-%E6%93%8D%E4%BD%9C%E5%AF%B9%E8%B1%A1%E5%88%86%E7%B1%BB.jpg" alt="IO-操作对象分类"></p>
-<h3 id="既然有了字节流-为什么还要有字符流"><a href="#既然有了字节流-为什么还要有字符流" class="headerlink" title="既然有了字节流,为什么还要有字符流?"></a>既然有了字节流,为什么还要有字符流?</h3><p>问题本质想问：<strong>不管是文件读写还是网络发送接收，信息的最小存储单元都是字节，那为什么 I/O 流操作要分为字节流操作和字符流操作呢？</strong></p>
-<p>回答：字符流是由 Java 虚拟机将字节转换得到的，问题就出在这个过程还算是非常耗时，并且，如果我们不知道编码类型就很容易出现乱码问题。所以， I/O 流就干脆提供了一个直接操作字符的接口，方便我们平时对字符进行流操作。如果音频文件、图片等媒体文件用字节流比较好，如果涉及到字符的话使用字符流比较好。</p>
-<h3 id="BIO-NIO-AIO-有什么区别"><a href="#BIO-NIO-AIO-有什么区别" class="headerlink" title="BIO,NIO,AIO 有什么区别?"></a>BIO,NIO,AIO 有什么区别?</h3><ul>
-<li><strong>BIO (Blocking I/O):</strong> 同步阻塞 I/O 模式，数据的读取写入必须阻塞在一个线程内等待其完成。在活动连接数不是特别高（小于单机 1000）的情况下，这种模型是比较不错的，可以让每一个连接专注于自己的 I/O 并且编程模型简单，也不用过多考虑系统的过载、限流等问题。线程池本身就是一个天然的漏斗，可以缓冲一些系统处理不了的连接或请求。但是，当面对十万甚至百万级连接的时候，传统的 BIO 模型是无能为力的。因此，我们需要一种更高效的 I/O 处理模型来应对更高的并发量。</li>
-<li><strong>NIO (Non-blocking/New I/O):</strong> NIO 是一种同步非阻塞的 I/O 模型，在 Java 1.4 中引入了 NIO 框架，对应 java.nio 包，提供了 Channel , Selector，Buffer 等抽象。NIO 中的 N 可以理解为 Non-blocking，不单纯是 New。它支持面向缓冲的，基于通道的 I/O 操作方法。 NIO 提供了与传统 BIO 模型中的 <code>Socket</code> 和 <code>ServerSocket</code> 相对应的 <code>SocketChannel</code> 和 <code>ServerSocketChannel</code> 两种不同的套接字通道实现,两种通道都支持阻塞和非阻塞两种模式。阻塞模式使用就像传统中的支持一样，比较简单，但是性能和可靠性都不好；非阻塞模式正好与之相反。对于低负载、低并发的应用程序，可以使用同步阻塞 I/O 来提升开发速率和更好的维护性；对于高负载、高并发的（网络）应用，应使用 NIO 的非阻塞模式来开发</li>
-<li><strong>AIO (Asynchronous I/O):</strong> AIO 也就是 NIO 2。在 Java 7 中引入了 NIO 的改进版 NIO 2,它是异步非阻塞的 IO 模型。异步 IO 是基于事件和回调机制实现的，也就是应用操作之后会直接返回，不会堵塞在那里，当后台处理完成，操作系统会通知相应的线程进行后续的操作。AIO 是异步 IO 的缩写，虽然 NIO 在网络操作中，提供了非阻塞的方法，但是 NIO 的 IO 行为还是同步的。对于 NIO 来说，我们的业务线程是在 IO 操作准备好时，得到通知，接着就由这个线程自行进行 IO 操作，IO 操作本身是同步的。查阅网上相关资料，我发现就目前来说 AIO 的应用还不是很广泛，Netty 之前也尝试使用过 AIO，不过又放弃了。</li>
-</ul>
-<h2 id="36-常见关键字总结-static-final-this-super"><a href="#36-常见关键字总结-static-final-this-super" class="headerlink" title="36. 常见关键字总结:static,final,this,super"></a>36. 常见关键字总结:static,final,this,super</h2><p>详见笔主的这篇文章: <a href="https://snailclimb.gitee.io/javaguide/#/docs/java/basic/final,static,this,super">https://snailclimb.gitee.io/javaguide/#/docs/java/basic/final,static,this,super</a></p>
-<h2 id="37-Collections-工具类和-Arrays-工具类常见方法总结"><a href="#37-Collections-工具类和-Arrays-工具类常见方法总结" class="headerlink" title="37. Collections 工具类和 Arrays 工具类常见方法总结"></a>37. Collections 工具类和 Arrays 工具类常见方法总结</h2><p>详见笔主的这篇文章: <a href="https://gitee.com/SnailClimb/JavaGuide/blob/master/docs/java/basic/Arrays,CollectionsCommonMethods.md">https://gitee.com/SnailClimb/JavaGuide/blob/master/docs/java/basic/Arrays,CollectionsCommonMethods.md</a></p>
-<h2 id="38-深拷贝-vs-浅拷贝"><a href="#38-深拷贝-vs-浅拷贝" class="headerlink" title="38. 深拷贝 vs 浅拷贝"></a>38. 深拷贝 vs 浅拷贝</h2><ol>
-<li><strong>浅拷贝</strong>：对基本数据类型进行值传递，对引用数据类型进行引用传递般的拷贝，此为浅拷贝。</li>
-<li><strong>深拷贝</strong>：对基本数据类型进行值传递，对引用数据类型，创建一个新的对象，并复制其内容，此为深拷贝。</li>
-</ol>
-<p><img src="/images/java-deep-and-shallow-copy.jpg" alt="deep and shallow copy"></p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a href="https://stackoverflow.com/questions/1906445/what-is-the-difference-between-jdk-and-jre">https://stackoverflow.com/questions/1906445/what-is-the-difference-between-jdk-and-jre</a></li>
-<li><a href="https://www.educba.com/oracle-vs-openjdk/">https://www.educba.com/oracle-vs-openjdk/</a></li>
-<li><a href="https://stackoverflow.com/questions/22358071/differences-between-oracle-jdk-and-openjdk?answertab=active#tab-top">https://stackoverflow.com/questions/22358071/differences-between-oracle-jdk-and-openjdk?answertab=active#tab-top</a></li>
-</ul>
-<h2 id="公众号"><a href="#公众号" class="headerlink" title="公众号"></a>公众号</h2><p>如果大家想要实时关注我更新的文章以及分享的干货的话，可以关注我的公众号。</p>
-<p><strong>《Java 面试突击》:</strong> 由本文档衍生的专为面试而生的《Java 面试突击》V2.0 PDF 版本<a href="#%E5%85%AC%E4%BC%97%E5%8F%B7">公众号</a>后台回复 <strong>“Java 面试突击”</strong> 即可免费领取！</p>
-<p><strong>Java 工程师必备学习资源:</strong> 一些 Java 工程师常用学习资源公众号后台回复关键字 <strong>“1”</strong> 即可免费无套路获取。</p>
-<p><img src="/images/JavaGuide.jpg" alt="我的公众号"></p>
-<p><strong>全文转载自：</strong><a href="https://github.com/Snailclimb/JavaGuide/blob/master/docs/java/Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.md">https://github.com/Snailclimb/JavaGuide/blob/master/docs/java/Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.md</a></p>
-]]></content>
-      <categories>
-        <category>Java</category>
-        <category>知识整理</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Java内存划分</title>
     <url>/2020/05/29/2020529-Java%E5%86%85%E5%AD%98%E5%88%92%E5%88%86/</url>
     <content><![CDATA[<p>简要的指明Java中内存有哪些区域</p>
@@ -838,6 +485,117 @@
       <categories>
         <category>JavaWeb</category>
         <category>HTML</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>黑马旅游网（案例）</title>
+    <url>/2020/06/24/2020624-%E9%BB%91%E9%A9%AC%E6%97%85%E6%B8%B8%E7%BD%91%EF%BC%88%E6%A1%88%E4%BE%8B%EF%BC%89/</url>
+    <content><![CDATA[<p>基于 tomcat 的简单 JavaWeb 项目(学习用)</p>
+<span id="more"></span>
+
+<h2 id="一、前期准备工作（环境搭建）"><a href="#一、前期准备工作（环境搭建）" class="headerlink" title="一、前期准备工作（环境搭建）"></a>一、前期准备工作（环境搭建）</h2><h3 id="1-导入已有maven项目"><a href="#1-导入已有maven项目" class="headerlink" title="1.导入已有maven项目"></a>1.导入已有maven项目</h3><p><img src="/images/hmTravel/hmTravel1.png" alt="image-20200619084400775"></p>
+<p><img src="/images/hmTravel/hmTravel2.png" alt="image-20200619084434510"></p>
+<p><img src="/images/hmTravel/hmTravel3.png" alt="image-20200619084526823"></p>
+<ul>
+<li>如果依赖部分导入失败可以使用本地 jar 包导入</li>
+</ul>
+<p>右键项目名称，打开如下 OMS</p>
+<p><img src="/images/hmTravel/hmTravel4.png" alt="image-20200619084649260"></p>
+<p>将 jar 包移入对应本地仓库</p>
+<p><img src="/images/hmTravel/hmTravel5.png" alt="image-20200619084841084"></p>
+<p>出现资源载入错误：</p>
+<p>引入bootstrap..min.css的时候出现了URL：bootstrap.min.css.map 404的错误。</p>
+<p>解决方法： 将bootstrap.min.css里的最后一行 /*#sourceMappingURL=bootstrap.min.css.map */删除即可</p>
+<p>把chorme文件的工具–&gt;开发者工具–&gt;设置–&gt;Enable source maps勾去掉，去掉这个勾，jquery就不会去下载source map文件了！</p>
+<h3 id="2-配置tomcat启动方式"><a href="#2-配置tomcat启动方式" class="headerlink" title="2.配置tomcat启动方式"></a>2.配置tomcat启动方式</h3><p><img src="/images/hmTravel/tomcatConf1.png" alt="image-20200619085624762"></p>
+<p><img src="/images/hmTravel/tomcatConf2.png" alt="image-20200619085649754"></p>
+<p><img src="/images/hmTravel/tomcatConf3.png" alt="image-20200619085709027"></p>
+<p>配置完成后，就可以不通过右侧的 maven 点击 plugins 的 tomcat7:run 来启动tomcat服务。右上角可以直接启动 tomcat7:run 。</p>
+<p><img src="/images/hmTravel/tomcatConf4.png" alt="image-20200619085847305"></p>
+<p>异常一：</p>
+<p><img src="/images/hmTravel/tomcatException1.png" alt="image-20200619181104638"></p>
+<p>原因：</p>
+<p>未指定plugin版本号</p>
+<p>解决：</p>
+<p>增加一行<version>x.x.x</version>即可</p>
+<p>异常二：</p>
+<p><img src="/images/hmTravel/tomcatException2.png" alt="image-20200619181256487"></p>
+<p>原因：</p>
+<p>未指定编码方式</p>
+<p>解决：</p>
+<p>在pom.xml文件中添加 <code>&lt;properties&gt;</code> <code>&lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;&lt;/properties&gt;</code></p>
+<h3 id="3-所用技术"><a href="#3-所用技术" class="headerlink" title="3.所用技术"></a>3.所用技术</h3><h4 id="1）-Web层"><a href="#1）-Web层" class="headerlink" title="1） Web层"></a>1） Web层</h4><p>a) Servlet：前端控制器</p>
+<p>b) html：视图</p>
+<p>c) Filter：过滤器</p>
+<p>d) BeanUtils：数据封装</p>
+<p>e) Jackson：json序列化工具</p>
+<h4 id="2）-service层"><a href="#2）-service层" class="headerlink" title="2） service层"></a>2） service层</h4><p>f) Javamail：java发送邮件工具</p>
+<p>g) Redis：nosql内存数据库</p>
+<p>h) Jedis：java的redis客户端</p>
+<h4 id="3）-Dao层"><a href="#3）-Dao层" class="headerlink" title="3） Dao层"></a>3） Dao层</h4><p>i) Mysql：数据库</p>
+<p>j) Druid：数据库连接池</p>
+<p>k)JdbcTemplate：jdbc的工具</p>
+<h3 id="4-创建数据库"><a href="#4-创建数据库" class="headerlink" title="4.创建数据库"></a>4.创建数据库</h3><p><img src="/images/hmTravel/dbTravel1.png" alt="image-20200619092747729"></p>
+<p>tab_user：</p>
+<p><img src="/images/hmTravel/dbTravel2.png" alt="image-20200619092853537"></p>
+<h2 id="二、功能实现"><a href="#二、功能实现" class="headerlink" title="二、功能实现"></a>二、功能实现</h2><h3 id="1-注册功能"><a href="#1-注册功能" class="headerlink" title="1.注册功能"></a>1.注册功能</h3><h4 id="基本注册"><a href="#基本注册" class="headerlink" title="基本注册"></a>基本注册</h4><p><img src="/images/hmTravel/register1.png" alt="image-20200619095200842"></p>
+<p>导入数据库失败，检查JDBCUtils工具类的properties的路径是否正确</p>
+<p><img src="/images/hmTravel/register2.png" alt="image-20200619220726172"></p>
+<h4 id="邮箱认证激活"><a href="#邮箱认证激活" class="headerlink" title="邮箱认证激活"></a>邮箱认证激活</h4><p><img src="/images/hmTravel/mailActive1.png" alt="image-20200619222039161"></p>
+<p>发送认证邮件的配置：</p>
+<p>USER是发件人的邮箱地址；PASSWORD是授权码，不是登录密码；</p>
+<p><img src="/images/hmTravel/mailActive2.png" alt="image-20200619220838419"></p>
+<p><img src="/images/hmTravel/mailActive3.png" alt="image-20200619220938541"></p>
+<p>收件人的邮箱地址:</p>
+<p><img src="/images/hmTravel/mailActive4.png" alt="image-20200619221025469"></p>
+<h3 id="2-登录功能"><a href="#2-登录功能" class="headerlink" title="2.登录功能"></a>2.登录功能</h3><p><img src="/images/hmTravel/login1.png" alt="image-20200620105756465"></p>
+<p>通过登录界面提供的数据，在数据库中查找对应的数据，如果找到，则将数据存在session中，并通过session在登录界面展示姓名</p>
+<p><img src="/images/hmTravel/login2.png" alt="image-20200620110022489"></p>
+<p><img src="/images/hmTravel/login3.png" alt="image-20200620105947460"></p>
+<p><img src="/images/hmTravel/login4.png" alt="img"></p>
+<p><img src="/images/hmTravel/login5.png" alt="image-20200620110131191"></p>
+<p><img src="/images/hmTravel/login6.png" alt="image-20200620110157059"></p>
+<p><img src="/images/hmTravel/login7.png" alt="image-20200620110230663"></p>
+<p><img src="/images/hmTravel/login8.png" alt="image-20200620110308011"></p>
+<p><img src="/images/hmTravel/login9.png" alt="image-20200620110332755"></p>
+<h3 id="3-退出功能"><a href="#3-退出功能" class="headerlink" title="3.退出功能"></a>3.退出功能</h3><p>点击退出，调用exitServlet销毁session记录，重定向到登陆界面</p>
+<p><img src="/images/hmTravel/logout1.png" alt="image-20200620112050048"></p>
+<p><img src="/images/hmTravel/logout2.png" alt="image-20200620112108194"></p>
+<h3 id="4-优化Servlet"><a href="#4-优化Servlet" class="headerlink" title="4.优化Servlet"></a>4.优化Servlet</h3><p>将不同功能但是同一类别的servlet放在同一个servlet中，较少servlet的数量</p>
+<p><img src="/images/hmTravel/servlet.png" alt="image-20200620150505337"></p>
+<h3 id="5-分类栏功能"><a href="#5-分类栏功能" class="headerlink" title="5.分类栏功能"></a>5.分类栏功能</h3><p><img src="/images/hmTravel/category.png" alt="image-20200620211341003"></p>
+<p>使用template从数据库读取数据，写入html页面</p>
+<p>小问题：</p>
+<p>分类的内容不经常改变，所以可以存在缓存中，这样每次页面加载时就不会再次发出请求。减少加载时间的消耗和数据库的压力。</p>
+<p>解决方法：</p>
+<p>通过jedis使用redis</p>
+<p><img src="/images/hmTravel/category2.png" alt="image-20200620221543104"></p>
+<p><img src="/images/hmTravel/category3.png" alt="image-20200620223700926"></p>
+<p>要和服务器一起启动redis程序</p>
+<p><img src="/images/hmTravel/category4.png" alt="image-20200620223922760"></p>
+<p><img src="/images/hmTravel/category5.png" alt="image-20200620223827928"></p>
+<h3 id="6-分页展示功能"><a href="#6-分页展示功能" class="headerlink" title="6.分页展示功能"></a>6.分页展示功能</h3><p>分类和线路是一对多的关系，一个类别下有多个线路。</p>
+<p><img src="/images/hmTravel/page1.png" alt="image-20200621085917484"></p>
+<p>利用分类和线路共有的cid，实现分类</p>
+<p><img src="/images/hmTravel/page2.png" alt="image-20200621093955475"></p>
+<p><img src="/images/hmTravel/page3.png" alt="image-20200621094011588"></p>
+<h3 id="7-查询功能"><a href="#7-查询功能" class="headerlink" title="7.查询功能"></a>7.查询功能</h3><p>更改sql语句查询方式，如果没有查询条件就查询全部</p>
+<p><img src="/images/hmTravel/query1.png" alt="image-20200621172802357"></p>
+<p>利用拼接的方式</p>
+<p>在html页面的load函数，以及每次调用函数都要添加查询条件参数rname</p>
+<p><img src="/images/hmTravel/query2.png" alt="image-20200621174116495"></p>
+<p><img src="/images/hmTravel/query3.png" alt="image-20200621174146362"></p>
+<h3 id="8-线路详情功能"><a href="#8-线路详情功能" class="headerlink" title="8.线路详情功能"></a>8.线路详情功能</h3><p><img src="/images/hmTravel/route1.png" alt="image-20200622091824618"></p>
+<p><img src="/images/hmTravel/route2.png" alt="image-20200622091829391"></p>
+<p>查询一个完整的route对象，有三部分，自身的route对象，img对象，seller对象。分别使用三个对象对应的dao查询并返回给service，再返回给servlet，最终到html。</p>
+<h3 id="9-收藏功能"><a href="#9-收藏功能" class="headerlink" title="9.收藏功能"></a>9.收藏功能</h3><h4 id="判断收藏状态"><a href="#判断收藏状态" class="headerlink" title="判断收藏状态"></a>判断收藏状态</h4><p><img src="/images/hmTravel/favo1.png" alt="image-20200622203734332"></p>
+<p><img src="/images/hmTravel/favo2.png" alt="image-20200622203804745"></p>
+<p>根据收藏与否，改变html上收藏按钮的样式</p>
+<h4 id="添加收藏"><a href="#添加收藏" class="headerlink" title="添加收藏"></a>添加收藏</h4><p><img src="/images/hmTravel/favo3.png" alt="img"></p>
+]]></content>
+      <categories>
+        <category>Java</category>
+        <category>案例</category>
       </categories>
   </entry>
   <entry>
@@ -1460,114 +1218,41 @@
       </categories>
   </entry>
   <entry>
-    <title>黑马旅游网（案例）</title>
-    <url>/2020/06/24/2020624-%E9%BB%91%E9%A9%AC%E6%97%85%E6%B8%B8%E7%BD%91%EF%BC%88%E6%A1%88%E4%BE%8B%EF%BC%89/</url>
-    <content><![CDATA[<p>基于 tomcat 的简单 JavaWeb 项目(学习用)</p>
+    <title>MyBatis连接池</title>
+    <url>/2020/07/11/2020711-MyBatis%E8%BF%9E%E6%8E%A5%E6%B1%A0/</url>
+    <content><![CDATA[<p>MyBatis连接池配置说明</p>
 <span id="more"></span>
 
-<h2 id="一、前期准备工作（环境搭建）"><a href="#一、前期准备工作（环境搭建）" class="headerlink" title="一、前期准备工作（环境搭建）"></a>一、前期准备工作（环境搭建）</h2><h3 id="1-导入已有maven项目"><a href="#1-导入已有maven项目" class="headerlink" title="1.导入已有maven项目"></a>1.导入已有maven项目</h3><p><img src="/images/hmTravel/hmTravel1.png" alt="image-20200619084400775"></p>
-<p><img src="/images/hmTravel/hmTravel2.png" alt="image-20200619084434510"></p>
-<p><img src="/images/hmTravel/hmTravel3.png" alt="image-20200619084526823"></p>
-<ul>
-<li>如果依赖部分导入失败可以使用本地 jar 包导入</li>
+<h2 id="1-分类"><a href="#1-分类" class="headerlink" title="1. 分类"></a>1. 分类</h2><p>UNPOOLED 不使用连接池的数据源</p>
+<p>POOLED 使用连接池的数据源 （常用）</p>
+<p>JNDI 使用 JNDI 实现的数据源</p>
+<h2 id="2-配置"><a href="#2-配置" class="headerlink" title="2. 配置"></a>2. 配置</h2><p>在 SqlMapConfig.xml 中进行配置</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dataSource</span> <span class="attr">type</span>=<span class="string">&quot;POOLED&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;driver&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;jdbc.driver&#125;&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;url&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;jdbc.url&#125;&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;username&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;jdbc.username&#125;&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;jdbc.password&#125;&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dataSource</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>MyBatis在初始化时，根据<dataSource>的 type属性来创建相应类型的的数据源DataSource,即:<br>type=”POOLED”: MyBatis 会创建 PooledDataSource 实例<br>type=”UNPOOLED” : MyBatis 会创建 UnpooledDataSource 实例<br>type=” JNDI”: MyBatis 会从 JNDI 服务上查找 DataSource 实例，然后返回使用</p>
+<h2 id="3-动态SQL"><a href="#3-动态SQL" class="headerlink" title="3. 动态SQL"></a>3. 动态SQL</h2><ul>
+<li><if>标签 判断条件是否成立，然后选择是否执行 sql 语句</li>
 </ul>
-<p>右键项目名称，打开如下 OMS</p>
-<p><img src="/images/hmTravel/hmTravel4.png" alt="image-20200619084649260"></p>
-<p>将 jar 包移入对应本地仓库</p>
-<p><img src="/images/hmTravel/hmTravel5.png" alt="image-20200619084841084"></p>
-<p>出现资源载入错误：</p>
-<p>引入bootstrap..min.css的时候出现了URL：bootstrap.min.css.map 404的错误。</p>
-<p>解决方法： 将bootstrap.min.css里的最后一行 /*#sourceMappingURL=bootstrap.min.css.map */删除即可</p>
-<p>把chorme文件的工具–&gt;开发者工具–&gt;设置–&gt;Enable source maps勾去掉，去掉这个勾，jquery就不会去下载source map文件了！</p>
-<h3 id="2-配置tomcat启动方式"><a href="#2-配置tomcat启动方式" class="headerlink" title="2.配置tomcat启动方式"></a>2.配置tomcat启动方式</h3><p><img src="/images/hmTravel/tomcatConf1.png" alt="image-20200619085624762"></p>
-<p><img src="/images/hmTravel/tomcatConf2.png" alt="image-20200619085649754"></p>
-<p><img src="/images/hmTravel/tomcatConf3.png" alt="image-20200619085709027"></p>
-<p>配置完成后，就可以不通过右侧的 maven 点击 plugins 的 tomcat7:run 来启动tomcat服务。右上角可以直接启动 tomcat7:run 。</p>
-<p><img src="/images/hmTravel/tomcatConf4.png" alt="image-20200619085847305"></p>
-<p>异常一：</p>
-<p><img src="/images/hmTravel/tomcatException1.png" alt="image-20200619181104638"></p>
-<p>原因：</p>
-<p>未指定plugin版本号</p>
-<p>解决：</p>
-<p>增加一行<version>x.x.x</version>即可</p>
-<p>异常二：</p>
-<p><img src="/images/hmTravel/tomcatException2.png" alt="image-20200619181256487"></p>
-<p>原因：</p>
-<p>未指定编码方式</p>
-<p>解决：</p>
-<p>在pom.xml文件中添加 <code>&lt;properties&gt;</code> <code>&lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;&lt;/properties&gt;</code></p>
-<h3 id="3-所用技术"><a href="#3-所用技术" class="headerlink" title="3.所用技术"></a>3.所用技术</h3><h4 id="1）-Web层"><a href="#1）-Web层" class="headerlink" title="1） Web层"></a>1） Web层</h4><p>a) Servlet：前端控制器</p>
-<p>b) html：视图</p>
-<p>c) Filter：过滤器</p>
-<p>d) BeanUtils：数据封装</p>
-<p>e) Jackson：json序列化工具</p>
-<h4 id="2）-service层"><a href="#2）-service层" class="headerlink" title="2） service层"></a>2） service层</h4><p>f) Javamail：java发送邮件工具</p>
-<p>g) Redis：nosql内存数据库</p>
-<p>h) Jedis：java的redis客户端</p>
-<h4 id="3）-Dao层"><a href="#3）-Dao层" class="headerlink" title="3） Dao层"></a>3） Dao层</h4><p>i) Mysql：数据库</p>
-<p>j) Druid：数据库连接池</p>
-<p>k)JdbcTemplate：jdbc的工具</p>
-<h3 id="4-创建数据库"><a href="#4-创建数据库" class="headerlink" title="4.创建数据库"></a>4.创建数据库</h3><p><img src="/images/hmTravel/dbTravel1.png" alt="image-20200619092747729"></p>
-<p>tab_user：</p>
-<p><img src="/images/hmTravel/dbTravel2.png" alt="image-20200619092853537"></p>
-<h2 id="二、功能实现"><a href="#二、功能实现" class="headerlink" title="二、功能实现"></a>二、功能实现</h2><h3 id="1-注册功能"><a href="#1-注册功能" class="headerlink" title="1.注册功能"></a>1.注册功能</h3><h4 id="基本注册"><a href="#基本注册" class="headerlink" title="基本注册"></a>基本注册</h4><p><img src="/images/hmTravel/register1.png" alt="image-20200619095200842"></p>
-<p>导入数据库失败，检查JDBCUtils工具类的properties的路径是否正确</p>
-<p><img src="/images/hmTravel/register2.png" alt="image-20200619220726172"></p>
-<h4 id="邮箱认证激活"><a href="#邮箱认证激活" class="headerlink" title="邮箱认证激活"></a>邮箱认证激活</h4><p><img src="/images/hmTravel/mailActive1.png" alt="image-20200619222039161"></p>
-<p>发送认证邮件的配置：</p>
-<p>USER是发件人的邮箱地址；PASSWORD是授权码，不是登录密码；</p>
-<p><img src="/images/hmTravel/mailActive2.png" alt="image-20200619220838419"></p>
-<p><img src="/images/hmTravel/mailActive3.png" alt="image-20200619220938541"></p>
-<p>收件人的邮箱地址:</p>
-<p><img src="/images/hmTravel/mailActive4.png" alt="image-20200619221025469"></p>
-<h3 id="2-登录功能"><a href="#2-登录功能" class="headerlink" title="2.登录功能"></a>2.登录功能</h3><p><img src="/images/hmTravel/login1.png" alt="image-20200620105756465"></p>
-<p>通过登录界面提供的数据，在数据库中查找对应的数据，如果找到，则将数据存在session中，并通过session在登录界面展示姓名</p>
-<p><img src="/images/hmTravel/login2.png" alt="image-20200620110022489"></p>
-<p><img src="/images/hmTravel/login3.png" alt="image-20200620105947460"></p>
-<p><img src="/images/hmTravel/login4.png" alt="img"></p>
-<p><img src="/images/hmTravel/login5.png" alt="image-20200620110131191"></p>
-<p><img src="/images/hmTravel/login6.png" alt="image-20200620110157059"></p>
-<p><img src="/images/hmTravel/login7.png" alt="image-20200620110230663"></p>
-<p><img src="/images/hmTravel/login8.png" alt="image-20200620110308011"></p>
-<p><img src="/images/hmTravel/login9.png" alt="image-20200620110332755"></p>
-<h3 id="3-退出功能"><a href="#3-退出功能" class="headerlink" title="3.退出功能"></a>3.退出功能</h3><p>点击退出，调用exitServlet销毁session记录，重定向到登陆界面</p>
-<p><img src="/images/hmTravel/logout1.png" alt="image-20200620112050048"></p>
-<p><img src="/images/hmTravel/logout2.png" alt="image-20200620112108194"></p>
-<h3 id="4-优化Servlet"><a href="#4-优化Servlet" class="headerlink" title="4.优化Servlet"></a>4.优化Servlet</h3><p>将不同功能但是同一类别的servlet放在同一个servlet中，较少servlet的数量</p>
-<p><img src="/images/hmTravel/servlet.png" alt="image-20200620150505337"></p>
-<h3 id="5-分类栏功能"><a href="#5-分类栏功能" class="headerlink" title="5.分类栏功能"></a>5.分类栏功能</h3><p><img src="/images/hmTravel/category.png" alt="image-20200620211341003"></p>
-<p>使用template从数据库读取数据，写入html页面</p>
-<p>小问题：</p>
-<p>分类的内容不经常改变，所以可以存在缓存中，这样每次页面加载时就不会再次发出请求。减少加载时间的消耗和数据库的压力。</p>
-<p>解决方法：</p>
-<p>通过jedis使用redis</p>
-<p><img src="/images/hmTravel/category2.png" alt="image-20200620221543104"></p>
-<p><img src="/images/hmTravel/category3.png" alt="image-20200620223700926"></p>
-<p>要和服务器一起启动redis程序</p>
-<p><img src="/images/hmTravel/category4.png" alt="image-20200620223922760"></p>
-<p><img src="/images/hmTravel/category5.png" alt="image-20200620223827928"></p>
-<h3 id="6-分页展示功能"><a href="#6-分页展示功能" class="headerlink" title="6.分页展示功能"></a>6.分页展示功能</h3><p>分类和线路是一对多的关系，一个类别下有多个线路。</p>
-<p><img src="/images/hmTravel/page1.png" alt="image-20200621085917484"></p>
-<p>利用分类和线路共有的cid，实现分类</p>
-<p><img src="/images/hmTravel/page2.png" alt="image-20200621093955475"></p>
-<p><img src="/images/hmTravel/page3.png" alt="image-20200621094011588"></p>
-<h3 id="7-查询功能"><a href="#7-查询功能" class="headerlink" title="7.查询功能"></a>7.查询功能</h3><p>更改sql语句查询方式，如果没有查询条件就查询全部</p>
-<p><img src="/images/hmTravel/query1.png" alt="image-20200621172802357"></p>
-<p>利用拼接的方式</p>
-<p>在html页面的load函数，以及每次调用函数都要添加查询条件参数rname</p>
-<p><img src="/images/hmTravel/query2.png" alt="image-20200621174116495"></p>
-<p><img src="/images/hmTravel/query3.png" alt="image-20200621174146362"></p>
-<h3 id="8-线路详情功能"><a href="#8-线路详情功能" class="headerlink" title="8.线路详情功能"></a>8.线路详情功能</h3><p><img src="/images/hmTravel/route1.png" alt="image-20200622091824618"></p>
-<p><img src="/images/hmTravel/route2.png" alt="image-20200622091829391"></p>
-<p>查询一个完整的route对象，有三部分，自身的route对象，img对象，seller对象。分别使用三个对象对应的dao查询并返回给service，再返回给servlet，最终到html。</p>
-<h3 id="9-收藏功能"><a href="#9-收藏功能" class="headerlink" title="9.收藏功能"></a>9.收藏功能</h3><h4 id="判断收藏状态"><a href="#判断收藏状态" class="headerlink" title="判断收藏状态"></a>判断收藏状态</h4><p><img src="/images/hmTravel/favo1.png" alt="image-20200622203734332"></p>
-<p><img src="/images/hmTravel/favo2.png" alt="image-20200622203804745"></p>
-<p>根据收藏与否，改变html上收藏按钮的样式</p>
-<h4 id="添加收藏"><a href="#添加收藏" class="headerlink" title="添加收藏"></a>添加收藏</h4><p><img src="/images/hmTravel/favo3.png" alt="img"></p>
-]]></content>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findByUser&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;user&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;user &quot;</span>&gt;</span></span><br><span class="line">	select * from user where 1=1</span><br><span class="line">	<span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;username != null and username != &#x27;&#x27; &quot;</span>&gt;</span></span><br><span class="line">	and username like #&#123;username&#125;</span><br><span class="line">	<span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;address != null&quot;</span>&gt;</span></span><br><span class="line">    and address like #&#123;address&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>注意: <if>标签的test属性中写的是对象的属性名，如果是包装类的对象要使用OGNL表达式的写法。<br>另外要注意 where 1=1 的作用!</p>
+<ul>
+<li><where>标签 可以替代 where 1 = 1 的条件用法</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--根据用户信息查询--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findByUser&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;user&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;user &quot;</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!--select * from user--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">refid</span>=<span class="string">&quot;defaultSql&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">where</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;username != null and username != &#x27;&#x27; &quot;</span>&gt;</span></span><br><span class="line">        and username like #&#123;username&#125;</span><br><span class="line">        <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;address != null&quot;</span>&gt;</span></span><br><span class="line">        and address like #&#123;address&#125;</span><br><span class="line">        <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">where</span>&gt;</span>	</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><foreach>标签 用来遍历集合以及它的属性</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--查询所有用户在 id 的集合之中--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findInIds&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;user&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;queryvo&quot;</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!--select * from user where id in (1,2,3,4,5);--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">refid</span>=<span class="string">&quot;defaultSql&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">where</span>&gt;</span></span><br><span class="line">    	<span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;ids != null and ids.size() &gt; 0&quot;</span>&gt;</span></span><br><span class="line">        	<span class="tag">&lt;<span class="name">foreach</span> <span class="attr">collection</span>=<span class="string">&quot;ids&quot;</span> <span class="attr">open</span>=<span class="string">&quot;id in (&quot;</span> <span class="attr">close</span>=<span class="string">&quot;)&quot;</span> <span class="attr">item</span>=<span class="string">&quot;uid&quot;</span> <span class="attr">separator</span>=<span class="string">&quot;,&quot;</span>&gt;</span></span><br><span class="line">            	#&#123;uid&#125;</span><br><span class="line">            <span class="tag">&lt;/<span class="name">foreach</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">where</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>SQL语句:<br>    select 字段 from user where id in (?)<br><foreach>标签用于遍历集合，它的属性:<br>    collection :代表要遍历的集合元素，注意编写时不要写#{}<br>    open:代表语句的开始部分<br>    close:代表结束部分</p>
+<h2 id="4-抽取重复代码"><a href="#4-抽取重复代码" class="headerlink" title="4. 抽取重复代码"></a>4. 抽取重复代码</h2><p>使用 <sql></sql> 标签，将重复的语句写在其中，然后可以使用 <include></include> 加上 sql 标签的 id 使用。</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--抽取重复的语句代码片段--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">sql</span> <span class="attr">id</span>=<span class="string">&quot;defaultSql&quot;</span>&gt;</span></span><br><span class="line">	select * from user</span><br><span class="line"><span class="tag">&lt;/<span class="name">sql</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--配置查询所有操作--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findAll&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;user&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--引用--&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">include</span> <span class="attr">refid</span>=<span class="string">&quot;defaultSql&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>]]></content>
       <categories>
-        <category>Java</category>
-        <category>案例</category>
+        <category>MyBatis</category>
       </categories>
   </entry>
   <entry>
@@ -1603,43 +1288,146 @@
       </categories>
   </entry>
   <entry>
-    <title>设计模式——单例模式</title>
-    <url>/2021/06/04/202164-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</url>
-    <content><![CDATA[<p>单例模式（Singleton Pattern）是 Java 中最简单的设计模式之一。</p>
+    <title>MyBatis的注解开发</title>
+    <url>/2020/07/15/2020715-MyBatis%E7%9A%84%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91/</url>
+    <content><![CDATA[<p>利用注解简化 MyBatis 的使用</p>
 <span id="more"></span>
 
-<h2 id="什么是单例模式？"><a href="#什么是单例模式？" class="headerlink" title="什么是单例模式？"></a>什么是单例模式？</h2><p>单例模式（Singleton Pattern）是 Java 中最简单的设计模式之一。这种类型的设计模式属于<strong>创建型模式</strong>，它提供了一种创建对象的最佳方式。</p>
-<p>这种模式涉及到一个单一的类，该类负责创建自己的对象，同时<strong>确保只有单个对象被创建</strong>。这个类<strong>提供了一种访问其唯一的对象的方式，可以直接访问，不需要实例化该类的对象</strong>。</p>
-<p>单例模式分为<strong>饿汉式</strong>和<strong>懒汉式</strong></p>
-<h2 id="特点："><a href="#特点：" class="headerlink" title="特点："></a>特点：</h2><ul>
-<li>单例类<strong>只能有一个实例</strong></li>
-<li>单例类必须<strong>自己创建</strong>自己的唯一实例</li>
-<li>单例类必须<strong>给所有其他对象提供</strong>这一实例</li>
-</ul>
-<h2 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h2><ul>
-<li>在内存里只有<strong>一个实例</strong>，减少了内存的开销，尤其是频繁的创建和销毁实例。</li>
-<li>避免对资源的多重占用</li>
-</ul>
-<h2 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h2><ul>
-<li>没有接口，不能继承，与单一职责原则冲突，一个类应该只关心内部逻辑，而不关心外部的实例化方法。</li>
-</ul>
-<h2 id="使用场景："><a href="#使用场景：" class="headerlink" title="使用场景："></a>使用场景：</h2><ul>
-<li>要求生产<strong>唯一序列号</strong>。 </li>
-<li>WEB 中的<strong>计数器</strong>，不用每次刷新都在数据库里加一次，用单例先缓存起来。 </li>
-<li>创建的一个对象需要<strong>消耗的资源过多</strong>，比如 I/O 与数据库的连接等。 </li>
-</ul>
-<h2 id="饿汉式："><a href="#饿汉式：" class="headerlink" title="饿汉式："></a>饿汉式：</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span></span>&#123;</span><br><span class="line">    <span class="comment">//首先不能让外部可以对该类进行实例化</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">    <span class="comment">//自己创建一个私有的静态的实例对象，当类被加载的时候就创建出对象</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance = <span class="keyword">new</span> Singleton();</span><br><span class="line">    <span class="comment">//外部只能通过该方法获取对象</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//缺陷：如果有一个静态方法，但是即使只调用静态方法的时候，也会自动创建出对象</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">hello</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;hello!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="常用注解"><a href="#常用注解" class="headerlink" title="常用注解"></a>常用注解</h2><p>@Insert:实现新增<br>@Update:实现更新<br>@Delete:实现删除<br>@Select:实现查询<br>@Result:实现结果集封装<br>@Results:可以与@Result 一起使用，封装多个结果集<br>@ResultMap:实现引用@Results 定义的封装<br>@One:实现一对一结果集封装<br>@Many:实现一对多结果集封装<br>@SelectProvider: 实现动态 SQL 映射<br>@CacheNamespace:实现注解二级缓存的使用</p>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><ol>
+<li>编写实体类</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Integer userId;</span><br><span class="line">    <span class="keyword">private</span> String userName;</span><br><span class="line">    <span class="keyword">private</span> Date userBirthday;</span><br><span class="line">    <span class="keyword">private</span> String userSex;</span><br><span class="line">    <span class="keyword">private</span> String userAddress;</span><br><span class="line">    getter/setter</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="懒汉式："><a href="#懒汉式：" class="headerlink" title="懒汉式："></a>懒汉式：</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">    <span class="comment">//首先不能让外部可以对该类进行实例化</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">    <span class="comment">//和饿汉模式相比，这边不需要先实例化出来，注意这里的 volatile，它是必须的</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> Singleton instance = <span class="keyword">null</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//这里使用了双重检查</span></span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">//加锁</span></span><br><span class="line">            <span class="keyword">synchronized</span> (Singleton.class) &#123;</span><br><span class="line">                <span class="comment">//这一次判断也是必须的，不然会有并发问题</span></span><br><span class="line">                <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">                    instance = <span class="keyword">new</span> Singleton();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>注解开发持久层（Dao）接口（此处不同） </li>
+</ol>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IUserDao</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Select(&quot;select * from user&quot;)</span></span><br><span class="line">    <span class="meta">@Results(id=&quot;userMap&quot;,</span></span><br><span class="line"><span class="meta">            value=&#123;</span></span><br><span class="line"><span class="meta">                @Result(id=true,column=&quot;id&quot;,property=&quot;userId&quot;),</span></span><br><span class="line"><span class="meta">                @Result(column=&quot;username&quot;,property=&quot;userName&quot;),</span></span><br><span class="line"><span class="meta">                @Result(column=&quot;sex&quot;,property=&quot;userSex&quot;),</span></span><br><span class="line"><span class="meta">                @Result(column=&quot;address&quot;,property=&quot;userAddress&quot;),</span></span><br><span class="line"><span class="meta">                @Result(column=&quot;birthday&quot;,property=&quot;userBirthday&quot;)</span></span><br><span class="line"><span class="meta">            &#125;)</span></span><br><span class="line">    <span class="function">List&lt;User&gt; <span class="title">findAll</span><span class="params">()</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Select(&quot;select * from user where id = #&#123;uid&#125;&quot;)</span></span><br><span class="line">    <span class="meta">@ResultMap(&quot;userMap&quot;)</span></span><br><span class="line">    <span class="function">User <span class="title">findById</span><span class="params">(Integer userId)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="嵌套类："><a href="#嵌套类：" class="headerlink" title="嵌套类："></a>嵌套类：</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">    <span class="comment">// 主要是使用了 嵌套类可以访问外部类的静态属性和静态方法 的特性</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Holder</span> </span>&#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance = <span class="keyword">new</span> Singleton();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Holder.instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>编写 SqlMapConfig 配置文件 </li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--配置properties文件的位置--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">properties</span> <span class="attr">resource</span>=<span class="string">&quot;jdbcConfig.properties &quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--配置别名的注册--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">typeAliases</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">package</span> <span class="attr">name</span>=<span class="string">&quot;com.itheima.domain&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">typeAliases</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--配置环境--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">environments</span> <span class="attr">default</span>=<span class="string">&quot;mysql&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--配置mysql的环境--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">environment</span> <span class="attr">id</span>=<span class="string">&quot;mysql&quot;</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--配置事务的类型是JDBC --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">transactionManager</span> <span class="attr">type</span>=<span class="string">&quot;JDBC&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">transactionManager</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--配置数据源--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dataSource</span> <span class="attr">type</span>=<span class="string">&quot;POOLED&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;driver&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;jdbc.driver&#125;&quot;</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;url&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;jdbc.ur1&#125;&quot;</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;username&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;jdbc.username&#125;&quot;</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;jdbc.password&#125;&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dataSource</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">environment</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">environments</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="枚举："><a href="#枚举：" class="headerlink" title="枚举："></a>枚举：</h2><p>最后，我们说一下枚举，枚举很特殊，它在类加载的时候会初始化里面的所有的实例，而且 JVM 保证了它们不会再被实例化，所以它天生就是单例的。</p>
-<p>虽然我们平时很少看到用枚举来实现单例，但是在 RxJava 的源码中，有很多地方都用了枚举来实现单例。</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--配置dao接口的位置，它有两种方式</span></span><br><span class="line"><span class="comment">第一种:使用mapper:标签配置class属性</span></span><br><span class="line"><span class="comment">第二种:使用package标签，直接指定dao接口所在的包--&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">package</span> <span class="attr">name</span>=<span class="string">&quot;com.itheima.dao&quot;</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">mappers</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="注解说明"><a href="#注解说明" class="headerlink" title="注解说明"></a>注解说明</h2><ul>
+<li>@Results 注解<br>代替的是标签<resultMap><br>该注解中可以使用单个@Result 注解，也可以使用@Result 集合@Results({@Result(),@Result()})或@Results(@Result())</li>
+<li>@Resut 注解<br>代替了 <id>标签和<result>标签<br>@Result 中属性介绍：<br>id 是否是主键字段<br>column 数据库的列名<br>property 需要装配的属性名<br>one 需要使用的@One注解(@Result(one=@One)())<br>many 需要使用的@Many 注解(@Result(many=@many)())</li>
+<li>@One 注解（一对一）<br>代替了<assocation>标签<br>是多表查询的关键，在注解中用来指定子查询返回单一对象。<br>@One 注解属性介绍：<br>select 指定用来多表查询的 sqlmapper<br>fetchType 会覆盖全局的配置参数 lazyLoadingEnabled<br>使用格式： @Result(column=” “,property=””,one=@One(select=””))</li>
+<li>@Many 注解（多对一）<br>代替了<Collection>标签<br>是是多表查询的关键，在注解中用来指定子查询返回对象集合。<br>注意：聚集元素用来处理“一对多”的关系。需要指定映射的 Java 实体类的属性，属性的 javaType （一般为 ArrayList）但是注解中可以不定义；<br>使用格式： @Result(property=””,column=””,many=@Many(select=””))</li>
+</ul>
 ]]></content>
       <categories>
-        <category>Java</category>
-        <category>设计模式</category>
+        <category>MyBatis</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>MyBatis的延迟加载</title>
+    <url>/2020/07/14/2020714-MyBatis%E7%9A%84%E5%BB%B6%E8%BF%9F%E5%8A%A0%E8%BD%BD/</url>
+    <content><![CDATA[<p>在进行一对一、一对多、多对多的查询时，不一定在加载用户信息的同时加载它的账户信息。此时，就可以使用延迟加载。</p>
+<span id="more"></span>
+
+<h2 id="什么是延迟加载"><a href="#什么是延迟加载" class="headerlink" title="什么是延迟加载"></a>什么是延迟加载</h2><p><strong>延迟加载</strong>：就是在<strong>需要用到数据时才进行加载</strong>，不需要用到数据时就不加载数据。延迟加载也称懒加载。<br><strong>好处：</strong>先从单表查询，需要时再从关联表去关联查询，大大提高数据库性能，因为查询单表要比关联查询多张表速 度要快。 </p>
+<p><strong>坏处：</strong>因为只有当需要用到数据时，才会进行数据库查询，这样在大批量数据查询时，因为查询工作也要消耗时间，所以可能造成用户等待时间变长，造成用户体验下降。</p>
+<h2 id="具体实现方法"><a href="#具体实现方法" class="headerlink" title="具体实现方法"></a>具体实现方法</h2><p>一对一：</p>
+<p><img src="/images/MyBatis/settins_mybatis.png" alt="image-20200714173529954"></p>
+<p>lazyLoadingEnabled 延迟加载<br>aggressiveLazyLoading 即时加载</p>
+<p>SqlMapConfig.xml :</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--开启延迟加载--&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">&quot;lazyLoadingEnabled&quot;</span> <span class="attr">value</span>=<span class="string">&quot;true&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">&quot;aggressiveLazyLoading&quot;</span> <span class="attr">value</span>=<span class="string">&quot;false&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>一对多：</p>
+<p>在 User 实体类中加入 List<Account> 属性</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line">    <span class="keyword">private</span> Date birthday;</span><br><span class="line">    <span class="keyword">private</span> String sex;</span><br><span class="line">    <span class="keyword">private</span> String address;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> List&lt;Account&gt; accounts;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Account&gt; <span class="title">getAccounts</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> accounts;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAccounts</span><span class="params">(List&lt;Account&gt; accounts)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.accounts = accounts;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">&quot;birthday&quot;</span> <span class="attr">property</span>=<span class="string">&quot;birthday&quot;</span>/&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- collection 是用于建立一对多 中集合属性的对应关系</span></span><br><span class="line"><span class="comment">    ofType用于指定集合元素的数据类型</span></span><br><span class="line"><span class="comment">    select是用于指定查询账户的唯一标识 (账户的dao全限定类名加上方法名称)</span></span><br><span class="line"><span class="comment">    column是用于指定使用哪个字段的值作为条件查询</span></span><br><span class="line"><span class="comment">--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">collection</span> <span class="attr">property</span>= <span class="string">&quot;accounts&quot;</span> <span class="attr">ofType</span>= <span class="string">&quot;account&quot;</span> <span class="attr">select</span>=<span class="string">&quot;com.itheima.dao.IAccountDao.findByUid&quot;</span></span></span><br><span class="line"><span class="tag"><span class="attr">column</span>=<span class="string">&quot;id&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">collection</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--配置查询所有操作--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findAll&quot;</span> <span class="attr">resultMap</span>=<span class="string">&quot;userMap&quot;</span>&gt;</span></span><br><span class="line">select * from user</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><collection>标签：<br>主要用于加载关联的集合对象<br>select 属性：<br>用于指定查询 account 列表的 sql 语句，所以填写的是该 sql 映射的 id<br>column 属性：<br>用于指定 select 属性的 sql 语句的参数来源，上面的参数来自于 user 的 id 列，所以就写成 id 这一个字段名了</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    in = Resources.getResourceAsStream(<span class="string">&quot;SqlMapConfig.xml&quot;</span>);</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>加载同一个配置了延迟加载的配置文件</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>最主要的是在 SqlMapConfig.xml 中开启延迟加载</p>
+]]></content>
+      <categories>
+        <category>MyBatis</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>MyBatis的缓存问题</title>
+    <url>/2020/07/15/2020715-MyBatis%E7%9A%84%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<p>MyBatis 中的缓存说明</p>
+<span id="more"></span>
+
+<h2 id="一级缓存"><a href="#一级缓存" class="headerlink" title="一级缓存"></a>一级缓存</h2><p>一级缓存是单个 SqlSession 的缓存区域。 MyBatis 对缓存提供支持，但是在没有配置的默认情况下，它只开启一级缓存，一级缓存只是相对于同一个 SqlSession 而言。所以在参数和 SQL 完全一样的情况下，我们使用同一个 SqlSession 对象调用一个 Mapper 方法，往往只执行一次SQL，因为使用SelSession第一次查询后，MyBatis会将其放在缓存中，以后再查询的时候，如果没有声明需要刷新，并且缓存没有超时的情况下， SqlSession 都会取出当前缓存的数据，而不会再次发送 SQL 到数据库。</p>
+<p><img src="/images/MyBatis/SqlSession1.png" alt="image-20200715152101792"></p>
+<p>第一次发起查询用户 id 为 1 的用户信息，先去找缓存中是否有 id 为 1 的用户信息，如果没有，从数据库查询用户信息。得到用户信息，将用户信息存储到一级缓存中。 如果 SqlSession 去执行 commit 操作（执行插入、更新、删除），清空  SqlSession  中的一级缓存，这样做的目的为了让缓存中存储的是最新的信息，避免脏读。 第二次发起查询用户 id 为 1 的用户信息，先去找缓存中是否有 id 为 1 的用户信息，缓存中有，直接从缓存中获取用户信息。</p>
+<h2 id="二级缓存"><a href="#二级缓存" class="headerlink" title="二级缓存"></a>二级缓存</h2><p>二级缓存是多个 SqlSession 共用的缓存区域。 SqlSession Factory 层面上的二级缓存默认是不开启的，二级缓存的开启需要进行配置，实现二级缓存的时候，MyBatis 要求返回的 POJO 必须是可序列化的。 也就是要求实 Serializable 接口，配置方法很简单，只需要在映射 XML 文件配置就可以开启缓存了。</p>
+<p><img src="/images/MyBatis/SqlSession2.png" alt="image-20200715152410496"></p>
+<p>首先开启 mybatis 的二级缓存。 SqlSession1 去查询用户信息，查询到用户信息会将查询数据存储到二级缓存中。 如果  SqlSession 3 去执行相同 mapper 映射下 sql，执行 commit 提交，将会清空该 mapper 映射下的二级缓存区域的数据。 SqlSession2 去查询与 SqlSession1 相同的用户信息，首先会去缓存中找是否存在数据，如果存在直接从缓存中取出数据。</p>
+<h3 id="配置方法"><a href="#配置方法" class="headerlink" title="配置方法"></a>配置方法</h3><h4 id="xml方式"><a href="#xml方式" class="headerlink" title="xml方式"></a>xml方式</h4><ul>
+<li>第一步：在 SqlMapConfig.xml 文件开启二级缓存</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">&quot;cacheEnabled&quot;</span> <span class="attr">value</span>=<span class="string">&quot;ture&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>第二步：配置相关的  Mapper  映射文件</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">&quot;com.itheima.dao.IUserDao&quot;</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!--开启二级缓存的支持--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">cache</span>&gt;</span><span class="tag">&lt;/<span class="name">cache</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><cache>标签表示当前这个 mapper 映射将使用二级缓存，区分的标准就看 mapper 的 namespace 值。</p>
+<ul>
+<li>第三步：配置 statement 上面的 useCache 属性 </li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findById&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;user&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;int&quot;</span> <span class="attr">useCache</span>=<span class="string">&quot;true&quot;</span>&gt;</span></span><br><span class="line">	select * from user where id=#&#123;uid&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>设置 useCache 为 true 代表当前这个 statement 要使用二级缓存，false 则为不使用。</p>
+<h4 id="注解方式"><a href="#注解方式" class="headerlink" title="注解方式"></a>注解方式</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@CacheNamespace(blocking=true)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IUserDao</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>MyBatis</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>MyBatis多表查询之一对多</title>
+    <url>/2020/07/14/2020714-MyBatis%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2%E4%B9%8B%E4%B8%80%E5%AF%B9%E5%A4%9A/</url>
+    <content><![CDATA[<p>MyBatis实现简单的多表查询</p>
+<span id="more"></span>
+
+<p><img src="/images/MyBatis/user_account.png" alt="user_account"></p>
+<h2 id="方式一"><a href="#方式一" class="headerlink" title="方式一"></a>方式一</h2><h3 id="定义账户信息的实体类"><a href="#定义账户信息的实体类" class="headerlink" title="定义账户信息的实体类"></a>定义账户信息的实体类</h3><p>用于存储数据库的账户信息</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Account</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> Integer uid;</span><br><span class="line">    <span class="keyword">private</span> Double money;</span><br><span class="line">    <span class="comment">//getter/setter</span></span><br><span class="line">    <span class="comment">//toString</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以及 getter and setter 、toString 方法</p>
+<h3 id="编写-Sql-语句"><a href="#编写-Sql-语句" class="headerlink" title="编写 Sql 语句"></a>编写 Sql 语句</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span></span><br><span class="line">	account.<span class="operator">*</span>,</span><br><span class="line">	user.username,</span><br><span class="line">	user.address</span><br><span class="line"><span class="keyword">from</span></span><br><span class="line">	account,</span><br><span class="line">	<span class="keyword">user</span></span><br><span class="line"><span class="keyword">where</span> account.uid <span class="operator">=</span> user.id;</span><br></pre></td></tr></table></figure>
+
+<h3 id="定义-AccountUser-类"><a href="#定义-AccountUser-类" class="headerlink" title="定义 AccountUser 类"></a>定义 AccountUser 类</h3><p>用于存储与账户对应的用户信息</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AccountUser</span> <span class="keyword">extends</span> <span class="title">Account</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line">    <span class="keyword">private</span> String address;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">getUsername</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> username;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以及 getter and setter 、toString 方法</p>
+<h3 id="定义账户的持久层-Dao-接口"><a href="#定义账户的持久层-Dao-接口" class="headerlink" title="定义账户的持久层 Dao 接口"></a><strong>定义账户的持久层</strong> <strong>Dao</strong> <strong>接口</strong></h3><p>用于定义各种操作数据库的方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IAccountDao</span> </span>&#123;</span><br><span class="line">    <span class="comment">//查询所有账户，同时获取账户的所属用户名称以及它的地址信息</span></span><br><span class="line">    <span class="function">List&lt;AccountUser&gt; <span class="title">findAll</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="定义-AccountDao-xml-文件中的查询配置信息"><a href="#定义-AccountDao-xml-文件中的查询配置信息" class="headerlink" title="定义 AccountDao.xml 文件中的查询配置信息"></a>定义 <strong>AccountDao.xml</strong> <strong>文件中的查询配置信息</strong></h3><p>用于实现 Dao 中的具体方法</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">&quot;com.itheima.dao.IAccountDao&quot;</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!--配置查询所有操作--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findAll&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;accountuser&quot;</span>&gt;</span></span><br><span class="line">    	select a.*,u.username,u.address from account a, user u where a.uid = u.id;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>注意：上述  SQL 语句的查询结果包含了 User 以及 Account 的数据，所以返回值类型就设置成 accountuser</p>
+<h3 id="创建-AccountTest-测试类"><a href="#创建-AccountTest-测试类" class="headerlink" title="创建 AccountTest 测试类"></a><strong>创建</strong> <strong>AccountTest</strong> <strong>测试类</strong></h3><p>测试具体的方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AccountTest</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> InputStream in ;</span><br><span class="line">    <span class="keyword">private</span> SqlSessionFactory factory;</span><br><span class="line">    <span class="keyword">private</span> SqlSession session;</span><br><span class="line">    <span class="keyword">private</span> IAccountDao accountDao;</span><br><span class="line">	<span class="meta">@Test</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testFindAll</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="comment">//执行操作</span></span><br><span class="line">		List&lt;AccountUser&gt; accountusers = accountDao.findAll();</span><br><span class="line">		<span class="keyword">for</span> (AccountUser au : accountusers) &#123;</span><br><span class="line">			System.out.println(au);</span><br><span class="line">		&#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>以及初始化方法、和结束方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Before</span><span class="comment">//在测试方法执行之前执行</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="comment">//1.读取配置文件</span></span><br><span class="line">    in = Resources.getResourceAsStream(<span class="string">&quot;SqlMapConfig.xml&quot;</span>);</span><br><span class="line">    <span class="comment">//2.创建构建者对象</span></span><br><span class="line">    SqlSessionFactoryBuilder builder = <span class="keyword">new</span> SqlSessionFactoryBuilder();</span><br><span class="line">    <span class="comment">//3.创建Sq1Session工厂对象</span></span><br><span class="line">    factory = builder.build(in);</span><br><span class="line">    <span class="comment">//4.创建SqlSession对象</span></span><br><span class="line">    session = factory.openSession();</span><br><span class="line">    <span class="comment">//5.创建Dao的代理对象</span></span><br><span class="line">    accountDao = session.getMapper(IAccountDao.class);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@After</span><span class="comment">//在测试方法执行完成之后执行</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroy</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">	<span class="comment">//6.事务的提交</span></span><br><span class="line">    session. commit();</span><br><span class="line">	<span class="comment">//7.释放资源</span></span><br><span class="line">    session.close();</span><br><span class="line">    in.close() ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="方式二"><a href="#方式二" class="headerlink" title="方式二"></a>方式二</h2><h3 id="修改-Account-类"><a href="#修改-Account-类" class="headerlink" title="修改 Account 类"></a>修改 Account 类</h3><p>加入 User 变量，标记该 Account 属于哪个 User</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Account</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> Integer uid;</span><br><span class="line">    <span class="keyword">private</span> Double money;</span><br><span class="line">    <span class="keyword">private</span> User user;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> User <span class="title">getUser</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> user;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">serUser</span><span class="params">(User user)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.user = user;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//getter/setter</span></span><br><span class="line">    <span class="comment">//toString</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="修改-AccountDao-接口中的方法"><a href="#修改-AccountDao-接口中的方法" class="headerlink" title="修改 AccountDao 接口中的方法"></a>修改 AccountDao 接口中的方法</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IAccountDao</span> </span>&#123;</span><br><span class="line">    <span class="comment">//查询所有账户，同时获取账户的所属用户名称以及它的地址信息</span></span><br><span class="line">    <span class="function">List&lt;Account&gt; <span class="title">findAll</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>将 List 中的类型设置成 Account ，因为当前的 Account 类中包含了一个 User 类对象，所以可以直接封装账户对应的用户信息。</p>
+<h3 id="重新定义-AccountDao-xml-文件"><a href="#重新定义-AccountDao-xml-文件" class="headerlink" title="重新定义 AccountDao.xml 文件"></a><strong>重新定义</strong> <strong>AccountDao.xml</strong> <strong>文件</strong></h3><p><img src="/images/MyBatis/AccountDao_xml.png" alt="image-20200711220339746"></p>
+<h3 id="测试类相同"><a href="#测试类相同" class="headerlink" title="测试类相同"></a>测试类相同</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testFindAll</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">//执行操作</span></span><br><span class="line">    List&lt;AccountUser&gt; accountusers = accountDao.findAll();</span><br><span class="line">    <span class="keyword">for</span> (AccountUser au : accountusers) &#123;</span><br><span class="line">        System.out.println(au);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>MyBatis</category>
       </categories>
   </entry>
   <entry>
@@ -1780,180 +1568,396 @@
       </categories>
   </entry>
   <entry>
-    <title>MyBatis连接池</title>
-    <url>/2020/07/11/2020711-MyBatis%E8%BF%9E%E6%8E%A5%E6%B1%A0/</url>
-    <content><![CDATA[<span id="more"></span>
-
-<h2 id="1-分类"><a href="#1-分类" class="headerlink" title="1. 分类"></a>1. 分类</h2><p>UNPOOLED 不使用连接池的数据源</p>
-<p>POOLED 使用连接池的数据源 （常用）</p>
-<p>JNDI 使用 JNDI 实现的数据源</p>
-<h2 id="2-配置"><a href="#2-配置" class="headerlink" title="2. 配置"></a>2. 配置</h2><p>在 SqlMapConfig.xml 中进行配置</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dataSource</span> <span class="attr">type</span>=<span class="string">&quot;POOLED&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;driver&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;jdbc.driver&#125;&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;url&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;jdbc.url&#125;&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;username&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;jdbc.username&#125;&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;jdbc.password&#125;&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dataSource</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>MyBatis在初始化时，根据<dataSource>的 type属性来创建相应类型的的数据源DataSource,即:<br>type=”POOLED”: MyBatis 会创建 PooledDataSource 实例<br>type=”UNPOOLED” : MyBatis 会创建 UnpooledDataSource 实例<br>type=” JNDI”: MyBatis 会从 JNDI 服务上查找 DataSource 实例，然后返回使用</p>
-<h2 id="3-动态SQL"><a href="#3-动态SQL" class="headerlink" title="3. 动态SQL"></a>3. 动态SQL</h2><ul>
-<li><if>标签 判断条件是否成立，然后选择是否执行 sql 语句</li>
-</ul>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findByUser&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;user&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;user &quot;</span>&gt;</span></span><br><span class="line">	select * from user where 1=1</span><br><span class="line">	<span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;username != null and username != &#x27;&#x27; &quot;</span>&gt;</span></span><br><span class="line">	and username like #&#123;username&#125;</span><br><span class="line">	<span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;address != null&quot;</span>&gt;</span></span><br><span class="line">    and address like #&#123;address&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>注意: <if>标签的test属性中写的是对象的属性名，如果是包装类的对象要使用OGNL表达式的写法。<br>另外要注意 where 1=1 的作用!</p>
-<ul>
-<li><where>标签 可以替代 where 1 = 1 的条件用法</li>
-</ul>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--根据用户信息查询--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findByUser&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;user&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;user &quot;</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!--select * from user--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">refid</span>=<span class="string">&quot;defaultSql&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">where</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;username != null and username != &#x27;&#x27; &quot;</span>&gt;</span></span><br><span class="line">        and username like #&#123;username&#125;</span><br><span class="line">        <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;address != null&quot;</span>&gt;</span></span><br><span class="line">        and address like #&#123;address&#125;</span><br><span class="line">        <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">where</span>&gt;</span>	</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><foreach>标签 用来遍历集合以及它的属性</li>
-</ul>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--查询所有用户在 id 的集合之中--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findInIds&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;user&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;queryvo&quot;</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!--select * from user where id in (1,2,3,4,5);--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">refid</span>=<span class="string">&quot;defaultSql&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">where</span>&gt;</span></span><br><span class="line">    	<span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;ids != null and ids.size() &gt; 0&quot;</span>&gt;</span></span><br><span class="line">        	<span class="tag">&lt;<span class="name">foreach</span> <span class="attr">collection</span>=<span class="string">&quot;ids&quot;</span> <span class="attr">open</span>=<span class="string">&quot;id in (&quot;</span> <span class="attr">close</span>=<span class="string">&quot;)&quot;</span> <span class="attr">item</span>=<span class="string">&quot;uid&quot;</span> <span class="attr">separator</span>=<span class="string">&quot;,&quot;</span>&gt;</span></span><br><span class="line">            	#&#123;uid&#125;</span><br><span class="line">            <span class="tag">&lt;/<span class="name">foreach</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">where</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>SQL语句:<br>    select 字段 from user where id in (?)<br><foreach>标签用于遍历集合，它的属性:<br>    collection :代表要遍历的集合元素，注意编写时不要写#{}<br>    open:代表语句的开始部分<br>    close:代表结束部分</p>
-<h2 id="4-抽取重复代码"><a href="#4-抽取重复代码" class="headerlink" title="4. 抽取重复代码"></a>4. 抽取重复代码</h2><p>使用 <sql></sql> 标签，将重复的语句写在其中，然后可以使用 <include></include> 加上 sql 标签的 id 使用。</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--抽取重复的语句代码片段--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">sql</span> <span class="attr">id</span>=<span class="string">&quot;defaultSql&quot;</span>&gt;</span></span><br><span class="line">	select * from user</span><br><span class="line"><span class="tag">&lt;/<span class="name">sql</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--配置查询所有操作--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findAll&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;user&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--引用--&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">include</span> <span class="attr">refid</span>=<span class="string">&quot;defaultSql&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>MyBatis</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>MyBatis多表查询之一对多</title>
-    <url>/2020/07/14/2020714-MyBatis%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2%E4%B9%8B%E4%B8%80%E5%AF%B9%E5%A4%9A/</url>
-    <content><![CDATA[<span id="more"></span>
-
-<p><img src="/images/MyBatis/user_account.png" alt="user_account"></p>
-<h2 id="方式一"><a href="#方式一" class="headerlink" title="方式一"></a>方式一</h2><h3 id="定义账户信息的实体类"><a href="#定义账户信息的实体类" class="headerlink" title="定义账户信息的实体类"></a>定义账户信息的实体类</h3><p>用于存储数据库的账户信息</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Account</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> Integer uid;</span><br><span class="line">    <span class="keyword">private</span> Double money;</span><br><span class="line">    <span class="comment">//getter/setter</span></span><br><span class="line">    <span class="comment">//toString</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>以及 getter and setter 、toString 方法</p>
-<h3 id="编写-Sql-语句"><a href="#编写-Sql-语句" class="headerlink" title="编写 Sql 语句"></a>编写 Sql 语句</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span></span><br><span class="line">	account.<span class="operator">*</span>,</span><br><span class="line">	user.username,</span><br><span class="line">	user.address</span><br><span class="line"><span class="keyword">from</span></span><br><span class="line">	account,</span><br><span class="line">	<span class="keyword">user</span></span><br><span class="line"><span class="keyword">where</span> account.uid <span class="operator">=</span> user.id;</span><br></pre></td></tr></table></figure>
-
-<h3 id="定义-AccountUser-类"><a href="#定义-AccountUser-类" class="headerlink" title="定义 AccountUser 类"></a>定义 AccountUser 类</h3><p>用于存储与账户对应的用户信息</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AccountUser</span> <span class="keyword">extends</span> <span class="title">Account</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line">    <span class="keyword">private</span> String address;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">getUsername</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> username;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>以及 getter and setter 、toString 方法</p>
-<h3 id="定义账户的持久层-Dao-接口"><a href="#定义账户的持久层-Dao-接口" class="headerlink" title="定义账户的持久层 Dao 接口"></a><strong>定义账户的持久层</strong> <strong>Dao</strong> <strong>接口</strong></h3><p>用于定义各种操作数据库的方法</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IAccountDao</span> </span>&#123;</span><br><span class="line">    <span class="comment">//查询所有账户，同时获取账户的所属用户名称以及它的地址信息</span></span><br><span class="line">    <span class="function">List&lt;AccountUser&gt; <span class="title">findAll</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="定义-AccountDao-xml-文件中的查询配置信息"><a href="#定义-AccountDao-xml-文件中的查询配置信息" class="headerlink" title="定义 AccountDao.xml 文件中的查询配置信息"></a>定义 <strong>AccountDao.xml</strong> <strong>文件中的查询配置信息</strong></h3><p>用于实现 Dao 中的具体方法</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">&quot;com.itheima.dao.IAccountDao&quot;</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!--配置查询所有操作--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findAll&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;accountuser&quot;</span>&gt;</span></span><br><span class="line">    	select a.*,u.username,u.address from account a, user u where a.uid = u.id;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>注意：上述  SQL 语句的查询结果包含了 User 以及 Account 的数据，所以返回值类型就设置成 accountuser</p>
-<h3 id="创建-AccountTest-测试类"><a href="#创建-AccountTest-测试类" class="headerlink" title="创建 AccountTest 测试类"></a><strong>创建</strong> <strong>AccountTest</strong> <strong>测试类</strong></h3><p>测试具体的方法</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AccountTest</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> InputStream in ;</span><br><span class="line">    <span class="keyword">private</span> SqlSessionFactory factory;</span><br><span class="line">    <span class="keyword">private</span> SqlSession session;</span><br><span class="line">    <span class="keyword">private</span> IAccountDao accountDao;</span><br><span class="line">	<span class="meta">@Test</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testFindAll</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="comment">//执行操作</span></span><br><span class="line">		List&lt;AccountUser&gt; accountusers = accountDao.findAll();</span><br><span class="line">		<span class="keyword">for</span> (AccountUser au : accountusers) &#123;</span><br><span class="line">			System.out.println(au);</span><br><span class="line">		&#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<p>以及初始化方法、和结束方法</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Before</span><span class="comment">//在测试方法执行之前执行</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="comment">//1.读取配置文件</span></span><br><span class="line">    in = Resources.getResourceAsStream(<span class="string">&quot;SqlMapConfig.xml&quot;</span>);</span><br><span class="line">    <span class="comment">//2.创建构建者对象</span></span><br><span class="line">    SqlSessionFactoryBuilder builder = <span class="keyword">new</span> SqlSessionFactoryBuilder();</span><br><span class="line">    <span class="comment">//3.创建Sq1Session工厂对象</span></span><br><span class="line">    factory = builder.build(in);</span><br><span class="line">    <span class="comment">//4.创建SqlSession对象</span></span><br><span class="line">    session = factory.openSession();</span><br><span class="line">    <span class="comment">//5.创建Dao的代理对象</span></span><br><span class="line">    accountDao = session.getMapper(IAccountDao.class);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@After</span><span class="comment">//在测试方法执行完成之后执行</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroy</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">	<span class="comment">//6.事务的提交</span></span><br><span class="line">    session. commit();</span><br><span class="line">	<span class="comment">//7.释放资源</span></span><br><span class="line">    session.close();</span><br><span class="line">    in.close() ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="方式二"><a href="#方式二" class="headerlink" title="方式二"></a>方式二</h2><h3 id="修改-Account-类"><a href="#修改-Account-类" class="headerlink" title="修改 Account 类"></a>修改 Account 类</h3><p>加入 User 变量，标记该 Account 属于哪个 User</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Account</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> Integer uid;</span><br><span class="line">    <span class="keyword">private</span> Double money;</span><br><span class="line">    <span class="keyword">private</span> User user;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> User <span class="title">getUser</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> user;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">serUser</span><span class="params">(User user)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.user = user;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//getter/setter</span></span><br><span class="line">    <span class="comment">//toString</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="修改-AccountDao-接口中的方法"><a href="#修改-AccountDao-接口中的方法" class="headerlink" title="修改 AccountDao 接口中的方法"></a>修改 AccountDao 接口中的方法</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IAccountDao</span> </span>&#123;</span><br><span class="line">    <span class="comment">//查询所有账户，同时获取账户的所属用户名称以及它的地址信息</span></span><br><span class="line">    <span class="function">List&lt;Account&gt; <span class="title">findAll</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>将 List 中的类型设置成 Account ，因为当前的 Account 类中包含了一个 User 类对象，所以可以直接封装账户对应的用户信息。</p>
-<h3 id="重新定义-AccountDao-xml-文件"><a href="#重新定义-AccountDao-xml-文件" class="headerlink" title="重新定义 AccountDao.xml 文件"></a><strong>重新定义</strong> <strong>AccountDao.xml</strong> <strong>文件</strong></h3><p><img src="/images/MyBatis/AccountDao_xml.png" alt="image-20200711220339746"></p>
-<h3 id="测试类相同"><a href="#测试类相同" class="headerlink" title="测试类相同"></a>测试类相同</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testFindAll</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">//执行操作</span></span><br><span class="line">    List&lt;AccountUser&gt; accountusers = accountDao.findAll();</span><br><span class="line">    <span class="keyword">for</span> (AccountUser au : accountusers) &#123;</span><br><span class="line">        System.out.println(au);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>MyBatis</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>MyBatis的延迟加载</title>
-    <url>/2020/07/14/2020714-MyBatis%E7%9A%84%E5%BB%B6%E8%BF%9F%E5%8A%A0%E8%BD%BD/</url>
-    <content><![CDATA[<p>在进行一对一、一对多、多对多的查询时，不一定在加载用户信息的同时加载它的账户信息。此时，就可以使用延迟加载。</p>
+    <title>设计模式——单例模式</title>
+    <url>/2021/06/04/202164-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[<p>单例模式（Singleton Pattern）是 Java 中最简单的设计模式之一。</p>
 <span id="more"></span>
 
-<h2 id="什么是延迟加载"><a href="#什么是延迟加载" class="headerlink" title="什么是延迟加载"></a>什么是延迟加载</h2><p><strong>延迟加载</strong>：就是在<strong>需要用到数据时才进行加载</strong>，不需要用到数据时就不加载数据。延迟加载也称懒加载。<br><strong>好处：</strong>先从单表查询，需要时再从关联表去关联查询，大大提高数据库性能，因为查询单表要比关联查询多张表速 度要快。 </p>
-<p><strong>坏处：</strong>因为只有当需要用到数据时，才会进行数据库查询，这样在大批量数据查询时，因为查询工作也要消耗时间，所以可能造成用户等待时间变长，造成用户体验下降。</p>
-<h2 id="具体实现方法"><a href="#具体实现方法" class="headerlink" title="具体实现方法"></a>具体实现方法</h2><p>一对一：</p>
-<p><img src="/images/MyBatis/settins_mybatis.png" alt="image-20200714173529954"></p>
-<p>lazyLoadingEnabled 延迟加载<br>aggressiveLazyLoading 即时加载</p>
-<p>SqlMapConfig.xml :</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--开启延迟加载--&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">&quot;lazyLoadingEnabled&quot;</span> <span class="attr">value</span>=<span class="string">&quot;true&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">&quot;aggressiveLazyLoading&quot;</span> <span class="attr">value</span>=<span class="string">&quot;false&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="什么是单例模式？"><a href="#什么是单例模式？" class="headerlink" title="什么是单例模式？"></a>什么是单例模式？</h2><p>单例模式（Singleton Pattern）是 Java 中最简单的设计模式之一。这种类型的设计模式属于<strong>创建型模式</strong>，它提供了一种创建对象的最佳方式。</p>
+<p>这种模式涉及到一个单一的类，该类负责创建自己的对象，同时<strong>确保只有单个对象被创建</strong>。这个类<strong>提供了一种访问其唯一的对象的方式，可以直接访问，不需要实例化该类的对象</strong>。</p>
+<p>单例模式分为<strong>饿汉式</strong>和<strong>懒汉式</strong></p>
+<h2 id="特点："><a href="#特点：" class="headerlink" title="特点："></a>特点：</h2><ul>
+<li>单例类<strong>只能有一个实例</strong></li>
+<li>单例类必须<strong>自己创建</strong>自己的唯一实例</li>
+<li>单例类必须<strong>给所有其他对象提供</strong>这一实例</li>
+</ul>
+<h2 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h2><ul>
+<li>在内存里只有<strong>一个实例</strong>，减少了内存的开销，尤其是频繁的创建和销毁实例。</li>
+<li>避免对资源的多重占用</li>
+</ul>
+<h2 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h2><ul>
+<li>没有接口，不能继承，与单一职责原则冲突，一个类应该只关心内部逻辑，而不关心外部的实例化方法。</li>
+</ul>
+<h2 id="使用场景："><a href="#使用场景：" class="headerlink" title="使用场景："></a>使用场景：</h2><ul>
+<li>要求生产<strong>唯一序列号</strong>。 </li>
+<li>WEB 中的<strong>计数器</strong>，不用每次刷新都在数据库里加一次，用单例先缓存起来。 </li>
+<li>创建的一个对象需要<strong>消耗的资源过多</strong>，比如 I/O 与数据库的连接等。 </li>
+</ul>
+<h2 id="饿汉式："><a href="#饿汉式：" class="headerlink" title="饿汉式："></a>饿汉式：</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span></span>&#123;</span><br><span class="line">    <span class="comment">//首先不能让外部可以对该类进行实例化</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">    <span class="comment">//自己创建一个私有的静态的实例对象，当类被加载的时候就创建出对象</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance = <span class="keyword">new</span> Singleton();</span><br><span class="line">    <span class="comment">//外部只能通过该方法获取对象</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//缺陷：如果有一个静态方法，但是即使只调用静态方法的时候，也会自动创建出对象</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">hello</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;hello!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>一对多：</p>
-<p>在 User 实体类中加入 List<Account> 属性</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line">    <span class="keyword">private</span> Date birthday;</span><br><span class="line">    <span class="keyword">private</span> String sex;</span><br><span class="line">    <span class="keyword">private</span> String address;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> List&lt;Account&gt; accounts;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Account&gt; <span class="title">getAccounts</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> accounts;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAccounts</span><span class="params">(List&lt;Account&gt; accounts)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.accounts = accounts;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="懒汉式："><a href="#懒汉式：" class="headerlink" title="懒汉式："></a>懒汉式：</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">    <span class="comment">//首先不能让外部可以对该类进行实例化</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">    <span class="comment">//和饿汉模式相比，这边不需要先实例化出来，注意这里的 volatile，它是必须的</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> Singleton instance = <span class="keyword">null</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//这里使用了双重检查</span></span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">//加锁</span></span><br><span class="line">            <span class="keyword">synchronized</span> (Singleton.class) &#123;</span><br><span class="line">                <span class="comment">//这一次判断也是必须的，不然会有并发问题</span></span><br><span class="line">                <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">                    instance = <span class="keyword">new</span> Singleton();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">&quot;birthday&quot;</span> <span class="attr">property</span>=<span class="string">&quot;birthday&quot;</span>/&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- collection 是用于建立一对多 中集合属性的对应关系</span></span><br><span class="line"><span class="comment">    ofType用于指定集合元素的数据类型</span></span><br><span class="line"><span class="comment">    select是用于指定查询账户的唯一标识 (账户的dao全限定类名加上方法名称)</span></span><br><span class="line"><span class="comment">    column是用于指定使用哪个字段的值作为条件查询</span></span><br><span class="line"><span class="comment">--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">collection</span> <span class="attr">property</span>= <span class="string">&quot;accounts&quot;</span> <span class="attr">ofType</span>= <span class="string">&quot;account&quot;</span> <span class="attr">select</span>=<span class="string">&quot;com.itheima.dao.IAccountDao.findByUid&quot;</span></span></span><br><span class="line"><span class="tag"><span class="attr">column</span>=<span class="string">&quot;id&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">collection</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--配置查询所有操作--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findAll&quot;</span> <span class="attr">resultMap</span>=<span class="string">&quot;userMap&quot;</span>&gt;</span></span><br><span class="line">select * from user</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="嵌套类："><a href="#嵌套类：" class="headerlink" title="嵌套类："></a>嵌套类：</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">    <span class="comment">// 主要是使用了 嵌套类可以访问外部类的静态属性和静态方法 的特性</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Holder</span> </span>&#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance = <span class="keyword">new</span> Singleton();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Holder.instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><collection>标签：<br>主要用于加载关联的集合对象<br>select 属性：<br>用于指定查询 account 列表的 sql 语句，所以填写的是该 sql 映射的 id<br>column 属性：<br>用于指定 select 属性的 sql 语句的参数来源，上面的参数来自于 user 的 id 列，所以就写成 id 这一个字段名了</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    in = Resources.getResourceAsStream(<span class="string">&quot;SqlMapConfig.xml&quot;</span>);</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>加载同一个配置了延迟加载的配置文件</p>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>最主要的是在 SqlMapConfig.xml 中开启延迟加载</p>
+<h2 id="枚举："><a href="#枚举：" class="headerlink" title="枚举："></a>枚举：</h2><p>最后，我们说一下枚举，枚举很特殊，它在类加载的时候会初始化里面的所有的实例，而且 JVM 保证了它们不会再被实例化，所以它天生就是单例的。</p>
+<p>虽然我们平时很少看到用枚举来实现单例，但是在 RxJava 的源码中，有很多地方都用了枚举来实现单例。</p>
 ]]></content>
       <categories>
-        <category>MyBatis</category>
+        <category>Java</category>
+        <category>设计模式</category>
       </categories>
   </entry>
   <entry>
-    <title>MyBatis的缓存问题</title>
-    <url>/2020/07/15/2020715-MyBatis%E7%9A%84%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<span id="more"></span>
+    <title>博客搭建第一天</title>
+    <url>/2020/05/07/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AC%AC%E4%B8%80%E5%A4%A9/</url>
+    <content><![CDATA[<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">System.out.println(<span class="string">&quot;Hello World!&quot;</span>);</span><br></pre></td></tr></table></figure>
 
-<h2 id="一级缓存"><a href="#一级缓存" class="headerlink" title="一级缓存"></a>一级缓存</h2><p>一级缓存是单个 SqlSession 的缓存区域。 MyBatis 对缓存提供支持，但是在没有配置的默认情况下，它只开启一级缓存，一级缓存只是相对于同一个 SqlSession 而言。所以在参数和 SQL 完全一样的情况下，我们使用同一个 SqlSession 对象调用一个 Mapper 方法，往往只执行一次SQL，因为使用SelSession第一次查询后，MyBatis会将其放在缓存中，以后再查询的时候，如果没有声明需要刷新，并且缓存没有超时的情况下， SqlSession 都会取出当前缓存的数据，而不会再次发送 SQL 到数据库。</p>
-<p><img src="/images/MyBatis/SqlSession1.png" alt="image-20200715152101792"></p>
-<p>第一次发起查询用户 id 为 1 的用户信息，先去找缓存中是否有 id 为 1 的用户信息，如果没有，从数据库查询用户信息。得到用户信息，将用户信息存储到一级缓存中。 如果 SqlSession 去执行 commit 操作（执行插入、更新、删除），清空  SqlSession  中的一级缓存，这样做的目的为了让缓存中存储的是最新的信息，避免脏读。 第二次发起查询用户 id 为 1 的用户信息，先去找缓存中是否有 id 为 1 的用户信息，缓存中有，直接从缓存中获取用户信息。</p>
-<h2 id="二级缓存"><a href="#二级缓存" class="headerlink" title="二级缓存"></a>二级缓存</h2><p>二级缓存是多个 SqlSession 共用的缓存区域。 SqlSession Factory 层面上的二级缓存默认是不开启的，二级缓存的开启需要进行配置，实现二级缓存的时候，MyBatis 要求返回的 POJO 必须是可序列化的。 也就是要求实 Serializable 接口，配置方法很简单，只需要在映射 XML 文件配置就可以开启缓存了。</p>
-<p><img src="/images/MyBatis/SqlSession2.png" alt="image-20200715152410496"></p>
-<p>首先开启 mybatis 的二级缓存。 SqlSession1 去查询用户信息，查询到用户信息会将查询数据存储到二级缓存中。 如果  SqlSession 3 去执行相同 mapper 映射下 sql，执行 commit 提交，将会清空该 mapper 映射下的二级缓存区域的数据。 SqlSession2 去查询与 SqlSession1 相同的用户信息，首先会去缓存中找是否存在数据，如果存在直接从缓存中取出数据。</p>
-<h3 id="配置方法"><a href="#配置方法" class="headerlink" title="配置方法"></a>配置方法</h3><h4 id="xml方式"><a href="#xml方式" class="headerlink" title="xml方式"></a>xml方式</h4><ul>
-<li>第一步：在 SqlMapConfig.xml 文件开启二级缓存</li>
-</ul>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">&quot;cacheEnabled&quot;</span> <span class="attr">value</span>=<span class="string">&quot;ture&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>第二步：配置相关的  Mapper  映射文件</li>
-</ul>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">&quot;com.itheima.dao.IUserDao&quot;</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!--开启二级缓存的支持--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">cache</span>&gt;</span><span class="tag">&lt;/<span class="name">cache</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><cache>标签表示当前这个 mapper 映射将使用二级缓存，区分的标准就看 mapper 的 namespace 值。</p>
-<ul>
-<li>第三步：配置 statement 上面的 useCache 属性 </li>
-</ul>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findById&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;user&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;int&quot;</span> <span class="attr">useCache</span>=<span class="string">&quot;true&quot;</span>&gt;</span></span><br><span class="line">	select * from user where id=#&#123;uid&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>设置 useCache 为 true 代表当前这个 statement 要使用二级缓存，false 则为不使用。</p>
-<h4 id="注解方式"><a href="#注解方式" class="headerlink" title="注解方式"></a>注解方式</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@CacheNamespace(blocking=true)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IUserDao</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+<p><img src="/images/Frist.gif"></p>
+]]></content>
       <categories>
-        <category>MyBatis</category>
+        <category>随心</category>
       </categories>
   </entry>
   <entry>
-    <title>MyBatis的注解开发</title>
-    <url>/2020/07/15/2020715-MyBatis%E7%9A%84%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91/</url>
-    <content><![CDATA[<span id="more"></span>
+    <title>【转载】Java基础知识大纲</title>
+    <url>/2020/05/08/202058-%E3%80%90%E8%BD%AC%E8%BD%BD%E3%80%91Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E5%A4%A7%E7%BA%B2/</url>
+    <content><![CDATA[<p>JavaGuide哥整理的一些基础知识问答</p>
+<p><strong>全文转载自：</strong><a href="https://github.com/Snailclimb/JavaGuide/blob/master/docs/java/Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.md">https://github.com/Snailclimb/JavaGuide/blob/master/docs/java/Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.md</a></p>
+<span id="more"></span>
 
-<h2 id="常用注解"><a href="#常用注解" class="headerlink" title="常用注解"></a>常用注解</h2><p>@Insert:实现新增<br>@Update:实现更新<br>@Delete:实现删除<br>@Select:实现查询<br>@Result:实现结果集封装<br>@Results:可以与@Result 一起使用，封装多个结果集<br>@ResultMap:实现引用@Results 定义的封装<br>@One:实现一对一结果集封装<br>@Many:实现一对多结果集封装<br>@SelectProvider: 实现动态 SQL 映射<br>@CacheNamespace:实现注解二级缓存的使用</p>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><ol>
-<li>编写实体类</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Integer userId;</span><br><span class="line">    <span class="keyword">private</span> String userName;</span><br><span class="line">    <span class="keyword">private</span> Date userBirthday;</span><br><span class="line">    <span class="keyword">private</span> String userSex;</span><br><span class="line">    <span class="keyword">private</span> String userAddress;</span><br><span class="line">    getter/setter</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>注解开发持久层（Dao）接口（此处不同） </li>
-</ol>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IUserDao</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Select(&quot;select * from user&quot;)</span></span><br><span class="line">    <span class="meta">@Results(id=&quot;userMap&quot;,</span></span><br><span class="line"><span class="meta">            value=&#123;</span></span><br><span class="line"><span class="meta">                @Result(id=true,column=&quot;id&quot;,property=&quot;userId&quot;),</span></span><br><span class="line"><span class="meta">                @Result(column=&quot;username&quot;,property=&quot;userName&quot;),</span></span><br><span class="line"><span class="meta">                @Result(column=&quot;sex&quot;,property=&quot;userSex&quot;),</span></span><br><span class="line"><span class="meta">                @Result(column=&quot;address&quot;,property=&quot;userAddress&quot;),</span></span><br><span class="line"><span class="meta">                @Result(column=&quot;birthday&quot;,property=&quot;userBirthday&quot;)</span></span><br><span class="line"><span class="meta">            &#125;)</span></span><br><span class="line">    <span class="function">List&lt;User&gt; <span class="title">findAll</span><span class="params">()</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Select(&quot;select * from user where id = #&#123;uid&#125;&quot;)</span></span><br><span class="line">    <span class="meta">@ResultMap(&quot;userMap&quot;)</span></span><br><span class="line">    <span class="function">User <span class="title">findById</span><span class="params">(Integer userId)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>编写 SqlMapConfig 配置文件 </li>
-</ol>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--配置properties文件的位置--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">properties</span> <span class="attr">resource</span>=<span class="string">&quot;jdbcConfig.properties &quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--配置别名的注册--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">typeAliases</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">package</span> <span class="attr">name</span>=<span class="string">&quot;com.itheima.domain&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">typeAliases</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--配置环境--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">environments</span> <span class="attr">default</span>=<span class="string">&quot;mysql&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--配置mysql的环境--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">environment</span> <span class="attr">id</span>=<span class="string">&quot;mysql&quot;</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--配置事务的类型是JDBC --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">transactionManager</span> <span class="attr">type</span>=<span class="string">&quot;JDBC&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">transactionManager</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--配置数据源--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dataSource</span> <span class="attr">type</span>=<span class="string">&quot;POOLED&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;driver&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;jdbc.driver&#125;&quot;</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;url&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;jdbc.ur1&#125;&quot;</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;username&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;jdbc.username&#125;&quot;</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;jdbc.password&#125;&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dataSource</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">environment</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">environments</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--配置dao接口的位置，它有两种方式</span></span><br><span class="line"><span class="comment">第一种:使用mapper:标签配置class属性</span></span><br><span class="line"><span class="comment">第二种:使用package标签，直接指定dao接口所在的包--&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">package</span> <span class="attr">name</span>=<span class="string">&quot;com.itheima.dao&quot;</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">mappers</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="注解说明"><a href="#注解说明" class="headerlink" title="注解说明"></a>注解说明</h2><ul>
-<li>@Results 注解<br>代替的是标签<resultMap><br>该注解中可以使用单个@Result 注解，也可以使用@Result 集合@Results({@Result(),@Result()})或@Results(@Result())</li>
-<li>@Resut 注解<br>代替了 <id>标签和<result>标签<br>@Result 中属性介绍：<br>id 是否是主键字段<br>column 数据库的列名<br>property 需要装配的属性名<br>one 需要使用的@One注解(@Result(one=@One)())<br>many 需要使用的@Many 注解(@Result(many=@many)())</li>
-<li>@One 注解（一对一）<br>代替了<assocation>标签<br>是多表查询的关键，在注解中用来指定子查询返回单一对象。<br>@One 注解属性介绍：<br>select 指定用来多表查询的 sqlmapper<br>fetchType 会覆盖全局的配置参数 lazyLoadingEnabled<br>使用格式： @Result(column=” “,property=””,one=@One(select=””))</li>
-<li>@Many 注解（多对一）<br>代替了<Collection>标签<br>是是多表查询的关键，在注解中用来指定子查询返回对象集合。<br>注意：聚集元素用来处理“一对多”的关系。需要指定映射的 Java 实体类的属性，属性的 javaType （一般为 ArrayList）但是注解中可以不定义；<br>使用格式： @Result(property=””,column=””,many=@Many(select=””))</li>
+<h2 id="1-面向对象和面向过程的区别"><a href="#1-面向对象和面向过程的区别" class="headerlink" title="1. 面向对象和面向过程的区别"></a>1. 面向对象和面向过程的区别</h2><ul>
+<li><strong>面向过程</strong> ：<strong>面向过程性能比面向对象高。</strong> 因为类调用时需要实例化，开销比较大，比较消耗资源，所以当性能是最重要的考量因素的时候，比如单片机、嵌入式开发、Linux/Unix 等一般采用面向过程开发。但是，<strong>面向过程没有面向对象易维护、易复用、易扩展。</strong></li>
+<li><strong>面向对象</strong> ：<strong>面向对象易维护、易复用、易扩展。</strong> 因为面向对象有封装、继承、多态性的特性，所以可以设计出低耦合的系统，使系统更加灵活、更加易于维护。但是，<strong>面向对象性能比面向过程低</strong>。</li>
 </ul>
+<p>参见 issue : <a href="https://github.com/Snailclimb/JavaGuide/issues/431">面向过程 ：面向过程性能比面向对象高？？</a></p>
+<blockquote>
+<p>这个并不是根本原因，面向过程也需要分配内存，计算内存偏移量，Java 性能差的主要原因并不是因为它是面向对象语言，而是 Java 是半编译语言，最终的执行代码并不是可以直接被 CPU 执行的二进制机械码。</p>
+<p>而面向过程语言大多都是直接编译成机械码在电脑上执行，并且其它一些面向过程的脚本语言性能也并不一定比 Java 好。</p>
+</blockquote>
+<h2 id="2-Java-语言有哪些特点"><a href="#2-Java-语言有哪些特点" class="headerlink" title="2. Java 语言有哪些特点?"></a>2. Java 语言有哪些特点?</h2><ol>
+<li>简单易学；</li>
+<li>面向对象（封装，继承，多态）；</li>
+<li>平台无关性（ Java 虚拟机实现平台无关性）；</li>
+<li>可靠性；</li>
+<li>安全性；</li>
+<li>支持多线程（ C++ 语言没有内置的多线程机制，因此必须调用操作系统的多线程功能来进行多线程程序设计，而 Java 语言却提供了多线程支持）；</li>
+<li>支持网络编程并且很方便（ Java 语言诞生本身就是为简化网络编程设计的，因此 Java 语言不仅支持网络编程而且很方便）；</li>
+<li>编译与解释并存；</li>
+</ol>
+<blockquote>
+<p>修正（参见： <a href="https://github.com/Snailclimb/JavaGuide/issues/544">issue#544</a>）：C++11 开始（2011 年的时候）,C++就引入了多线程库，在 windows、linux、macos 都可以使用<code>std::thread</code>和<code>std::async</code>来创建线程。参考链接：<a href="http://www.cplusplus.com/reference/thread/thread/?kw=thread">http://www.cplusplus.com/reference/thread/thread/?kw=thread</a></p>
+</blockquote>
+<h2 id="3-关于-JVM-JDK-和-JRE-最详细通俗的解答"><a href="#3-关于-JVM-JDK-和-JRE-最详细通俗的解答" class="headerlink" title="3. 关于 JVM JDK 和 JRE 最详细通俗的解答"></a>3. 关于 JVM JDK 和 JRE 最详细通俗的解答</h2><h3 id="JVM"><a href="#JVM" class="headerlink" title="JVM"></a>JVM</h3><p>Java 虚拟机（JVM）是运行 Java 字节码的虚拟机。JVM 有针对不同系统的特定实现（Windows，Linux，macOS），目的是使用相同的字节码，它们都会给出相同的结果。</p>
+<p><strong>什么是字节码?采用字节码的好处是什么?</strong></p>
+<blockquote>
+<p>在 Java 中，JVM 可以理解的代码就叫做<code>字节码</code>（即扩展名为 <code>.class</code> 的文件），它不面向任何特定的处理器，只面向虚拟机。Java 语言通过字节码的方式，在一定程度上解决了传统解释型语言执行效率低的问题，同时又保留了解释型语言可移植的特点。所以 Java 程序运行时比较高效，而且，由于字节码并不针对一种特定的机器，因此，Java 程序无须重新编译便可在多种不同操作系统的计算机上运行。</p>
+</blockquote>
+<p><strong>Java 程序从源代码到运行一般有下面 3 步：</strong></p>
+<p><img src="/images/Java%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E8%BF%87%E7%A8%8B.png" alt="Java程序运行过程"></p>
+<p>我们需要格外注意的是 .class-&gt;机器码 这一步。在这一步 JVM 类加载器首先加载字节码文件，然后通过解释器逐行解释执行，这种方式的执行速度会相对比较慢。而且，有些方法和代码块是经常需要被调用的(也就是所谓的热点代码)，所以后面引进了 JIT 编译器，而 JIT 属于运行时编译。当 JIT 编译器完成第一次编译后，其会将字节码对应的机器码保存下来，下次可以直接使用。而我们知道，机器码的运行效率肯定是高于 Java 解释器的。这也解释了我们为什么经常会说 Java 是编译与解释共存的语言。</p>
+<blockquote>
+<p>HotSpot 采用了惰性评估(Lazy Evaluation)的做法，根据二八定律，消耗大部分系统资源的只有那一小部分的代码（热点代码），而这也就是 JIT 所需要编译的部分。JVM 会根据代码每次被执行的情况收集信息并相应地做出一些优化，因此执行的次数越多，它的速度就越快。JDK 9 引入了一种新的编译模式 AOT(Ahead of Time Compilation)，它是直接将字节码编译成机器码，这样就避免了 JIT 预热等各方面的开销。JDK 支持分层编译和 AOT 协作使用。但是 ，AOT 编译器的编译质量是肯定比不上 JIT 编译器的。</p>
+</blockquote>
+<p><strong>总结：</strong></p>
+<p>Java 虚拟机（JVM）是运行 Java 字节码的虚拟机。JVM 有针对不同系统的特定实现（Windows，Linux，macOS），目的是使用相同的字节码，它们都会给出相同的结果。字节码和不同系统的 JVM 实现是 Java 语言“一次编译，随处可以运行”的关键所在。</p>
+<h3 id="JDK-和-JRE"><a href="#JDK-和-JRE" class="headerlink" title="JDK 和 JRE"></a>JDK 和 JRE</h3><p>JDK 是 Java Development Kit，它是功能齐全的 Java SDK。它拥有 JRE 所拥有的一切，还有编译器（javac）和工具（如 javadoc 和 jdb）。它能够创建和编译程序。</p>
+<p>JRE 是 Java 运行时环境。它是运行已编译 Java 程序所需的所有内容的集合，包括 Java 虚拟机（JVM），Java 类库，java 命令和其他的一些基础构件。但是，它不能用于创建新程序。</p>
+<p>如果你只是为了运行一下 Java 程序的话，那么你只需要安装 JRE 就可以了。如果你需要进行一些 Java 编程方面的工作，那么你就需要安装 JDK 了。但是，这不是绝对的。有时，即使您不打算在计算机上进行任何 Java 开发，仍然需要安装 JDK。例如，如果要使用 JSP 部署 Web 应用程序，那么从技术上讲，您只是在应用程序服务器中运行 Java 程序。那你为什么需要 JDK 呢？因为应用程序服务器会将 JSP 转换为 Java servlet，并且需要使用 JDK 来编译 servlet。</p>
+<h2 id="4-Oracle-JDK-和-OpenJDK-的对比"><a href="#4-Oracle-JDK-和-OpenJDK-的对比" class="headerlink" title="4. Oracle JDK 和 OpenJDK 的对比"></a>4. Oracle JDK 和 OpenJDK 的对比</h2><p>可能在看这个问题之前很多人和我一样并没有接触和使用过 OpenJDK 。那么 Oracle 和 OpenJDK 之间是否存在重大差异？下面我通过收集到的一些资料，为你解答这个被很多人忽视的问题。</p>
+<p>对于 Java 7，没什么关键的地方。OpenJDK 项目主要基于 Sun 捐赠的 HotSpot 源代码。此外，OpenJDK 被选为 Java 7 的参考实现，由 Oracle 工程师维护。关于 JVM，JDK，JRE 和 OpenJDK 之间的区别，Oracle 博客帖子在 2012 年有一个更详细的答案：</p>
+<blockquote>
+<p>问：OpenJDK 存储库中的源代码与用于构建 Oracle JDK 的代码之间有什么区别？</p>
+<p>答：非常接近 - 我们的 Oracle JDK 版本构建过程基于 OpenJDK 7 构建，只添加了几个部分，例如部署代码，其中包括 Oracle 的 Java 插件和 Java WebStart 的实现，以及一些封闭的源代码派对组件，如图形光栅化器，一些开源的第三方组件，如 Rhino，以及一些零碎的东西，如附加文档或第三方字体。展望未来，我们的目的是开源 Oracle JDK 的所有部分，除了我们考虑商业功能的部分。</p>
+</blockquote>
+<p><strong>总结：</strong></p>
+<ol>
+<li>Oracle JDK 大概每 6 个月发一次主要版本，而 OpenJDK 版本大概每三个月发布一次。但这不是固定的，我觉得了解这个没啥用处。详情参见：<a href="https://blogs.oracle.com/java-platform-group/update-and-faq-on-the-java-se-release-cadence">https://blogs.oracle.com/java-platform-group/update-and-faq-on-the-java-se-release-cadence</a> 。</li>
+<li>OpenJDK 是一个参考模型并且是完全开源的，而 Oracle JDK 是 OpenJDK 的一个实现，并不是完全开源的；</li>
+<li>Oracle JDK 比 OpenJDK 更稳定。OpenJDK 和 Oracle JDK 的代码几乎相同，但 Oracle JDK 有更多的类和一些错误修复。因此，如果您想开发企业/商业软件，我建议您选择 Oracle JDK，因为它经过了彻底的测试和稳定。某些情况下，有些人提到在使用 OpenJDK 可能会遇到了许多应用程序崩溃的问题，但是，只需切换到 Oracle JDK 就可以解决问题；</li>
+<li>在响应性和 JVM 性能方面，Oracle JDK 与 OpenJDK 相比提供了更好的性能；</li>
+<li>Oracle JDK 不会为即将发布的版本提供长期支持，用户每次都必须通过更新到最新版本获得支持来获取最新版本；</li>
+<li>Oracle JDK 根据二进制代码许可协议获得许可，而 OpenJDK 根据 GPL v2 许可获得许可。</li>
+</ol>
+<h2 id="5-Java-和-C-的区别"><a href="#5-Java-和-C-的区别" class="headerlink" title="5. Java 和 C++的区别?"></a>5. Java 和 C++的区别?</h2><p>我知道很多人没学过 C++，但是面试官就是没事喜欢拿咱们 Java 和 C++ 比呀！没办法！！！就算没学过 C++，也要记下来！</p>
+<ul>
+<li>都是面向对象的语言，都支持封装、继承和多态</li>
+<li>Java 不提供指针来直接访问内存，程序内存更加安全</li>
+<li>Java 的类是单继承的，C++ 支持多重继承；虽然 Java 的类不可以多继承，但是接口可以多继承。</li>
+<li>Java 有自动内存管理机制，不需要程序员手动释放无用内存</li>
+<li><strong>在 C 语言中，字符串或字符数组最后都会有一个额外的字符‘\0’来表示结束。但是，Java 语言中没有结束符这一概念。</strong> 这是一个值得深度思考的问题，具体原因推荐看这篇文章： <a href="https://blog.csdn.net/sszgg2006/article/details/49148189">https://blog.csdn.net/sszgg2006/article/details/49148189</a></li>
+</ul>
+<h2 id="6-什么是-Java-程序的主类-应用程序和小程序的主类有何不同"><a href="#6-什么是-Java-程序的主类-应用程序和小程序的主类有何不同" class="headerlink" title="6. 什么是 Java 程序的主类 应用程序和小程序的主类有何不同?"></a>6. 什么是 Java 程序的主类 应用程序和小程序的主类有何不同?</h2><p>一个程序中可以有多个类，但只能有一个类是主类。在 Java 应用程序中，这个主类是指包含 main（）方法的类。而在 Java 小程序中，这个主类是一个继承自系统类 JApplet 或 Applet 的子类。应用程序的主类不一定要求是 public 类，但小程序的主类要求必须是 public 类。主类是 Java 程序执行的入口点。</p>
+<h2 id="7-Java-应用程序与小程序之间有哪些差别"><a href="#7-Java-应用程序与小程序之间有哪些差别" class="headerlink" title="7. Java 应用程序与小程序之间有哪些差别?"></a>7. Java 应用程序与小程序之间有哪些差别?</h2><p>简单说应用程序是从主线程启动(也就是 <code>main()</code> 方法)。applet 小程序没有 <code>main()</code> 方法，主要是嵌在浏览器页面上运行(调用<code>init()</code>或者<code>run()</code>来启动)，嵌入浏览器这点跟 flash 的小游戏类似。</p>
+<h2 id="8-字符型常量和字符串常量的区别"><a href="#8-字符型常量和字符串常量的区别" class="headerlink" title="8. 字符型常量和字符串常量的区别?"></a>8. 字符型常量和字符串常量的区别?</h2><ol>
+<li>形式上: 字符常量是单引号引起的一个字符; 字符串常量是双引号引起的若干个字符</li>
+<li>含义上: 字符常量相当于一个整型值( ASCII 值),可以参加表达式运算; 字符串常量代表一个地址值(该字符串在内存中存放位置)</li>
+<li>占内存大小 字符常量只占 2 个字节; 字符串常量占若干个字节 (<strong>注意： char 在 Java 中占两个字节</strong>)</li>
+</ol>
+<blockquote>
+<p>java 编程思想第四版：2.2.2 节 <img src="/images/Java%E5%90%84%E7%B1%BB%E5%9E%8B%E5%A4%A7%E5%B0%8F.png" alt="img"></p>
+</blockquote>
+<h2 id="9-构造器-Constructor-是否可被-override"><a href="#9-构造器-Constructor-是否可被-override" class="headerlink" title="9. 构造器 Constructor 是否可被 override?"></a>9. 构造器 Constructor 是否可被 override?</h2><p>Constructor 不能被 override（重写）,但是可以 overload（重载）,所以你可以看到一个类中有多个构造函数的情况。</p>
+<h2 id="10-重载和重写的区别"><a href="#10-重载和重写的区别" class="headerlink" title="10. 重载和重写的区别"></a>10. 重载和重写的区别</h2><blockquote>
+<p>重载就是同样的一个方法能够根据输入数据的不同，做出不同的处理</p>
+<p>重写就是当子类继承自父类的相同方法，输入数据一样，但要做出有别于父类的响应时，你就要覆盖父类方法</p>
+</blockquote>
+<h4 id="重载"><a href="#重载" class="headerlink" title="重载"></a>重载</h4><p>发生在同一个类中，方法名必须相同，参数类型不同、个数不同、顺序不同，方法返回值和访问修饰符可以不同。</p>
+<p>下面是《Java 核心技术》对重载这个概念的介绍：</p>
+<p><img src="/images/java%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF-%E9%87%8D%E8%BD%BD.jpg" alt="img"></p>
+<p><strong>综上：重载就是同一个类中多个同名方法根据不同的传参来执行不同的逻辑处理。</strong></p>
+<h4 id="重写"><a href="#重写" class="headerlink" title="重写"></a>重写</h4><p>重写发生在运行期，是子类对父类的允许访问的方法的实现过程进行重新编写。</p>
+<ol>
+<li>返回值类型、方法名、参数列表必须相同，抛出的异常范围小于等于父类，访问修饰符范围大于等于父类。</li>
+<li>如果父类方法访问修饰符为 private/final/static 则子类就不能重写该方法，但是被 static 修饰的方法能够被再次声明。</li>
+<li>构造方法无法被重写</li>
+</ol>
+<p><strong>综上：重写就是子类对父类方法的重新改造，外部样子不能改变，内部逻辑可以改变</strong></p>
+<p><strong>暖心的 Guide 哥最后再来个图标总结一下！</strong></p>
+<table>
+<thead>
+<tr>
+<th>区别点</th>
+<th>重载方法</th>
+<th>重写方法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>发生范围</td>
+<td>同一个类</td>
+<td>子类 中</td>
+</tr>
+<tr>
+<td>参数列表</td>
+<td>必须修改</td>
+<td>一定不能修改</td>
+</tr>
+<tr>
+<td>返回类型</td>
+<td>可修改</td>
+<td>一定不能修改</td>
+</tr>
+<tr>
+<td>异常</td>
+<td>可修改</td>
+<td>可以减少或删除，一定不能抛出新的或者更广的异常</td>
+</tr>
+<tr>
+<td>访问修饰符</td>
+<td>可修改</td>
+<td>一定不能做更严格的限制（可以降低限制）</td>
+</tr>
+<tr>
+<td>发生阶段</td>
+<td>编译期</td>
+<td>运行期</td>
+</tr>
+</tbody></table>
+<h2 id="11-Java-面向对象编程三大特性-封装-继承-多态"><a href="#11-Java-面向对象编程三大特性-封装-继承-多态" class="headerlink" title="11. Java 面向对象编程三大特性: 封装 继承 多态"></a>11. Java 面向对象编程三大特性: 封装 继承 多态</h2><h3 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h3><p>封装把一个对象的属性私有化，同时提供一些可以被外界访问的属性的方法，如果属性不想被外界访问，我们大可不必提供方法给外界访问。但是如果一个类没有提供给外界访问的方法，那么这个类也没有什么意义了。</p>
+<h3 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h3><p>继承是使用已存在的类的定义作为基础建立新类的技术，新类的定义可以增加新的数据或新的功能，也可以用父类的功能，但不能选择性地继承父类。通过使用继承我们能够非常方便地复用以前的代码。</p>
+<p><strong>关于继承如下 3 点请记住：</strong></p>
+<ol>
+<li>子类拥有父类对象所有的属性和方法（包括私有属性和私有方法），但是父类中的私有属性和方法子类是无法访问，<strong>只是拥有</strong>。</li>
+<li>子类可以拥有自己属性和方法，即子类可以对父类进行扩展。</li>
+<li>子类可以用自己的方式实现父类的方法。（以后介绍）。</li>
+</ol>
+<h3 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h3><p>所谓多态就是指程序中定义的引用变量所指向的具体类型和通过该引用变量发出的方法调用在编程时并不确定，而是在程序运行期间才确定，即一个引用变量到底会指向哪个类的实例对象，该引用变量发出的方法调用到底是哪个类中实现的方法，必须在由程序运行期间才能决定。</p>
+<p>在 Java 中有两种形式可以实现多态：继承（多个子类对同一方法的重写）和接口（实现接口并覆盖接口中同一方法）。</p>
+<h2 id="12-String-StringBuffer-和-StringBuilder-的区别是什么-String-为什么是不可变的"><a href="#12-String-StringBuffer-和-StringBuilder-的区别是什么-String-为什么是不可变的" class="headerlink" title="12. String StringBuffer 和 StringBuilder 的区别是什么? String 为什么是不可变的?"></a>12. String StringBuffer 和 StringBuilder 的区别是什么? String 为什么是不可变的?</h2><p><strong>可变性</strong></p>
+<p>简单的来说：String 类中使用 final 关键字修饰字符数组来保存字符串，<code>private final char value[]</code>，所以 String 对象是不可变的。</p>
+<blockquote>
+<p>补充（来自<a href="https://github.com/Snailclimb/JavaGuide/issues/675">issue 675</a>）：在 Java 9 之后，String 类的实现改用 byte 数组存储字符串 <code>private final byte[] value</code>;</p>
+</blockquote>
+<p>而 StringBuilder 与 StringBuffer 都继承自 AbstractStringBuilder 类，在 AbstractStringBuilder 中也是使用字符数组保存字符串<code>char[]value</code> 但是没有用 final 关键字修饰，所以这两种对象都是可变的。</p>
+<p>StringBuilder 与 StringBuffer 的构造方法都是调用父类构造方法也就是 AbstractStringBuilder 实现的，大家可以自行查阅源码。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">AbstractStringBuilder.java</span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractStringBuilder</span> <span class="keyword">implements</span> <span class="title">Appendable</span>, <span class="title">CharSequence</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * The value is used for character storage.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">char</span>[] value;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * The count is the number of characters used.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">int</span> count;</span><br><span class="line"></span><br><span class="line">    AbstractStringBuilder(<span class="keyword">int</span> capacity) &#123;</span><br><span class="line">        value = <span class="keyword">new</span> <span class="keyword">char</span>[capacity];</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>线程安全性</strong></p>
+<p>String 中的对象是不可变的，也就可以理解为常量，线程安全。AbstractStringBuilder 是 StringBuilder 与 StringBuffer 的公共父类，定义了一些字符串的基本操作，如 expandCapacity、append、insert、indexOf 等公共方法。StringBuffer 对方法加了同步锁或者对调用的方法加了同步锁，所以是线程安全的。StringBuilder 并没有对方法进行加同步锁，所以是非线程安全的。</p>
+<p><strong>性能</strong></p>
+<p>每次对 String 类型进行改变的时候，都会生成一个新的 String 对象，然后将指针指向新的 String 对象。StringBuffer 每次都会对 StringBuffer 对象本身进行操作，而不是生成新的对象并改变对象引用。相同情况下使用 StringBuilder 相比使用 StringBuffer 仅能获得 10%~15% 左右的性能提升，但却要冒多线程不安全的风险。</p>
+<p><strong>对于三者使用的总结：</strong></p>
+<ol>
+<li>操作少量的数据: 适用 String</li>
+<li>单线程操作字符串缓冲区下操作大量数据: 适用 StringBuilder</li>
+<li>多线程操作字符串缓冲区下操作大量数据: 适用 StringBuffer</li>
+</ol>
+<h2 id="13-自动装箱与拆箱"><a href="#13-自动装箱与拆箱" class="headerlink" title="13. 自动装箱与拆箱"></a>13. 自动装箱与拆箱</h2><ul>
+<li><strong>装箱</strong>：将基本类型用它们对应的引用类型包装起来；</li>
+<li><strong>拆箱</strong>：将包装类型转换为基本数据类型；</li>
+</ul>
+<p>更多内容见：<a href="https://www.cnblogs.com/dolphin0520/p/3780005.html">深入剖析 Java 中的装箱和拆箱</a></p>
+<h2 id="14-在一个静态方法内调用一个非静态成员为什么是非法的"><a href="#14-在一个静态方法内调用一个非静态成员为什么是非法的" class="headerlink" title="14. 在一个静态方法内调用一个非静态成员为什么是非法的?"></a>14. 在一个静态方法内调用一个非静态成员为什么是非法的?</h2><p>由于静态方法可以不通过对象进行调用，因此在静态方法里，不能调用其他非静态变量，也不可以访问非静态变量成员。</p>
+<h2 id="15-在-Java-中定义一个不做事且没有参数的构造方法的作用"><a href="#15-在-Java-中定义一个不做事且没有参数的构造方法的作用" class="headerlink" title="15. 在 Java 中定义一个不做事且没有参数的构造方法的作用"></a>15. 在 Java 中定义一个不做事且没有参数的构造方法的作用</h2><p>Java 程序在执行子类的构造方法之前，如果没有用 <code>super()</code>来调用父类特定的构造方法，则会调用父类中“没有参数的构造方法”。因此，如果父类中只定义了有参数的构造方法，而在子类的构造方法中又没有用 <code>super()</code>来调用父类中特定的构造方法，则编译时将发生错误，因为 Java 程序在父类中找不到没有参数的构造方法可供执行。解决办法是在父类里加上一个不做事且没有参数的构造方法。</p>
+<h2 id="16-import-java-和-javax-有什么区别？"><a href="#16-import-java-和-javax-有什么区别？" class="headerlink" title="16. import java 和 javax 有什么区别？"></a>16. import java 和 javax 有什么区别？</h2><p>刚开始的时候 JavaAPI 所必需的包是 java 开头的包，javax 当时只是扩展 API 包来使用。然而随着时间的推移，javax 逐渐地扩展成为 Java API 的组成部分。但是，将扩展从 javax 包移动到 java 包确实太麻烦了，最终会破坏一堆现有的代码。因此，最终决定 javax 包将成为标准 API 的一部分。</p>
+<p>所以，实际上 java 和 javax 没有区别。这都是一个名字。</p>
+<h2 id="17-接口和抽象类的区别是什么？"><a href="#17-接口和抽象类的区别是什么？" class="headerlink" title="17. 接口和抽象类的区别是什么？"></a>17. 接口和抽象类的区别是什么？</h2><ol>
+<li>接口的方法默认是 public，所有方法在接口中不能有实现(Java 8 开始接口方法可以有默认实现），而抽象类可以有非抽象的方法。</li>
+<li>接口中除了 static、final 变量，不能有其他变量，而抽象类中则不一定。</li>
+<li>一个类可以实现多个接口，但只能实现一个抽象类。接口自己本身可以通过 extends 关键字扩展多个接口。</li>
+<li>接口方法默认修饰符是 public，抽象方法可以有 public、protected 和 default 这些修饰符（抽象方法就是为了被重写所以不能使用 private 关键字修饰！）。</li>
+<li>从设计层面来说，抽象是对类的抽象，是一种模板设计，而接口是对行为的抽象，是一种行为的规范。</li>
+</ol>
+<p>备注：</p>
+<ol>
+<li>在 JDK8 中，接口也可以定义静态方法，可以直接用接口名调用。实现类和实现是不可以调用的。如果同时实现两个接口，接口中定义了一样的默认方法，则必须重写，不然会报错。(详见 issue:<a href="https://github.com/Snailclimb/JavaGuide/issues/146%E3%80%82">https://github.com/Snailclimb/JavaGuide/issues/146。</a></li>
+<li>jdk9 的接口被允许定义私有方法 。</li>
+</ol>
+<p>总结一下 jdk7~jdk9 Java 中接口概念的变化（<a href="https://www.geeksforgeeks.org/private-methods-java-9-interfaces/">相关阅读</a>）：</p>
+<ol>
+<li>在 jdk 7 或更早版本中，接口里面只能有常量变量和抽象方法。这些接口方法必须由选择实现接口的类实现。</li>
+<li>jdk8 的时候接口可以有默认方法和静态方法功能。</li>
+<li>Jdk 9 在接口中引入了私有方法和私有静态方法。</li>
+</ol>
+<h2 id="18-成员变量与局部变量的区别有哪些？"><a href="#18-成员变量与局部变量的区别有哪些？" class="headerlink" title="18. 成员变量与局部变量的区别有哪些？"></a>18. 成员变量与局部变量的区别有哪些？</h2><ol>
+<li>从语法形式上看:成员变量是属于类的，而局部变量是在方法中定义的变量或是方法的参数；成员变量可以被 public,private,static 等修饰符所修饰，而局部变量不能被访问控制修饰符及 static 所修饰；但是，成员变量和局部变量都能被 final 所修饰。</li>
+<li>从变量在内存中的存储方式来看:如果成员变量是使用<code>static</code>修饰的，那么这个成员变量是属于类的，如果没有使用<code>static</code>修饰，这个成员变量是属于实例的。而对象存在于堆内存，局部变量则存在于栈内存。</li>
+<li>从变量在内存中的生存时间上看:成员变量是对象的一部分，它随着对象的创建而存在，而局部变量随着方法的调用而自动消失。</li>
+<li>成员变量如果没有被赋初值:则会自动以类型的默认值而赋值（一种情况例外:被 final 修饰的成员变量也必须显式地赋值），而局部变量则不会自动赋值。</li>
+</ol>
+<h2 id="19-创建一个对象用什么运算符-对象实体与对象引用有何不同"><a href="#19-创建一个对象用什么运算符-对象实体与对象引用有何不同" class="headerlink" title="19. 创建一个对象用什么运算符?对象实体与对象引用有何不同?"></a>19. 创建一个对象用什么运算符?对象实体与对象引用有何不同?</h2><p>new 运算符，new 创建对象实例（对象实例在堆内存中），对象引用指向对象实例（对象引用存放在栈内存中）。一个对象引用可以指向 0 个或 1 个对象（一根绳子可以不系气球，也可以系一个气球）;一个对象可以有 n 个引用指向它（可以用 n 条绳子系住一个气球）。</p>
+<h2 id="20-什么是方法的返回值-返回值在类的方法里的作用是什么"><a href="#20-什么是方法的返回值-返回值在类的方法里的作用是什么" class="headerlink" title="20. 什么是方法的返回值?返回值在类的方法里的作用是什么?"></a>20. 什么是方法的返回值?返回值在类的方法里的作用是什么?</h2><p>方法的返回值是指我们获取到的某个方法体中的代码执行后产生的结果！（前提是该方法可能产生结果）。返回值的作用:接收出结果，使得它可以用于其他的操作！</p>
+<h2 id="21-一个类的构造方法的作用是什么-若一个类没有声明构造方法，该程序能正确执行吗-为什么"><a href="#21-一个类的构造方法的作用是什么-若一个类没有声明构造方法，该程序能正确执行吗-为什么" class="headerlink" title="21. 一个类的构造方法的作用是什么? 若一个类没有声明构造方法，该程序能正确执行吗? 为什么?"></a>21. 一个类的构造方法的作用是什么? 若一个类没有声明构造方法，该程序能正确执行吗? 为什么?</h2><p>主要作用是完成对类对象的初始化工作。可以执行。因为一个类即使没有声明构造方法也会有默认的不带参数的构造方法。</p>
+<h2 id="22-构造方法有哪些特性？"><a href="#22-构造方法有哪些特性？" class="headerlink" title="22. 构造方法有哪些特性？"></a>22. 构造方法有哪些特性？</h2><ol>
+<li>名字与类名相同。</li>
+<li>没有返回值，但不能用 void 声明构造函数。</li>
+<li>生成类的对象时自动执行，无需调用。</li>
+</ol>
+<h2 id="23-静态方法和实例方法有何不同"><a href="#23-静态方法和实例方法有何不同" class="headerlink" title="23. 静态方法和实例方法有何不同"></a>23. 静态方法和实例方法有何不同</h2><ol>
+<li>在外部调用静态方法时，可以使用”类名.方法名”的方式，也可以使用”对象名.方法名”的方式。而实例方法只有后面这种方式。也就是说，调用静态方法可以无需创建对象。</li>
+<li>静态方法在访问本类的成员时，只允许访问静态成员（即静态成员变量和静态方法），而不允许访问实例成员变量和实例方法；实例方法则无此限制。</li>
+</ol>
+<h2 id="24-对象的相等与指向他们的引用相等-两者有什么不同"><a href="#24-对象的相等与指向他们的引用相等-两者有什么不同" class="headerlink" title="24. 对象的相等与指向他们的引用相等,两者有什么不同?"></a>24. 对象的相等与指向他们的引用相等,两者有什么不同?</h2><p>对象的相等，比的是内存中存放的内容是否相等。而引用相等，比较的是他们指向的内存地址是否相等。</p>
+<h2 id="25-在调用子类构造方法之前会先调用父类没有参数的构造方法-其目的是"><a href="#25-在调用子类构造方法之前会先调用父类没有参数的构造方法-其目的是" class="headerlink" title="25. 在调用子类构造方法之前会先调用父类没有参数的构造方法,其目的是?"></a>25. 在调用子类构造方法之前会先调用父类没有参数的构造方法,其目的是?</h2><p>帮助子类做初始化工作。</p>
+<h2 id="26-与-equals-重要"><a href="#26-与-equals-重要" class="headerlink" title="26. == 与 equals(重要)"></a>26. == 与 equals(重要)</h2><p><strong>==</strong> : 它的作用是判断两个对象的地址是不是相等。即，判断两个对象是不是同一个对象(基本数据类型==比较的是值，引用数据类型==比较的是内存地址)。</p>
+<p><strong>equals()</strong> : 它的作用也是判断两个对象是否相等。但它一般有两种使用情况：</p>
+<ul>
+<li>情况 1：类没有覆盖 equals() 方法。则通过 equals() 比较该类的两个对象时，等价于通过“==”比较这两个对象。</li>
+<li>情况 2：类覆盖了 equals() 方法。一般，我们都覆盖 equals() 方法来比较两个对象的内容是否相等；若它们的内容相等，则返回 true (即，认为这两个对象相等)。</li>
+</ul>
+<p><strong>举个例子：</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">test1</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        String a = <span class="keyword">new</span> String(<span class="string">&quot;ab&quot;</span>); <span class="comment">// a 为一个引用</span></span><br><span class="line">        String b = <span class="keyword">new</span> String(<span class="string">&quot;ab&quot;</span>); <span class="comment">// b为另一个引用,对象的内容一样</span></span><br><span class="line">        String aa = <span class="string">&quot;ab&quot;</span>; <span class="comment">// 放在常量池中</span></span><br><span class="line">        String bb = <span class="string">&quot;ab&quot;</span>; <span class="comment">// 从常量池中查找</span></span><br><span class="line">        <span class="keyword">if</span> (aa == bb) <span class="comment">// true</span></span><br><span class="line">            System.out.println(<span class="string">&quot;aa==bb&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (a == b) <span class="comment">// false，非同一对象</span></span><br><span class="line">            System.out.println(<span class="string">&quot;a==b&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (a.equals(b)) <span class="comment">// true</span></span><br><span class="line">            System.out.println(<span class="string">&quot;aEQb&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (<span class="number">42</span> == <span class="number">42.0</span>) &#123; <span class="comment">// true</span></span><br><span class="line">            System.out.println(<span class="string">&quot;true&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>说明：</strong></p>
+<ul>
+<li>String 中的 equals 方法是被重写过的，因为 object 的 equals 方法是比较的对象的内存地址，而 String 的 equals 方法比较的是对象的值。</li>
+<li>当创建 String 类型的对象时，虚拟机会在常量池中查找有没有已经存在的值和要创建的值相同的对象，如果有就把它赋给当前引用。如果没有就在常量池中重新创建一个 String 对象。</li>
+</ul>
+<h2 id="27-hashCode-与-equals-重要"><a href="#27-hashCode-与-equals-重要" class="headerlink" title="27. hashCode 与 equals (重要)"></a>27. hashCode 与 equals (重要)</h2><p>面试官可能会问你：“你重写过 hashcode 和 equals 么，为什么重写 equals 时必须重写 hashCode 方法？”</p>
+<h3 id="hashCode（）介绍"><a href="#hashCode（）介绍" class="headerlink" title="hashCode（）介绍"></a>hashCode（）介绍</h3><p>hashCode() 的作用是获取哈希码，也称为散列码；它实际上是返回一个 int 整数。这个哈希码的作用是确定该对象在哈希表中的索引位置。hashCode() 定义在 JDK 的 Object.java 中，这就意味着 Java 中的任何类都包含有 hashCode() 函数。</p>
+<p>散列表存储的是键值对(key-value)，它的特点是：能根据“键”快速的检索出对应的“值”。这其中就利用到了散列码！（可以快速找到所需要的对象）</p>
+<h3 id="为什么要有-hashCode"><a href="#为什么要有-hashCode" class="headerlink" title="为什么要有 hashCode"></a>为什么要有 hashCode</h3><p><strong>我们先以“HashSet 如何检查重复”为例子来说明为什么要有 hashCode：</strong> 当你把对象加入 HashSet 时，HashSet 会先计算对象的 hashcode 值来判断对象加入的位置，同时也会与该位置其他已经加入的对象的 hashcode 值作比较，如果没有相符的 hashcode，HashSet 会假设对象没有重复出现。但是如果发现有相同 hashcode 值的对象，这时会调用 <code>equals()</code>方法来检查 hashcode 相等的对象是否真的相同。如果两者相同，HashSet 就不会让其加入操作成功。如果不同的话，就会重新散列到其他位置。（摘自我的 Java 启蒙书《Head first java》第二版）。这样我们就大大减少了 equals 的次数，相应就大大提高了执行速度。</p>
+<p>通过我们可以看出：<code>hashCode()</code> 的作用就是<strong>获取哈希码</strong>，也称为散列码；它实际上是返回一个 int 整数。这个<strong>哈希码的作用</strong>是确定该对象在哈希表中的索引位置。**<code>hashCode()</code>在散列表中才有用，在其它情况下没用**。在散列表中 hashCode() 的作用是获取对象的散列码，进而确定该对象在散列表中的位置。</p>
+<h3 id="hashCode（）与-equals（）的相关规定"><a href="#hashCode（）与-equals（）的相关规定" class="headerlink" title="hashCode（）与 equals（）的相关规定"></a>hashCode（）与 equals（）的相关规定</h3><ol>
+<li>如果两个对象相等，则 hashcode 一定也是相同的</li>
+<li>两个对象相等,对两个对象分别调用 equals 方法都返回 true</li>
+<li>两个对象有相同的 hashcode 值，它们也不一定是相等的</li>
+<li><strong>因此，equals 方法被覆盖过，则 hashCode 方法也必须被覆盖</strong></li>
+<li>hashCode() 的默认行为是对堆上的对象产生独特值。如果没有重写 hashCode()，则该 class 的两个对象无论如何都不会相等（即使这两个对象指向相同的数据）</li>
+</ol>
+<p>推荐阅读：<a href="https://www.cnblogs.com/skywang12345/p/3324958.html">Java hashCode() 和 equals()的若干问题解答</a></p>
+<h2 id="28-为什么-Java-中只有值传递？"><a href="#28-为什么-Java-中只有值传递？" class="headerlink" title="28. 为什么 Java 中只有值传递？"></a>28. 为什么 Java 中只有值传递？</h2><p><a href="https://juejin.im/post/5e18879e6fb9a02fc63602e2">为什么 Java 中只有值传递？</a></p>
+<h2 id="29-简述线程、程序、进程的基本概念。以及他们之间关系是什么"><a href="#29-简述线程、程序、进程的基本概念。以及他们之间关系是什么" class="headerlink" title="29. 简述线程、程序、进程的基本概念。以及他们之间关系是什么?"></a>29. 简述线程、程序、进程的基本概念。以及他们之间关系是什么?</h2><p><strong>线程</strong>与进程相似，但线程是一个比进程更小的执行单位。一个进程在其执行的过程中可以产生多个线程。与进程不同的是同类的多个线程共享同一块内存空间和一组系统资源，所以系统在产生一个线程，或是在各个线程之间作切换工作时，负担要比进程小得多，也正因为如此，线程也被称为轻量级进程。</p>
+<p><strong>程序</strong>是含有指令和数据的文件，被存储在磁盘或其他的数据存储设备中，也就是说程序是静态的代码。</p>
+<p><strong>进程</strong>是程序的一次执行过程，是系统运行程序的基本单位，因此进程是动态的。系统运行一个程序即是一个进程从创建，运行到消亡的过程。简单来说，一个进程就是一个执行中的程序，它在计算机中一个指令接着一个指令地执行着，同时，每个进程还占有某些系统资源如 CPU 时间，内存空间，文件，输入输出设备的使用权等等。换句话说，当程序在执行时，将会被操作系统载入内存中。 线程是进程划分成的更小的运行单位。线程和进程最大的不同在于基本上各进程是独立的，而各线程则不一定，因为同一进程中的线程极有可能会相互影响。从另一角度来说，进程属于操作系统的范畴，主要是同一段时间内，可以同时执行一个以上的程序，而线程则是在同一程序内几乎同时执行一个以上的程序段。</p>
+<h2 id="30-线程有哪些基本状态"><a href="#30-线程有哪些基本状态" class="headerlink" title="30. 线程有哪些基本状态?"></a>30. 线程有哪些基本状态?</h2><p>Java 线程在运行的生命周期中的指定时刻只可能处于下面 6 种不同状态的其中一个状态（图源《Java 并发编程艺术》4.1.4 节）。</p>
+<p><img src="/images/Java%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%8A%B6%E6%80%81.png" alt="Java线程的状态"></p>
+<p>线程在生命周期中并不是固定处于某一个状态而是随着代码的执行在不同状态之间切换。Java 线程状态变迁如下图所示（图源《Java 并发编程艺术》4.1.4 节）：</p>
+<p><img src="/images/Java%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E5%8F%98%E8%BF%81.png" alt="Java线程状态变迁"></p>
+<p>由上图可以看出：</p>
+<p>线程创建之后它将处于 <strong>NEW（新建）</strong> 状态，调用 <code>start()</code> 方法后开始运行，线程这时候处于 <strong>READY（可运行）</strong> 状态。可运行状态的线程获得了 cpu 时间片（timeslice）后就处于 <strong>RUNNING（运行）</strong> 状态。</p>
+<blockquote>
+<p>操作系统隐藏 Java 虚拟机（JVM）中的 READY 和 RUNNING 状态，它只能看到 RUNNABLE 状态（图源：<a href="https://howtodoinjava.com/">HowToDoInJava</a>：<a href="https://howtodoinjava.com/java/multi-threading/java-thread-life-cycle-and-thread-states/">Java Thread Life Cycle and Thread States</a>），所以 Java 系统一般将这两个状态统称为 <strong>RUNNABLE（运行中）</strong> 状态 。</p>
+</blockquote>
+<p><img src="/images/RUNNABLE-VS-RUNNING.png" alt="RUNNABLE-VS-RUNNING"></p>
+<p>当线程执行 <code>wait()</code>方法之后，线程进入 <strong>WAITING（等待）</strong>状态。进入等待状态的线程需要依靠其他线程的通知才能够返回到运行状态，而 <strong>TIME_WAITING(超时等待)</strong> 状态相当于在等待状态的基础上增加了超时限制，比如通过 <code>sleep（long millis）</code>方法或 <code>wait（long millis）</code>方法可以将 Java 线程置于 TIMED WAITING 状态。当超时时间到达后 Java 线程将会返回到 RUNNABLE 状态。当线程调用同步方法时，在没有获取到锁的情况下，线程将会进入到 <strong>BLOCKED（阻塞）</strong> 状态。线程在执行 Runnable 的<code>run()</code>方法之后将会进入到 <strong>TERMINATED（终止）</strong> 状态。</p>
+<h2 id="31-关于-final-关键字的一些总结"><a href="#31-关于-final-关键字的一些总结" class="headerlink" title="31 关于 final 关键字的一些总结"></a>31 关于 final 关键字的一些总结</h2><p>final 关键字主要用在三个地方：变量、方法、类。</p>
+<ol>
+<li>对于一个 final 变量，如果是基本数据类型的变量，则其数值一旦在初始化之后便不能更改；如果是引用类型的变量，则在对其初始化之后便不能再让其指向另一个对象。</li>
+<li>当用 final 修饰一个类时，表明这个类不能被继承。final 类中的所有成员方法都会被隐式地指定为 final 方法。</li>
+<li>使用 final 方法的原因有两个。第一个原因是把方法锁定，以防任何继承类修改它的含义；第二个原因是效率。在早期的 Java 实现版本中，会将 final 方法转为内嵌调用。但是如果方法过于庞大，可能看不到内嵌调用带来的任何性能提升（现在的 Java 版本已经不需要使用 final 方法进行这些优化了）。类中所有的 private 方法都隐式地指定为 final。</li>
+</ol>
+<h2 id="32-Java-中的异常处理"><a href="#32-Java-中的异常处理" class="headerlink" title="32 Java 中的异常处理"></a>32 Java 中的异常处理</h2><h3 id="Java-异常类层次结构图"><a href="#Java-异常类层次结构图" class="headerlink" title="Java 异常类层次结构图"></a>Java 异常类层次结构图</h3><p><img src="/images/java%E5%BC%82%E5%B8%B8%E7%B1%BB%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84%E5%9B%BE.jpg" alt="Java异常类层次结构图"></p>
+<p>图片来自：<a href="https://simplesnippets.tech/exception-handling-in-java-part-1/">https://simplesnippets.tech/exception-handling-in-java-part-1/</a></p>
+<p><img src="/images/java%E5%BC%82%E5%B8%B8%E7%B1%BB%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84%E5%9B%BE%E4%BA%8C.png" alt="Java异常类层次结构图"></p>
+<p>图片来自：<a href="https://chercher.tech/java-programming/exceptions-java">https://chercher.tech/java-programming/exceptions-java</a></p>
+<p>在 Java 中，所有的异常都有一个共同的祖先 java.lang 包中的 <strong>Throwable 类</strong>。Throwable： 有两个重要的子类：<strong>Exception（异常）</strong> 和 <strong>Error（错误）</strong> ，二者都是 Java 异常处理的重要子类，各自都包含大量子类。</p>
+<p><strong>Error（错误）:是程序无法处理的错误</strong>，表示运行应用程序中较严重问题。大多数错误与代码编写者执行的操作无关，而表示代码运行时 JVM（Java 虚拟机）出现的问题。例如，Java 虚拟机运行错误（Virtual MachineError），当 JVM 不再有继续执行操作所需的内存资源时，将出现 OutOfMemoryError。这些异常发生时，Java 虚拟机（JVM）一般会选择线程终止。</p>
+<p>这些错误表示故障发生于虚拟机自身、或者发生在虚拟机试图执行应用时，如 Java 虚拟机运行错误（Virtual MachineError）、类定义错误（NoClassDefFoundError）等。这些错误是不可查的，因为它们在应用程序的控制和处理能力之 外，而且绝大多数是程序运行时不允许出现的状况。对于设计合理的应用程序来说，即使确实发生了错误，本质上也不应该试图去处理它所引起的异常状况。在 Java 中，错误通过 Error 的子类描述。</p>
+<p><strong>Exception（异常）:是程序本身可以处理的异常</strong>。Exception 类有一个重要的子类 <strong>RuntimeException</strong>。RuntimeException 异常由 Java 虚拟机抛出。<strong>NullPointerException</strong>（要访问的变量没有引用任何对象时，抛出该异常）、<strong>ArithmeticException</strong>（算术运算异常，一个整数除以 0 时，抛出该异常）和 <strong>ArrayIndexOutOfBoundsException</strong> （下标越界异常）。</p>
+<p><strong>注意：异常和错误的区别：异常能被程序本身处理，错误是无法处理。</strong></p>
+<h3 id="Throwable-类常用方法"><a href="#Throwable-类常用方法" class="headerlink" title="Throwable 类常用方法"></a>Throwable 类常用方法</h3><ul>
+<li><strong>public string getMessage()</strong>:返回异常发生时的简要描述</li>
+<li><strong>public string toString()</strong>:返回异常发生时的详细信息</li>
+<li><strong>public string getLocalizedMessage()</strong>:返回异常对象的本地化信息。使用 Throwable 的子类覆盖这个方法，可以生成本地化信息。如果子类没有覆盖该方法，则该方法返回的信息与 getMessage（）返回的结果相同</li>
+<li><strong>public void printStackTrace()</strong>:在控制台上打印 Throwable 对象封装的异常信息</li>
+</ul>
+<h3 id="异常处理总结"><a href="#异常处理总结" class="headerlink" title="异常处理总结"></a>异常处理总结</h3><ul>
+<li><strong>try 块：</strong> 用于捕获异常。其后可接零个或多个 catch 块，如果没有 catch 块，则必须跟一个 finally 块。</li>
+<li><strong>catch 块：</strong> 用于处理 try 捕获到的异常。</li>
+<li><strong>finally 块：</strong> 无论是否捕获或处理异常，finally 块里的语句都会被执行。当在 try 块或 catch 块中遇到 return 语句时，finally 语句块将在方法返回之前被执行。</li>
+</ul>
+<p><strong>在以下 4 种特殊情况下，finally 块不会被执行：</strong></p>
+<ol>
+<li>在 finally 语句块第一行发生了异常。 因为在其他行，finally 块还是会得到执行</li>
+<li>在前面的代码中用了 System.exit(int)已退出程序。 exit 是带参函数 ；若该语句在异常语句之后，finally 会执行</li>
+<li>程序所在的线程死亡。</li>
+<li>关闭 CPU。</li>
+</ol>
+<p>下面这部分内容来自 issue:<a href="https://github.com/Snailclimb/JavaGuide/issues/190%E3%80%82">https://github.com/Snailclimb/JavaGuide/issues/190。</a></p>
+<p><strong>注意：</strong> 当 try 语句和 finally 语句中都有 return 语句时，在方法返回之前，finally 语句的内容将被执行，并且 finally 语句的返回值将会覆盖原始的返回值。如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> value * value;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (value == <span class="number">2</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果调用 <code>f(2)</code>，返回值将是 0，因为 finally 语句的返回值覆盖了 try 语句块的返回值。</p>
+<h2 id="33-Java-序列化中如果有些字段不想进行序列化，怎么办？"><a href="#33-Java-序列化中如果有些字段不想进行序列化，怎么办？" class="headerlink" title="33 Java 序列化中如果有些字段不想进行序列化，怎么办？"></a>33 Java 序列化中如果有些字段不想进行序列化，怎么办？</h2><p>对于不想进行序列化的变量，使用 transient 关键字修饰。</p>
+<p>transient 关键字的作用是：阻止实例中那些用此关键字修饰的的变量序列化；当对象被反序列化时，被 transient 修饰的变量值不会被持久化和恢复。transient 只能修饰变量，不能修饰类和方法。</p>
+<h2 id="34-获取用键盘输入常用的两种方法"><a href="#34-获取用键盘输入常用的两种方法" class="headerlink" title="34 获取用键盘输入常用的两种方法"></a>34 获取用键盘输入常用的两种方法</h2><p>方法 1：通过 Scanner</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Scanner input = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">String s  = input.nextLine();</span><br><span class="line">input.close();</span><br></pre></td></tr></table></figure>
+
+<p>方法 2：通过 BufferedReader</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">BufferedReader input = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(System.in));</span><br><span class="line">String s = input.readLine();</span><br></pre></td></tr></table></figure>
+
+<h2 id="35-Java-中-IO-流"><a href="#35-Java-中-IO-流" class="headerlink" title="35 Java 中 IO 流"></a>35 Java 中 IO 流</h2><h3 id="Java-中-IO-流分为几种"><a href="#Java-中-IO-流分为几种" class="headerlink" title="Java 中 IO 流分为几种?"></a>Java 中 IO 流分为几种?</h3><ul>
+<li>按照流的流向分，可以分为输入流和输出流；</li>
+<li>按照操作单元划分，可以划分为字节流和字符流；</li>
+<li>按照流的角色划分为节点流和处理流。</li>
+</ul>
+<p>Java Io 流共涉及 40 多个类，这些类看上去很杂乱，但实际上很有规则，而且彼此之间存在非常紧密的联系， Java I0 流的 40 多个类都是从如下 4 个抽象类基类中派生出来的。</p>
+<ul>
+<li>InputStream/Reader: 所有的输入流的基类，前者是字节输入流，后者是字符输入流。</li>
+<li>OutputStream/Writer: 所有输出流的基类，前者是字节输出流，后者是字符输出流。</li>
+</ul>
+<p>按操作方式分类结构图：</p>
+<p><img src="/images/IO-%E6%93%8D%E4%BD%9C%E6%96%B9%E5%BC%8F%E5%88%86%E7%B1%BB.jpg" alt="IO-操作方式分类"></p>
+<p>按操作对象分类结构图：</p>
+<p><img src="/images/IO-%E6%93%8D%E4%BD%9C%E5%AF%B9%E8%B1%A1%E5%88%86%E7%B1%BB.jpg" alt="IO-操作对象分类"></p>
+<h3 id="既然有了字节流-为什么还要有字符流"><a href="#既然有了字节流-为什么还要有字符流" class="headerlink" title="既然有了字节流,为什么还要有字符流?"></a>既然有了字节流,为什么还要有字符流?</h3><p>问题本质想问：<strong>不管是文件读写还是网络发送接收，信息的最小存储单元都是字节，那为什么 I/O 流操作要分为字节流操作和字符流操作呢？</strong></p>
+<p>回答：字符流是由 Java 虚拟机将字节转换得到的，问题就出在这个过程还算是非常耗时，并且，如果我们不知道编码类型就很容易出现乱码问题。所以， I/O 流就干脆提供了一个直接操作字符的接口，方便我们平时对字符进行流操作。如果音频文件、图片等媒体文件用字节流比较好，如果涉及到字符的话使用字符流比较好。</p>
+<h3 id="BIO-NIO-AIO-有什么区别"><a href="#BIO-NIO-AIO-有什么区别" class="headerlink" title="BIO,NIO,AIO 有什么区别?"></a>BIO,NIO,AIO 有什么区别?</h3><ul>
+<li><strong>BIO (Blocking I/O):</strong> 同步阻塞 I/O 模式，数据的读取写入必须阻塞在一个线程内等待其完成。在活动连接数不是特别高（小于单机 1000）的情况下，这种模型是比较不错的，可以让每一个连接专注于自己的 I/O 并且编程模型简单，也不用过多考虑系统的过载、限流等问题。线程池本身就是一个天然的漏斗，可以缓冲一些系统处理不了的连接或请求。但是，当面对十万甚至百万级连接的时候，传统的 BIO 模型是无能为力的。因此，我们需要一种更高效的 I/O 处理模型来应对更高的并发量。</li>
+<li><strong>NIO (Non-blocking/New I/O):</strong> NIO 是一种同步非阻塞的 I/O 模型，在 Java 1.4 中引入了 NIO 框架，对应 java.nio 包，提供了 Channel , Selector，Buffer 等抽象。NIO 中的 N 可以理解为 Non-blocking，不单纯是 New。它支持面向缓冲的，基于通道的 I/O 操作方法。 NIO 提供了与传统 BIO 模型中的 <code>Socket</code> 和 <code>ServerSocket</code> 相对应的 <code>SocketChannel</code> 和 <code>ServerSocketChannel</code> 两种不同的套接字通道实现,两种通道都支持阻塞和非阻塞两种模式。阻塞模式使用就像传统中的支持一样，比较简单，但是性能和可靠性都不好；非阻塞模式正好与之相反。对于低负载、低并发的应用程序，可以使用同步阻塞 I/O 来提升开发速率和更好的维护性；对于高负载、高并发的（网络）应用，应使用 NIO 的非阻塞模式来开发</li>
+<li><strong>AIO (Asynchronous I/O):</strong> AIO 也就是 NIO 2。在 Java 7 中引入了 NIO 的改进版 NIO 2,它是异步非阻塞的 IO 模型。异步 IO 是基于事件和回调机制实现的，也就是应用操作之后会直接返回，不会堵塞在那里，当后台处理完成，操作系统会通知相应的线程进行后续的操作。AIO 是异步 IO 的缩写，虽然 NIO 在网络操作中，提供了非阻塞的方法，但是 NIO 的 IO 行为还是同步的。对于 NIO 来说，我们的业务线程是在 IO 操作准备好时，得到通知，接着就由这个线程自行进行 IO 操作，IO 操作本身是同步的。查阅网上相关资料，我发现就目前来说 AIO 的应用还不是很广泛，Netty 之前也尝试使用过 AIO，不过又放弃了。</li>
+</ul>
+<h2 id="36-常见关键字总结-static-final-this-super"><a href="#36-常见关键字总结-static-final-this-super" class="headerlink" title="36. 常见关键字总结:static,final,this,super"></a>36. 常见关键字总结:static,final,this,super</h2><p>详见笔主的这篇文章: <a href="https://snailclimb.gitee.io/javaguide/#/docs/java/basic/final,static,this,super">https://snailclimb.gitee.io/javaguide/#/docs/java/basic/final,static,this,super</a></p>
+<h2 id="37-Collections-工具类和-Arrays-工具类常见方法总结"><a href="#37-Collections-工具类和-Arrays-工具类常见方法总结" class="headerlink" title="37. Collections 工具类和 Arrays 工具类常见方法总结"></a>37. Collections 工具类和 Arrays 工具类常见方法总结</h2><p>详见笔主的这篇文章: <a href="https://gitee.com/SnailClimb/JavaGuide/blob/master/docs/java/basic/Arrays,CollectionsCommonMethods.md">https://gitee.com/SnailClimb/JavaGuide/blob/master/docs/java/basic/Arrays,CollectionsCommonMethods.md</a></p>
+<h2 id="38-深拷贝-vs-浅拷贝"><a href="#38-深拷贝-vs-浅拷贝" class="headerlink" title="38. 深拷贝 vs 浅拷贝"></a>38. 深拷贝 vs 浅拷贝</h2><ol>
+<li><strong>浅拷贝</strong>：对基本数据类型进行值传递，对引用数据类型进行引用传递般的拷贝，此为浅拷贝。</li>
+<li><strong>深拷贝</strong>：对基本数据类型进行值传递，对引用数据类型，创建一个新的对象，并复制其内容，此为深拷贝。</li>
+</ol>
+<p><img src="/images/java-deep-and-shallow-copy.jpg" alt="deep and shallow copy"></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://stackoverflow.com/questions/1906445/what-is-the-difference-between-jdk-and-jre">https://stackoverflow.com/questions/1906445/what-is-the-difference-between-jdk-and-jre</a></li>
+<li><a href="https://www.educba.com/oracle-vs-openjdk/">https://www.educba.com/oracle-vs-openjdk/</a></li>
+<li><a href="https://stackoverflow.com/questions/22358071/differences-between-oracle-jdk-and-openjdk?answertab=active#tab-top">https://stackoverflow.com/questions/22358071/differences-between-oracle-jdk-and-openjdk?answertab=active#tab-top</a></li>
+</ul>
+<h2 id="公众号"><a href="#公众号" class="headerlink" title="公众号"></a>公众号</h2><p>如果大家想要实时关注我更新的文章以及分享的干货的话，可以关注我的公众号。</p>
+<p><strong>《Java 面试突击》:</strong> 由本文档衍生的专为面试而生的《Java 面试突击》V2.0 PDF 版本<a href="#%E5%85%AC%E4%BC%97%E5%8F%B7">公众号</a>后台回复 <strong>“Java 面试突击”</strong> 即可免费领取！</p>
+<p><strong>Java 工程师必备学习资源:</strong> 一些 Java 工程师常用学习资源公众号后台回复关键字 <strong>“1”</strong> 即可免费无套路获取。</p>
+<p><img src="/images/JavaGuide.jpg" alt="我的公众号"></p>
+<p><strong>全文转载自：</strong><a href="https://github.com/Snailclimb/JavaGuide/blob/master/docs/java/Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.md">https://github.com/Snailclimb/JavaGuide/blob/master/docs/java/Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.md</a></p>
 ]]></content>
       <categories>
-        <category>MyBatis</category>
+        <category>Java</category>
+        <category>知识整理</category>
       </categories>
   </entry>
 </search>
