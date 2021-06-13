@@ -20,30 +20,29 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;example.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.5.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:1,&quot;unescape&quot;:false,&quot;preload&quot;:false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="MyBatis 中的缓存说明">
+<meta name="description" content="整合 JUnit 为项目提供单元测试，减少代码冗余">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MyBatis的缓存问题">
-<meta property="og:url" content="http://example.com/2020/07/15/2020715-MyBatis%E7%9A%84%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:title" content="Spring整合JUnit">
+<meta property="og:url" content="http://example.com/2020/07/17/2020717-Spring%E6%95%B4%E5%90%88JUnit/index.html">
 <meta property="og:site_name" content="深海学者">
-<meta property="og:description" content="MyBatis 中的缓存说明">
+<meta property="og:description" content="整合 JUnit 为项目提供单元测试，减少代码冗余">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/images/MyBatis/SqlSession1.png">
-<meta property="og:image" content="http://example.com/images/MyBatis/SqlSession2.png">
-<meta property="article:published_time" content="2020-07-15T07:33:22.000Z">
-<meta property="article:modified_time" content="2021-06-07T08:11:01.258Z">
+<meta property="og:image" content="http://example.com/images/Spring/jar_junit.png">
+<meta property="article:published_time" content="2020-07-17T13:44:33.000Z">
+<meta property="article:modified_time" content="2021-06-11T08:21:54.003Z">
 <meta property="article:author" content="QTLin">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/images/MyBatis/SqlSession1.png">
+<meta name="twitter:image" content="http://example.com/images/Spring/jar_junit.png">
 
 
-<link rel="canonical" href="http://example.com/2020/07/15/2020715-MyBatis%E7%9A%84%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98/">
+<link rel="canonical" href="http://example.com/2020/07/17/2020717-Spring%E6%95%B4%E5%90%88JUnit/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;2020&#x2F;07&#x2F;15&#x2F;2020715-MyBatis%E7%9A%84%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98&#x2F;&quot;,&quot;path&quot;:&quot;2020&#x2F;07&#x2F;15&#x2F;2020715-MyBatis的缓存问题&#x2F;&quot;,&quot;title&quot;:&quot;MyBatis的缓存问题&quot;}</script>
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;2020&#x2F;07&#x2F;17&#x2F;2020717-Spring%E6%95%B4%E5%90%88JUnit&#x2F;&quot;,&quot;path&quot;:&quot;2020&#x2F;07&#x2F;17&#x2F;2020717-Spring整合JUnit&#x2F;&quot;,&quot;title&quot;:&quot;Spring整合JUnit&quot;}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
-<title>MyBatis的缓存问题 | 深海学者</title>
+<title>Spring整合JUnit | 深海学者</title>
   
 
 
@@ -149,7 +148,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E7%BA%A7%E7%BC%93%E5%AD%98"><span class="nav-text">一级缓存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98"><span class="nav-text">二级缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95"><span class="nav-text">配置方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#xml%E6%96%B9%E5%BC%8F"><span class="nav-text">xml方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%A8%E8%A7%A3%E6%96%B9%E5%BC%8F"><span class="nav-text">注解方式</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%97%AE%E9%A2%98"><span class="nav-text">问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%86%E6%9E%90"><span class="nav-text">分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0"><span class="nav-text">实现</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -217,7 +216,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/07/15/2020715-MyBatis%E7%9A%84%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/07/17/2020717-Spring%E6%95%B4%E5%90%88JUnit/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -230,7 +229,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          MyBatis的缓存问题
+          Spring整合JUnit
         </h1>
 
         <div class="post-meta-container">
@@ -241,14 +240,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2020-07-15 15:33:22" itemprop="dateCreated datePublished" datetime="2020-07-15T15:33:22+08:00">2020-07-15</time>
+      <time title="创建时间：2020-07-17 21:44:33" itemprop="dateCreated datePublished" datetime="2020-07-17T21:44:33+08:00">2020-07-17</time>
     </span>
       <span class="post-meta-item">
         <span class="post-meta-item-icon">
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-06-07 16:11:01" itemprop="dateModified" datetime="2021-06-07T16:11:01+08:00">2021-06-07</time>
+        <time title="修改时间：2021-06-11 16:21:54" itemprop="dateModified" datetime="2021-06-11T16:21:54+08:00">2021-06-11</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -256,7 +255,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/MyBatis/" itemprop="url" rel="index"><span itemprop="name">MyBatis</span></a>
+          <a href="/categories/Spring/" itemprop="url" rel="index"><span itemprop="name">Spring</span></a>
         </span>
     </span>
 
@@ -268,7 +267,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.5k</span>
+      <span>1k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -286,33 +285,34 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>MyBatis 中的缓存说明</p>
+        <p>整合 JUnit 为项目提供单元测试，减少代码冗余</p>
 <span id="more"></span>
 
-<h2 id="一级缓存"><a href="#一级缓存" class="headerlink" title="一级缓存"></a>一级缓存</h2><p>一级缓存是单个 SqlSession 的缓存区域。 MyBatis 对缓存提供支持，但是在没有配置的默认情况下，它只开启一级缓存，一级缓存只是相对于同一个 SqlSession 而言。所以在参数和 SQL 完全一样的情况下，我们使用同一个 SqlSession 对象调用一个 Mapper 方法，往往只执行一次SQL，因为使用SelSession第一次查询后，MyBatis会将其放在缓存中，以后再查询的时候，如果没有声明需要刷新，并且缓存没有超时的情况下， SqlSession 都会取出当前缓存的数据，而不会再次发送 SQL 到数据库。</p>
-<p><img src="/images/MyBatis/SqlSession1.png" alt="image-20200715152101792"></p>
-<p>第一次发起查询用户 id 为 1 的用户信息，先去找缓存中是否有 id 为 1 的用户信息，如果没有，从数据库查询用户信息。得到用户信息，将用户信息存储到一级缓存中。 如果 SqlSession 去执行 commit 操作（执行插入、更新、删除），清空  SqlSession  中的一级缓存，这样做的目的为了让缓存中存储的是最新的信息，避免脏读。 第二次发起查询用户 id 为 1 的用户信息，先去找缓存中是否有 id 为 1 的用户信息，缓存中有，直接从缓存中获取用户信息。</p>
-<h2 id="二级缓存"><a href="#二级缓存" class="headerlink" title="二级缓存"></a>二级缓存</h2><p>二级缓存是多个 SqlSession 共用的缓存区域。 SqlSession Factory 层面上的二级缓存默认是不开启的，二级缓存的开启需要进行配置，实现二级缓存的时候，MyBatis 要求返回的 POJO 必须是可序列化的。 也就是要求实 Serializable 接口，配置方法很简单，只需要在映射 XML 文件配置就可以开启缓存了。</p>
-<p><img src="/images/MyBatis/SqlSession2.png" alt="image-20200715152410496"></p>
-<p>首先开启 mybatis 的二级缓存。 SqlSession1 去查询用户信息，查询到用户信息会将查询数据存储到二级缓存中。 如果  SqlSession 3 去执行相同 mapper 映射下 sql，执行 commit 提交，将会清空该 mapper 映射下的二级缓存区域的数据。 SqlSession2 去查询与 SqlSession1 相同的用户信息，首先会去缓存中找是否存在数据，如果存在直接从缓存中取出数据。</p>
-<h3 id="配置方法"><a href="#配置方法" class="headerlink" title="配置方法"></a>配置方法</h3><h4 id="xml方式"><a href="#xml方式" class="headerlink" title="xml方式"></a>xml方式</h4><ul>
-<li>第一步：在 SqlMapConfig.xml 文件开启二级缓存</li>
-</ul>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">&quot;cacheEnabled&quot;</span> <span class="attr">value</span>=<span class="string">&quot;ture&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>在之前的测试类中，每个测试方法都有以下两行代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ApplicationContext ac = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">&quot;bean.xml&quot;</span>);</span><br><span class="line">IAccountService as = ac.getBean(<span class="string">&quot;accountService&quot;</span>,IAccountService.class);</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>第二步：配置相关的  Mapper  映射文件</li>
-</ul>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">&quot;com.itheima.dao.IUserDao&quot;</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!--开启二级缓存的支持--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">cache</span>&gt;</span><span class="tag">&lt;/<span class="name">cache</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这两行的代码作用是获取容器，所以不能随意删除，但是就造成了代码的重复。</p>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>我们需要程序能够自动帮我们创造容器，就不用手动创建。</p>
+<p>JUnit 给我们一个注解，可以让我们替换掉它的运行器。 这时，我们需要依靠 Spring 框架，因为它提供了一个运行器，可以读取配置文件（或注解）来创建容器。我们只需要告诉它配置文件在哪就行了。</p>
+<h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><ol>
+<li>导入jar包</li>
+</ol>
+<p><img src="/images/Spring/jar_junit.png" alt="jar_junit"></p>
+<ol start="2">
+<li>使用@RunWith 注解替换原有的运行器使用Spring提供的运行器</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RunWith(SpringJUnit4ClassRunner.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AccountServiceTest</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
 
-<p><cache>标签表示当前这个 mapper 映射将使用二级缓存，区分的标准就看 mapper 的 namespace 值。</p>
-<ul>
-<li>第三步：配置 statement 上面的 useCache 属性 </li>
-</ul>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;findById&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;user&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;int&quot;</span> <span class="attr">useCache</span>=<span class="string">&quot;true&quot;</span>&gt;</span></span><br><span class="line">	select * from user where id=#&#123;uid&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>使用@ContextConfiguration 指定 Spring 配置文件的位置</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RunWith(SpringJUnit4ClassRunner.class)</span></span><br><span class="line"><span class="meta">@ContextConfiguration(locations=&#123;&quot;classpath:bean.xml&quot;&#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AccountServiceTest</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure>
 
-<p>设置 useCache 为 true 代表当前这个 statement 要使用二级缓存，false 则为不使用。</p>
-<h4 id="注解方式"><a href="#注解方式" class="headerlink" title="注解方式"></a>注解方式</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@CacheNamespace(blocking=true)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IUserDao</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    @ContextConfiguration 注解：<br>​            locations 属性：用于指定配置文件的位置，如果是类路径下，需要用 classpath: 表明。<br>​            classes 属性：用于指定注解的类，当不使用 xml 配置时，需要用此属性指定注解类的位置。</p>
+<ol start="4">
+<li>使用@Autowired 给测试类中的变量注入数据</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RunWith(SpringJUnit4ClassRunner.class)</span></span><br><span class="line"><span class="meta">@ContextConfiguration(locations=&#123;&quot;classpath:bean.xml&quot;&#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AccountServiceTest</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> IAccountService as;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -325,13 +325,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2020/07/14/2020714-MyBatis%E7%9A%84%E5%BB%B6%E8%BF%9F%E5%8A%A0%E8%BD%BD/" rel="prev" title="MyBatis的延迟加载">
-                  <i class="fa fa-chevron-left"></i> MyBatis的延迟加载
+                <a href="/2020/07/17/2020717-Spring%E6%B3%A8%E8%A7%A3%E8%AF%B4%E6%98%8E/" rel="prev" title="Spring注解说明">
+                  <i class="fa fa-chevron-left"></i> Spring注解说明
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2020/07/15/2020715-MyBatis%E7%9A%84%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91/" rel="next" title="MyBatis的注解开发">
-                  MyBatis的注解开发 <i class="fa fa-chevron-right"></i>
+                <a href="/2020/07/18/2020718-Spring-IOC-CRUD/" rel="next" title="Spring-IOC-CRUD">
+                  Spring-IOC-CRUD <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>

@@ -2153,4 +2153,135 @@
         <category>算法</category>
       </categories>
   </entry>
+  <entry>
+    <title>Spring整合JUnit</title>
+    <url>/2020/07/17/2020717-Spring%E6%95%B4%E5%90%88JUnit/</url>
+    <content><![CDATA[<p>整合 JUnit 为项目提供单元测试，减少代码冗余</p>
+<span id="more"></span>
+
+<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>在之前的测试类中，每个测试方法都有以下两行代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">ApplicationContext ac = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">&quot;bean.xml&quot;</span>);</span><br><span class="line">IAccountService as = ac.getBean(<span class="string">&quot;accountService&quot;</span>,IAccountService.class);</span><br></pre></td></tr></table></figure>
+
+<p>这两行的代码作用是获取容器，所以不能随意删除，但是就造成了代码的重复。</p>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>我们需要程序能够自动帮我们创造容器，就不用手动创建。</p>
+<p>JUnit 给我们一个注解，可以让我们替换掉它的运行器。 这时，我们需要依靠 Spring 框架，因为它提供了一个运行器，可以读取配置文件（或注解）来创建容器。我们只需要告诉它配置文件在哪就行了。</p>
+<h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><ol>
+<li>导入jar包</li>
+</ol>
+<p><img src="/images/Spring/jar_junit.png" alt="jar_junit"></p>
+<ol start="2">
+<li>使用@RunWith 注解替换原有的运行器使用Spring提供的运行器</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RunWith(SpringJUnit4ClassRunner.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AccountServiceTest</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>使用@ContextConfiguration 指定 Spring 配置文件的位置</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RunWith(SpringJUnit4ClassRunner.class)</span></span><br><span class="line"><span class="meta">@ContextConfiguration(locations=&#123;&quot;classpath:bean.xml&quot;&#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AccountServiceTest</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​    @ContextConfiguration 注解：<br>​            locations 属性：用于指定配置文件的位置，如果是类路径下，需要用 classpath: 表明。<br>​            classes 属性：用于指定注解的类，当不使用 xml 配置时，需要用此属性指定注解类的位置。</p>
+<ol start="4">
+<li>使用@Autowired 给测试类中的变量注入数据</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RunWith(SpringJUnit4ClassRunner.class)</span></span><br><span class="line"><span class="meta">@ContextConfiguration(locations=&#123;&quot;classpath:bean.xml&quot;&#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AccountServiceTest</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> IAccountService as;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Spring</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Spring-IOC-CRUD</title>
+    <url>/2020/07/18/2020718-Spring-IOC-CRUD/</url>
+    <content><![CDATA[<p>利用 Spring-IOC 控制反转的特性，对数据库进行简单的 CRUD 操作</p>
+<span id="more"></span>
+
+<h2 id="基于-xml-的配置"><a href="#基于-xml-的配置" class="headerlink" title="基于 xml 的配置"></a>基于 xml 的配置</h2><ol>
+<li>拷贝 jar 包</li>
+</ol>
+<p><img src="/images/Spring/jar_crud.png" alt="image-20200718074221411"></p>
+<ol start="2">
+<li>创建数据库和编写实体类<br>数据库 sql 语句：</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> account (</span><br><span class="line">    id <span class="type">int</span> <span class="keyword">primary</span> key auto_increment,</span><br><span class="line">    name <span class="type">varchar</span>(<span class="number">40</span>),</span><br><span class="line">    money <span class="type">float</span></span><br><span class="line">)<span class="type">character</span> <span class="keyword">set</span> utf8 <span class="keyword">collate</span> utf8_general_ci;</span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> account(name,money) <span class="keyword">values</span>(<span class="string">&#x27;aaa&#x27;</span>,<span class="number">1000</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> account(name,money) <span class="keyword">values</span>(<span class="string">&#x27;bbb&#x27;</span>,<span class="number">1000</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> account(name,money) <span class="keyword">values</span>(<span class="string">&#x27;ccc&#x27;</span>,<span class="number">1000</span>);</span><br></pre></td></tr></table></figure>
+
+<p>实体类：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Account</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> Float money;</span><br><span class="line"> 	getter/setter</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>编写持久层（dao）代码 </li>
+</ol>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IAccountDao</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">save</span><span class="params">(Account account)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AccountDaoIml</span> <span class="keyword">implements</span> <span class="title">IAccountDao</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> DBAssit dbAssit;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDbAssit</span><span class="params">(DBAssit dbAssit)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.dbAssit = dbAssit;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">save</span><span class="params">(Account account)</span> </span>&#123;</span><br><span class="line">        dbAssit.update(<span class="string">&quot;insert account(name,money) into value(?,?)&quot;</span>,account.getName(),account.getMoney());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>编写业务层（service）代码 </li>
+</ol>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IAccountService</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">saveAccount</span><span class="params">(Account account)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AccountServiceImpl</span> <span class="keyword">implements</span> <span class="title">IAccountService</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> IAccountDao accountDao;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAccountDao</span><span class="params">(IAccountDao accountDao)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.accountDao = accountDao;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>编写 xml 配置文件 </li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding= &quot;UTF-8?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span> <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance” xsi:schemaLocation=&quot;</span><span class="attr">http:</span>//<span class="attr">www.springframework.org</span>/<span class="attr">schema</span>/<span class="attr">beans</span></span></span><br><span class="line"><span class="tag"><span class="attr">http:</span>//<span class="attr">www.springframework.org</span>/<span class="attr">schema</span>/<span class="attr">beans</span>/<span class="attr">spring-beans.xsd</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--配置service--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;accountService&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.itheima.service.impl.AccountServiceImpl&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;accountDao&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;accountDao&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--配置dao--&gt;</span>                                                 </span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;accountDao&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.itheima.dao.impl.AccountDaoImpl&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;dbAssit&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;dbAssit&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--配置dbAssit--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;dbAssit&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.itheima.dbassit.DBAssit&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;dataSource&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;dataSource&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--配置数据源--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;dataSource&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.mchange.v2.c3p0.ComboPooledDataSource&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;driverClass&quot;</span> <span class="attr">value</span>=<span class="string">&quot;com.mysql.jdbc.Driver&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;jdbcUrl&quot;</span> <span class="attr">value</span>=<span class="string">&quot;jdbc:mysql:///spring_day02&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;user&quot;</span> <span class="attr">value</span>=<span class="string">&quot;root&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1234&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>编写测试类 </li>
+</ol>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RunWith(SpringJUnit4ClassRunner.class)</span></span><br><span class="line"><span class="meta">@ContextConfiguration(locations=&#123;&quot;classpath:bean.xml&quot;&#125;)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testSaveAccount</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> IAccountService as;</span><br><span class="line">    </span><br><span class="line">    Account account = <span class="keyword">new</span> Account();</span><br><span class="line">    account.setName(<span class="string">&quot;黑马程序员&quot;</span>);</span><br><span class="line">    account.setMoney(<span class="number">100000f</span>);</span><br><span class="line">    as.saveAccount(account);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="基于注解的配置"><a href="#基于注解的配置" class="headerlink" title="基于注解的配置"></a>基于注解的配置</h2><ol>
+<li>拷贝相关 jar 包到 libs 目录 注意：在基于注解的配置中，我们还要多拷贝一个 aop 的 jar 包。</li>
+</ol>
+<p><img src="/images/Spring/jar_aop.png" alt="img"></p>
+<ol start="2">
+<li>导入约束文件<br>相较于上面的 xml 文件，多导入一个 context 名称空间下的约束。<br>由于我们使用了注解配置，此时不能继承 JdbcDaoSupport，需要自己配置一个 JdbcTemplate</li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding= &quot;UTF-8?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span> </span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:context</span>=<span class="string">&quot;http://www.springframework.org/schema/context&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://www.springframework.org/schema/beans</span></span></span><br><span class="line"><span class="string"><span class="tag">                           http://www.springframework.org/schema/beans/spring-beans.xsd</span></span></span><br><span class="line"><span class="string"><span class="tag">                           http://www.springframework.org/schema/context</span></span></span><br><span class="line"><span class="string"><span class="tag">                           http://www.springframework.org/schema/context/spring-context.xsd&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--告知spring创建容器时要扫描的包--&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">&quot;com.itheima&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">context:component-scan</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--配置dbAssit--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;dbAssit&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.itheima.dbassit.DBAssit&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;dataSource&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;dataSource&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--配置数据源--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;dataSource&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.mchange.v2.c3p0.ComboPooledDataSource&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;driverClass&quot;</span> <span class="attr">value</span>=<span class="string">&quot;com.mysql.jdbc.Driver&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;jdbcUrl&quot;</span> <span class="attr">value</span>=<span class="string">&quot;jdbc:mysql:///spring_day02&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;user&quot;</span> <span class="attr">value</span>=<span class="string">&quot;root&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1234&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>使用注解配置管理的资源 </li>
+</ol>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component(&quot;accountService&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AccountServiceImpl</span> <span class="keyword">implements</span> <span class="title">IAccountService</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> IAccountDao accountDao;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Componet(&quot;accountDao&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AccountDaoImpl</span> <span class="keyword">implements</span> <span class="title">IAccountDao</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> DBAssit dbAssit;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://deepbreath373.github.io/2020/07/17/2020717-Spring%E6%B3%A8%E8%A7%A3%E8%AF%B4%E6%98%8E/">常用注解</a></p>
+<h4 id="注解配置优化"><a href="#注解配置优化" class="headerlink" title="注解配置优化"></a>注解配置优化</h4><p>我们发现，之所以我们现在离不开 xml 配置文件，是因为我们有一句很关键的配置： </p>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-20200717211040199.png" alt="img"></p>
+<p> 如果他要也能用注解配置，那么我们就离脱离 xml 文件又进了一步。 另外，数据源和 JdbcTemplate 的配置也需要靠注解来实现。 </p>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-20200717211047493.png" alt="img"></p>
+<h5 id="新注解说明"><a href="#新注解说明" class="headerlink" title="新注解说明"></a>新注解说明</h5><ul>
+<li>@Configuration 作用： 用于指定当前类是一个 spring 配置类，当创建容器时会从该类上加载注解。获取容器时需要使用AnnotationApplicationContext(有@Configuration 注解的类.class)。 属性： value:用于指定配置类的字节码</li>
+</ul>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-20200717211308419.png" alt="image-20200717211308419"></p>
+<ul>
+<li>@ComponentScan 作用： 用于指定 spring 在初始化容器时要扫描的包。作用和在 spring 的 xml 配置文件中的： &lt;context:component-scan base-package=”com.itheima”/&gt;是一样的。 属性： basePackages：用于指定要扫描的包。和该注解中的 value 属性作用一样。</li>
+</ul>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-20200717211401886.png" alt="image-20200717211401886"></p>
+<ul>
+<li>@Bean 作用： 该注解<strong>只能写在方法上</strong>，表明使用此方法创建一个对象，并且放入 spring 容器。 属性： name：给当前@Bean 注解方法创建的对象指定一个名称(即 bean 的 id）。</li>
+</ul>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-20200717211511598.png" alt="image-20200717211511598"></p>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-20200717211525512.png" alt="image-20200717211525512"></p>
+<p>但是，此时配置数据库的内容是写死的，所以还需要另一个注解</p>
+<ul>
+<li>@PropertySource作用： 用于加载.properties 文件中的配置。例如我们配置数据源时，可以把连接数据库的信息写到 properties 配置文件中，就可以使用此注解指定 properties 配置文件的位置。 属性： value[]：用于指定 properties 文件位置。如果是在类路径下，需要写上 classpath:</li>
+</ul>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-20200717212612202.png" alt="image-20200717212612202"></p>
+<ul>
+<li>@Import作用： 用于导入其他配置类，在引入其他配置类时，可以不用再写@Configuration 注解。当然，写上也没问题。 属性： value[]：用于指定其他配置类的字节码.</li>
+</ul>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-20200717212641902.png" alt="image-20200717212641902"></p>
+<ul>
+<li>获取 IOC 容器</li>
+</ul>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-20200717212731684.png" alt="image-20200717212731684"></p>
+<h2 id="配置方式选择比对"><a href="#配置方式选择比对" class="headerlink" title="配置方式选择比对"></a>配置方式选择比对</h2><p>注解的优势：<br>配置简单，维护方便（我们找到类，就相当于找到了对应的配置）。<br>XML 的优势：<br>修改时，不用改源码。不涉及重新编译和部署。</p>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-2.png" alt="img"></p>
+]]></content>
+      <categories>
+        <category>Spring</category>
+      </categories>
+  </entry>
 </search>
