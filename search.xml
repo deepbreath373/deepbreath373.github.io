@@ -2446,4 +2446,183 @@
         <category>Spring</category>
       </categories>
   </entry>
+  <entry>
+    <title>Spring中的JdbcTemplate</title>
+    <url>/2020/07/26/2020726-Spring%E4%B8%AD%E7%9A%84JdbcTemplate/</url>
+    <content><![CDATA[<p>利用 Spring 提供的 Jdbc 对数据库进行操作</p>
+<span id="more"></span>
+
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">JdbcTemplate</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">JdbcTemplate</span><span class="params">(DataSource dataSource)</span> </span>&#123;</span><br><span class="line">    setDataSource(dataSource);</span><br><span class="line">    afterPropertiesSet();</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">JdbcTemplate</span><span class="params">(DataSource dataSource, <span class="keyword">boolean</span> lazyInit)</span> </span>&#123;</span><br><span class="line">    setDataSource(dataSource);</span><br><span class="line">    setLazyInit(lazyInit);</span><br><span class="line">    afterPropertiesSet();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>出了默认构造函数之外，都需要提供 DataSource 。并且使用 set 方法，这样就可以使用依赖注入的方式，在配置文件中配置这些对象。</p>
+<h2 id="配置数据源"><a href="#配置数据源" class="headerlink" title="配置数据源"></a>配置数据源</h2><p>1.环境搭建</p>
+<p><img src="/images/Spring/jar_jdbc.png" alt="image-20200726092455095"></p>
+<p>2.导入约束</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://www.springframework.org/schema/beans</span></span></span><br><span class="line"><span class="string"><span class="tag">    http://www.springframework.org/schema/beans/spring-beans.xsd&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>3.1配置 C3P0 数据源<br>导入 <strong>c3p0-0.9.2.1.jar</strong> 到工程的 lib 目录，在 Spring 的配置文件中配置：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;dataSource&quot;</span> <span class="attr">class</span>= <span class="string">&quot;com.mchange.v2.c3p0.ComboPooledDataSource&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;driverClass&quot;</span> <span class="attr">value</span>=<span class="string">&quot;com.mysql.jdbc.Driver&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;jdbcUrl&quot;</span> <span class="attr">value</span>= <span class="string">&quot;jdbc:mysql:///spring_day02&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;user&quot;</span> <span class="attr">value</span>=<span class="string">&quot;root&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1234&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>3.2配置 DBCP 数据源<br>导入 <strong>commons-dbcp.jar</strong> <strong>commons-pool.jar</strong> 到工程的 lib 目录，在 Spring 的配置文件中配置：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;dataSource&quot;</span> <span class="attr">class</span>=<span class="string">&quot;org.apache.commons.dbcp.BasicDataSource&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;driverClassName&quot;</span> <span class="attr">value</span>=<span class="string">&quot;com.mysql.jdbc.Driver&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;url&quot;</span> <span class="attr">value</span>= <span class="string">&quot;jdbc:mysql:///spring_day02&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;username&quot;</span> <span class="attr">value</span>=<span class="string">&quot;root&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1234&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>3.3配置 spring 内置数据源</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;dataSource&quot;</span> <span class="attr">class</span>=<span class="string">&quot;org.springframework.jdbc.datasource.DriverManagerDataSource&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;driverClassName&quot;</span> <span class="attr">value</span>=<span class="string">&quot;com.mysql.jdbc.Driver&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;url&quot;</span> <span class="attr">value</span>= <span class="string">&quot;jdbc:mysql:///spring_day02&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;username&quot;</span> <span class="attr">value</span>=<span class="string">&quot;root&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1234&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>3.4使用配置文件方式</p>
+<p>定义properties文件</p>
+<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="meta">jdbc.driverClass</span>=<span class="string">com.mysql.jdbc.Driver</span></span><br><span class="line"><span class="meta">jdbc.url</span>=<span class="string">jdbc:mysql:///spring_day02</span></span><br><span class="line"><span class="meta">jdbc.username</span>=<span class="string">root</span></span><br><span class="line"><span class="meta">jdbc.password</span>=<span class="string">1234</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>一种导入方式 </p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">&quot;org.springframework.beans.factory.config.PropertyPlaceholderConfigurer&quot;</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;location&quot;</span> <span class="attr">value</span>=<span class="string">&quot;classpath:jdbc.properties&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>另一种导入方式</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">context:property-placeholder</span> <span class="attr">location</span>=<span class="string">&quot;classpath:jdbc.properties&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="CRUD"><a href="#CRUD" class="headerlink" title="CRUD"></a>CRUD</h2><p>1.创建数据库表</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> account(</span><br><span class="line">	id <span class="type">int</span> <span class="keyword">primary</span> key auto_increment,</span><br><span class="line">    name <span class="type">varchar</span>(<span class="number">40</span>),</span><br><span class="line">    money <span class="type">float</span></span><br><span class="line">)<span class="type">character</span> <span class="keyword">set</span> utf8 <span class="keyword">collate</span> utf8_general_ci;</span><br></pre></td></tr></table></figure>
+
+<p>2.配置JdbcTemplate</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://www.springframework.org/schema/beans</span></span></span><br><span class="line"><span class="string"><span class="tag">    http://www.springframework.org/schema/beans/spring-beans.xsd&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--配置一个数据库的操作模板：JdbcTemplate--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;jdbcTemplate&quot;</span> <span class="attr">class</span>=<span class="string">&quot;org.springframework.jdbc.core.JdbcTemplate&quot;</span>&gt;</span></span><br><span class="line">    	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;dataSource&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;dataSource&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;dataSource&quot;</span> <span class="attr">class</span>=<span class="string">&quot;org.springframework.jdbc.datasource.DriverManagerDataSource&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;driverClassName&quot;</span> <span class="attr">value</span>=<span class="string">&quot;com.mysql.jdbc.Driver&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;url&quot;</span> <span class="attr">value</span>= <span class="string">&quot;jdbc:mysql:///spring_day02&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;username&quot;</span> <span class="attr">value</span>=<span class="string">&quot;root&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1234&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>3.基本操作</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JdbcTemplateDemo2</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//1.获取Spring容器</span></span><br><span class="line">        ApplicationContext ac = <span class="keyword">new</span> ClassPathXmlApplicationContext(<span class="string">&quot;bean.xml&quot;</span>);</span><br><span class="line">        <span class="comment">//2.根据id获取bean对象</span></span><br><span class="line">        JdbcTemplate jt = (JdbcTemplate) ac.getBean(<span class="string">&quot;jdbcTemplate&quot;</span>);</span><br><span class="line">        <span class="comment">//3.执行操作</span></span><br><span class="line">        jt.execute(<span class="string">&quot;insert into account (name，money) values(&#x27;eee&#x27;,500)&quot;</span>);</span><br><span class="line">        <span class="comment">//保存</span></span><br><span class="line">        jt.update(<span class="string">&quot;insert into account (name, money) values(?, ?)&quot;</span>, <span class="string">&quot;fff&quot;</span>, <span class="number">5000</span>) ;</span><br><span class="line">        <span class="comment">//修改</span></span><br><span class="line">        jt.update(<span class="string">&quot;update account set money = money-? where id = ?&quot;</span>,<span class="number">300</span>,<span class="number">6</span>);</span><br><span class="line">        <span class="comment">//删除</span></span><br><span class="line">        jt.update(<span class="string">&quot;delete from account where id = ?&quot;</span>,<span class="number">6</span>);</span><br><span class="line">        <span class="comment">//查询所有</span></span><br><span class="line">        List&lt;Account&gt; accounts = jt.query (<span class="string">&quot;select * from account where money &gt; ? &quot;</span>，</span><br><span class="line">        <span class="keyword">new</span> AccountRowMapper()，<span class="number">500</span>) ;</span><br><span class="line">        <span class="keyword">for</span> (Account account : accounts) &#123;</span><br><span class="line">      		System.out.print1n(account);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AccountRowMapper</span> <span class="keyword">implements</span> <span class="title">RowMapper</span>&lt;<span class="title">Account</span>&gt; </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Account <span class="title">mapRow</span><span class="params">(ResultSet rs, <span class="keyword">int</span> rowNum)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">        Account account = <span class="keyword">new</span> Account();</span><br><span class="line">        account.setId(rs.getInt(<span class="string">&quot;id&quot;</span>));</span><br><span class="line">        account.setName(rs.getString(<span class="string">&quot;name&quot;</span>));</span><br><span class="line">        account.setMoney(rs.getFloat(<span class="string">&quot;money&quot;</span>));</span><br><span class="line">        <span class="keyword">return</span> account;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Spring 中的 RowMapper 可以将返回的每行数据分装成一个用户自定义的类。此处的 AccountRowMapper 则是将查询到的每行数据封装成一个个 Account 用户。</li>
+</ul>
+<h2 id="在Dao中使用"><a href="#在Dao中使用" class="headerlink" title="在Dao中使用"></a>在Dao中使用</h2><p>1.准备实体类</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Account</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> Float money;</span><br><span class="line">    getter/setter</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2.1在dao中定义JdbcTemplate</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AccountDaoImpl</span> <span class="keyword">implements</span> <span class="title">IAccountDao</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> JdbcTemplate jdbcTemplate;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setJdbcTemplate</span><span class="params">(JdbcTemplate jdbcTemplate)</span> </span>&#123;</span><br><span class="line">    	<span class="keyword">this</span>.jdbcTemplate = jdbcTemplate;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--配置一个dao--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;accountDao&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.itheima.dao.impl.AccountDaoImpl&quot;</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!--注入jdbcTemplate--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;jdbcTemplate&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;jdbcTemplate&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>但是这样会导致多个dao中有许多重复的定义方法。</p>
+<p>2.2让dao继承JdbcTemplate</p>
+<ul>
+<li><p>JdbcDaoSupport 是 spring 框架为我们提供的一个类，该类中定义了一个JdbcTemplate 对象，我们可以直接获取使用，但是要想创建该对象，需要为其提供一个数据源。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">JdbcDaoSupport</span> <span class="keyword">extends</span> <span class="title">DaoSupport</span> </span>&#123;</span><br><span class="line">    <span class="comment">//定义对象</span></span><br><span class="line">    <span class="keyword">private</span> JdbcTemplate jdbcTemplate;</span><br><span class="line">    <span class="comment">//set方法注入数据源，判断是否注入了，注入了就创建JdbcTemplate</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">setDataSource</span> <span class="params">(DataSource dataSource)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.jdbcTemplate == <span class="keyword">null</span> || dataSource != <span class="keyword">this</span>.jdbcTemplate.getDataSource())&#123;</span><br><span class="line">            <span class="comment">//如果提供了数据源就创建JdbcTemplate</span></span><br><span class="line">            <span class="keyword">this</span>.jdbcTemplate = createJdbcTemplate (dataSource) ;</span><br><span class="line">            initTemplateConfig();</span><br><span class="line">        &#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>让dao继承JdbcDaoSupport</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AccountDaoImpl2</span> <span class="keyword">extends</span> <span class="title">JdbcDaoSupport</span> <span class="keyword">implements</span> <span class="title">IAccountDao</span> </span>&#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<p>就可以使用父类的 getJdbcTemplate（） 方法获取</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--配置dao2--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;accountDao2&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.itheima.dao.impl.AccountDaoImol2&quot;</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!--注入dataSource--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;dataSource&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;dataSource&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>区别：<ul>
+<li>第一种在Dao类中定义 JdbcTemplate 的方式，适用于所有配方式( xml 和注解都可以)。</li>
+<li>第二种让Dao继承 JdbeDaoSupport 的方式，只能用于基于 XML 的方式，注解用不了。</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Spring</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Spring中的事务控制</title>
+    <url>/2020/07/27/2020727-Spring%E4%B8%AD%E7%9A%84%E4%BA%8B%E5%8A%A1%E6%8E%A7%E5%88%B6/</url>
+    <content><![CDATA[<p>当需要一组操作要么一起成功，要么一起失败的时候，就需要事务的处理</p>
+<span id="more"></span>
+
+<h1 id="相关接口"><a href="#相关接口" class="headerlink" title="相关接口"></a>相关接口</h1><h3 id="PlatformTransactionManager"><a href="#PlatformTransactionManager" class="headerlink" title="PlatformTransactionManager"></a><strong>PlatformTransactionManager</strong></h3><p>此<strong>接口</strong>是spring的事务管理器，提供了常用的操作事务的方法。</p>
+<ul>
+<li>获取事务状态信息——TransactionStatus getTransaction(TransactionDefinition definition)</li>
+<li>提交事务 ——void commit(TransactionStatus status)</li>
+<li>回滚事务 ——void rollback(TransactionStatus status)</li>
+</ul>
+<p>正常情况使用它的实现类进行开发</p>
+<ul>
+<li>org.springframework.jdbc.datasource.DataSourceTransactionManager<br>使用 Spring JDBC 或 iBatis 进行持久化数据时使用</li>
+<li>org.springframework.orm.hibernate5.HibernateTransactionManager<br>使用 Hibernate 版本进行持久化数据时使用</li>
+</ul>
+<h3 id="TransactionDefinition"><a href="#TransactionDefinition" class="headerlink" title="TransactionDefinition"></a>TransactionDefinition</h3><p>此<strong>接口</strong>是事务的定义信息对象</p>
+<ul>
+<li>获取事务对象名称：String getName()</li>
+<li>获取事务隔离级别：int getIsolationLevel()</li>
+<li>获取事务传播行为：int getPropagationBehavior()</li>
+<li>获取事务超时时间：int getTimeout()</li>
+<li>获取事务是否只读：boolean isReadOnly()<br>读写型事务：增加删除修改开启事务<br>只读型事务：执行查询时，也会开启事务</li>
+</ul>
+<h3 id="TransactionStatus"><a href="#TransactionStatus" class="headerlink" title="TransactionStatus"></a>TransactionStatus</h3><p>此<strong>接口</strong>提供事务具体的运行状态</p>
+<ul>
+<li>刷新事务：void flush()</li>
+<li>获取是否存在存储点：boolean hasSavepoint()</li>
+<li>获取事务是否完成：boolean isCompleted()</li>
+<li>获取事务是否为新事务：boolean isNewTransaction()</li>
+<li>获取事务是否回滚：boolean isRollbackOnly()</li>
+<li>设置事务回滚：void setRollbackOnly()</li>
+</ul>
+<h2 id="事务的隔离级别"><a href="#事务的隔离级别" class="headerlink" title="事务的隔离级别"></a>事务的隔离级别</h2><p>事务隔离级别反映事务提交并发访问时的处理态度</p>
+<ul>
+<li>默认级别，归属下列某一种：<br>ISOLATION_DEFAULT</li>
+<li>可以读取未提交数据：<br>ISOLATION_READ_UNCOMMITTED</li>
+<li>只能读取已提交数据，解决脏读问题(Oracle默认级别)：<br>ISOLATION_READ_COMMITTED</li>
+<li>是否读取其他事务提交修改后的数据，解决不可重复读问题(MySQL默认级别)：<br>ISOLATION_REPEATABLE_READ</li>
+<li>是否读取其他事务提交添加后的数据，解决幻读问题：<br>ISOLATION_SERIALIZABLE</li>
+</ul>
+<h2 id="事务的传播行为（propagation）"><a href="#事务的传播行为（propagation）" class="headerlink" title="事务的传播行为（propagation）"></a>事务的传播行为（propagation）</h2><ul>
+<li>REQUIRED:<br>如果当前没有事务，就新建一个事务，如果已经存在一个事务中，加入到这个事务中<br>一般的选择(默认值)</li>
+<li>SUPPORTS:<br>支持当前事务，如果当前没有事务，就以非事务方式执行(没有事务)</li>
+<li>MANDATORY:<br>使用当前的事务，如果当前没有事务，就抛出异常</li>
+<li>REQUERS_NEW:<br>新建事务，如果当前在事务中，把当前事务挂起</li>
+<li>NOT SUPPORTED:<br>以非事务方式执行操作，如果当前存在事务，就把当前事务挂起</li>
+<li>NEVER:<br>以非事务方式运行，如果当前存在事务，抛出异常</li>
+<li>NESTED:<br>如果当前存在事务，则在嵌套事务内执行；如果当前没有事务，则执行REQUIRED类似的操作</li>
+</ul>
+<h2 id="基于xml的声明式事务控制"><a href="#基于xml的声明式事务控制" class="headerlink" title="基于xml的声明式事务控制"></a>基于xml的声明式事务控制</h2><h3 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h3><p>1.导入 jar 包</p>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-20200727091425288.png" alt="image-20200727091425288"></p>
+<p>2.导入约束</p>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-20200727091536677.png" alt="image-20200727091536677"></p>
+<p>3.准备数据库表和实体类</p>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-20200727091554602.png" alt="image-20200727091554602"></p>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-20200727091604392.png" alt="image-20200727091604392"></p>
+<p>4.编写service接口和实现类</p>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-20200727091631128.png" alt="image-20200727091631128"></p>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-20200727091724821.png" alt="image-20200727091724821"></p>
+<p>5.编写dao接口和实现类</p>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-20200727091754328.png" alt="img"></p>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-20200727091815564.png" alt="image-20200727091815564"></p>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-20200727091844288.png" alt="image-20200727091844288"></p>
+<p>6.配置xml配置文件</p>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-20200727091916338.png" alt="image-20200727091916338"></p>
+<h3 id="配置步骤"><a href="#配置步骤" class="headerlink" title="配置步骤"></a>配置步骤</h3><p>1.配置事务管理器</p>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-20200727092022236.png" alt="image-20200727092022236"></p>
+<p>2.配置事务的通知引用事务管理器</p>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-20200727092059933.png" alt="image-20200727092059933"></p>
+<p>3.配置事务的属性</p>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-20200727092119231.png" alt="image-20200727092119231"></p>
+<p>4.配置 AOP 切入点表达式</p>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-20200727092140632.png" alt="image-20200727092140632"></p>
+<p>5.配置切入点表达式和事务通知的对应关系</p>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-20200727092155728.png" alt="image-20200727092155728"></p>
+<h2 id="基于注解的配置方式"><a href="#基于注解的配置方式" class="headerlink" title="基于注解的配置方式"></a>基于注解的配置方式</h2><h3 id="环境搭建-1"><a href="#环境搭建-1" class="headerlink" title="环境搭建"></a>环境搭建</h3><p>1.导入jar包</p>
+<p>2.导入约束和配置扫描包路径</p>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-20200727092457640.png" alt="image-20200727092457640"></p>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-20200727092508306.png" alt="image-20200727092508306"></p>
+<p>3.创建数据库表和实体类</p>
+<p>4.创建service接口和实现类并使用注解让spring管理</p>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-20200727092607149.png" alt="image-20200727092607149"></p>
+<p>5.创建 Dao 接口和实现类并使用注解让 spring 管理</p>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-20200727092655700.png" alt="image-20200727092655700"></p>
+<h3 id="配置步骤-1"><a href="#配置步骤-1" class="headerlink" title="配置步骤"></a>配置步骤</h3><p>1.配置事务管理器并注入数据源</p>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-20200727092735918.png" alt="image-20200727092735918"></p>
+<p>2.在业务层使用@Transactional 注解</p>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-20200727092807100.png" alt="image-20200727092807100"></p>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-20200727092823247.png" alt="image-20200727092823247"></p>
+<p>3.在配置文件中开启 spring 对注解事务的支持</p>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-20200727092959875.png" alt="image-20200727092959875"></p>
+<p>4.不使用 xml 的配置方式</p>
+<p><img src="http://www.deepsea-blog.top/wp-content/uploads/2020/07/image-20200727093021107.png" alt="img"></p>
+]]></content>
+      <categories>
+        <category>Spring</category>
+      </categories>
+  </entry>
 </search>
