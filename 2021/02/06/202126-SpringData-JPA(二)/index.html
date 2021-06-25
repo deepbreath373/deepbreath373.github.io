@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/koroneko.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/koroneko.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/koroneko.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;example.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.5.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:1,&quot;unescape&quot;:false,&quot;preload&quot;:false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="利用 SpringData JPA 可以简化对数据库的操作">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringData JPA(二)">
+<meta property="og:url" content="http://example.com/2021/02/06/202126-SpringData-JPA(%E4%BA%8C)/index.html">
+<meta property="og:site_name" content="深海学者">
+<meta property="og:description" content="利用 SpringData JPA 可以简化对数据库的操作">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/SpringDataJPA/daoProxy.png">
+<meta property="og:image" content="http://example.com/images/SpringDataJPA/invoke.png">
+<meta property="og:image" content="http://example.com/images/SpringDataJPA/method.png">
+<meta property="og:image" content="http://example.com/images/SpringDataJPA/process.png">
+<meta property="og:image" content="http://example.com/images/SpringDataJPA/jpaRep.png">
+<meta property="og:image" content="http://example.com/images/SpringDataJPA/JSE.png">
+<meta property="og:image" content="http://example.com/images/SpringDataJPA/method_rule.png">
+<meta property="og:image" content="http://example.com/images/SpringDataJPA/method_rule2.png">
+<meta property="article:published_time" content="2021-02-06T03:11:11.000Z">
+<meta property="article:modified_time" content="2021-06-25T09:02:28.289Z">
+<meta property="article:author" content="QTLin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/SpringDataJPA/daoProxy.png">
+
+
+<link rel="canonical" href="http://example.com/2021/02/06/202126-SpringData-JPA(%E4%BA%8C)/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;2021&#x2F;02&#x2F;06&#x2F;202126-SpringData-JPA(%E4%BA%8C)&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;02&#x2F;06&#x2F;202126-SpringData-JPA(二)&#x2F;&quot;,&quot;title&quot;:&quot;SpringData JPA(二)&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>SpringData JPA(二) | 深海学者</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">深海学者</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">More Knowledge!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SpringData-JPA%E7%9A%84%E6%A6%82%E8%BF%B0"><span class="nav-text">SpringData JPA的概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SpringData-JPA%E7%9A%84%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8"><span class="nav-text">SpringData JPA的快速入门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83"><span class="nav-text">搭建开发环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%8C%E6%88%90%E9%9C%80%E6%B1%82"><span class="nav-text">完成需求</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SpringData-JPA%E7%9A%84%E5%86%85%E9%83%A8%E5%8E%9F%E7%90%86%E5%89%96%E6%9E%90"><span class="nav-text">SpringData JPA的内部原理剖析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-Data-JPA-%E7%9A%84%E6%9F%A5%E8%AF%A2%E6%96%B9%E5%BC%8F"><span class="nav-text">Spring Data JPA 的查询方式</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">QTLin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/deepbreath373" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;deepbreath373" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:qitao_lin@163.com" title="E-Mail → mailto:qitao_lin@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/02/06/202126-SpringData-JPA(%E4%BA%8C)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="QTLin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="深海学者">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SpringData JPA(二)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-02-06 11:11:11" itemprop="dateCreated datePublished" datetime="2021-02-06T11:11:11+08:00">2021-02-06</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-06-25 17:02:28" itemprop="dateModified" datetime="2021-06-25T17:02:28+08:00">2021-06-25</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/SpringData-JPA/" itemprop="url" rel="index"><span itemprop="name">SpringData JPA</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>13k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>12 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>利用 SpringData JPA 可以简化对数据库的操作</p>
+<span id="more"></span>
+
+<h2 id="SpringData-JPA的概述"><a href="#SpringData-JPA的概述" class="headerlink" title="SpringData JPA的概述"></a>SpringData JPA的概述</h2><p>Spring Data JPA 是 Spring 基于 ORM 框架、JPA 规范的基础上封装的一套 JPA 应用框架，可使开 发者用极简的代码即可实现对数据库的访问和操作。使用了 SpringDataJpa，我们的 dao 层中只需要写接口，就自动具有了增删改查、分页查询等方法。</p>
+<h2 id="SpringData-JPA的快速入门"><a href="#SpringData-JPA的快速入门" class="headerlink" title="SpringData JPA的快速入门"></a>SpringData JPA的快速入门</h2><h3 id="搭建开发环境"><a href="#搭建开发环境" class="headerlink" title="搭建开发环境"></a>搭建开发环境</h3><p>1.引入 SDJPA 的坐标</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">properties</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">spring.version</span>&gt;</span>4.2.4.RELEASE<span class="tag">&lt;/<span class="name">spring.version</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">hibernate.version</span>&gt;</span>5.0.7.Final<span class="tag">&lt;/<span class="name">hibernate.version</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">slf4j.version</span>&gt;</span>1.6.6<span class="tag">&lt;/<span class="name">slf4j.version</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">log4j.version</span>&gt;</span>1.2.12<span class="tag">&lt;/<span class="name">log4j.version</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">c3p0.version</span>&gt;</span>0.9.1.2<span class="tag">&lt;/<span class="name">c3p0.version</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">mysql.version</span>&gt;</span>5.1.6<span class="tag">&lt;/<span class="name">mysql.version</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">properties</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span> </span><br><span class="line">    <span class="comment">&lt;!-- junit单元测试 --&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.9<span class="tag">&lt;/<span class="name">version</span>&gt;</span> <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span> </span><br><span class="line">    <span class="comment">&lt;!-- spring beg --&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.aspectj<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>aspectjweaver<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.6.8<span class="tag">&lt;/<span class="name">version</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-aop<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;spring.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-context<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;spring.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-context-support<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;spring.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-orm<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;spring.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-beans<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;spring.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;spring.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- spring end --&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">&lt;!-- hibernate beg --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.hibernate<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>hibernate-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;hibernate.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.hibernate<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>hibernate-entitymanager<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;hibernate.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.hibernate<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>hibernate-validator<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.2.1.Final<span class="tag">&lt;/<span class="name">version</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span> </span><br><span class="line">    <span class="comment">&lt;!-- hibernate end --&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">&lt;!-- c3p0 beg --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>c3p0<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>c3p0<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;c3p0.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span> </span><br><span class="line">    <span class="comment">&lt;!-- c3p0 end --&gt;</span> </span><br><span class="line">    </span><br><span class="line">    <span class="comment">&lt;!-- log end --&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>log4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>log4j<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;log4j.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.slf4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>slf4j-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;slf4j.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.slf4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>slf4j-log4j12<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;slf4j.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span> </span><br><span class="line">    <span class="comment">&lt;!-- log end --&gt;</span> </span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;mysql.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.data<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-data-jpa<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.9.0.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-test<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.2.4.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span> </span><br><span class="line">    </span><br><span class="line">    <span class="comment">&lt;!-- el beg 使用spring data jpa 必须引入 --&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>javax.el<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>javax.el-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.2.4<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.glassfish.web<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>javax.el<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.2.4<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- el end --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>2.整合SDJPA与Spring</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span> </span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span> </span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:aop</span>=<span class="string">&quot;http://www.springframework.org/schema/aop&quot;</span> </span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:context</span>=<span class="string">&quot;http://www.springframework.org/schema/context&quot;</span> </span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:jdbc</span>=<span class="string">&quot;http://www.springframework.org/schema/jdbc&quot;</span> </span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:tx</span>=<span class="string">&quot;http://www.springframework.org/schema/tx&quot;</span> </span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:jpa</span>=<span class="string">&quot;http://www.springframework.org/schema/data/jpa&quot;</span> </span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:task</span>=<span class="string">&quot;http://www.springframework.org/schema/task&quot;</span> </span></span><br><span class="line"><span class="tag">       <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot; </span></span></span><br><span class="line"><span class="string"><span class="tag">                           http://www.springframework.org/schema/beans </span></span></span><br><span class="line"><span class="string"><span class="tag">                           http://www.springframework.org/schema/beans/spring-beans.xsd </span></span></span><br><span class="line"><span class="string"><span class="tag">                           http://www.springframework.org/schema/aop </span></span></span><br><span class="line"><span class="string"><span class="tag">                           http://www.springframework.org/schema/aop/spring-aop.xsd </span></span></span><br><span class="line"><span class="string"><span class="tag">                           http://www.springframework.org/schema/context </span></span></span><br><span class="line"><span class="string"><span class="tag">                           http://www.springframework.org/schema/context/spring-context.xsd </span></span></span><br><span class="line"><span class="string"><span class="tag">                           http://www.springframework.org/schema/jdbc </span></span></span><br><span class="line"><span class="string"><span class="tag">                           http://www.springframework.org/schema/jdbc/spring-jdbc.xsd </span></span></span><br><span class="line"><span class="string"><span class="tag">                           http://www.springframework.org/schema/tx </span></span></span><br><span class="line"><span class="string"><span class="tag">                           http://www.springframework.org/schema/tx/spring-tx.xsd </span></span></span><br><span class="line"><span class="string"><span class="tag">                           http://www.springframework.org/schema/data/jpa </span></span></span><br><span class="line"><span class="string"><span class="tag">                           http://www.springframework.org/schema/data/jpa/spring-jpa.xsd&quot;</span>&gt;</span> </span><br><span class="line">    <span class="comment">&lt;!-- 1.dataSource 配置数据库连接池--&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;dataSource&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.mchange.v2.c3p0.ComboPooledDataSource&quot;</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;driverClass&quot;</span> <span class="attr">value</span>=<span class="string">&quot;com.mysql.jdbc.Driver&quot;</span> /&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;jdbcUrl&quot;</span> <span class="attr">value</span>=<span class="string">&quot;jdbc:mysql://localhost:3306/jpa&quot;</span> /&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;user&quot;</span> <span class="attr">value</span>=<span class="string">&quot;root&quot;</span> /&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">value</span>=<span class="string">&quot;root&quot;</span> /&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span> </span><br><span class="line">    <span class="comment">&lt;!-- 2.配置entityManagerFactory --&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;entityManagerFactory&quot;</span> <span class="attr">class</span>=<span class="string">&quot;org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean&quot;</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;dataSource&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;dataSource&quot;</span> /&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;packagesToScan&quot;</span> <span class="attr">value</span>=<span class="string">&quot;cn.itcast.entity&quot;</span> /&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;persistenceProvider&quot;</span>&gt;</span> </span><br><span class="line">            <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">&quot;org.hibernate.jpa.HibernatePersistenceProvider&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span> </span><br><span class="line">        <span class="comment">&lt;!--JPA的供应商适配器--&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;jpaVendorAdapter&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">&quot;org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter&quot;</span>&gt;</span> </span><br><span class="line">                <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;generateDdl&quot;</span> <span class="attr">value</span>=<span class="string">&quot;false&quot;</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;database&quot;</span> <span class="attr">value</span>=<span class="string">&quot;MYSQL&quot;</span> /&gt;</span> </span><br><span class="line">                <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;databasePlatform&quot;</span> <span class="attr">value</span>=<span class="string">&quot;org.hibernate.dialect.MySQLDialect&quot;</span> /&gt;</span> </span><br><span class="line">                <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;showSql&quot;</span> <span class="attr">value</span>=<span class="string">&quot;true&quot;</span> /&gt;</span> </span><br><span class="line">            <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;jpaDialect&quot;</span>&gt;</span> </span><br><span class="line">            <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">&quot;org.springframework.orm.jpa.vendor.HibernateJpaDialect&quot;</span> /&gt;</span> </span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span> </span><br><span class="line">    <span class="comment">&lt;!-- 3.事务管理器--&gt;</span> </span><br><span class="line">    <span class="comment">&lt;!-- JPA事务管理器 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;transactionManager&quot;</span> <span class="attr">class</span>=<span class="string">&quot;org.springframework.orm.jpa.JpaTransactionManager&quot;</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;entityManagerFactory&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;entityManagerFactory&quot;</span> /&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span> </span><br><span class="line">    <span class="comment">&lt;!-- 整合spring data jpa--&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">jpa:repositories</span> <span class="attr">base-package</span>=<span class="string">&quot;cn.itcast.dao&quot;</span> <span class="attr">transaction-manager-ref</span>=<span class="string">&quot;transactionManager&quot;</span> <span class="attr">entity-manager-factory-ref</span>=<span class="string">&quot;entityManagerFactory&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">jpa:repositories</span>&gt;</span> </span><br><span class="line">    <span class="comment">&lt;!-- 4.txAdvice--&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">tx:advice</span> <span class="attr">id</span>=<span class="string">&quot;txAdvice&quot;</span> <span class="attr">transaction-manager</span>=<span class="string">&quot;transactionManager&quot;</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">tx:attributes</span>&gt;</span> </span><br><span class="line">            <span class="tag">&lt;<span class="name">tx:method</span> <span class="attr">name</span>=<span class="string">&quot;save*&quot;</span> <span class="attr">propagation</span>=<span class="string">&quot;REQUIRED&quot;</span>/&gt;</span> </span><br><span class="line">            <span class="tag">&lt;<span class="name">tx:method</span> <span class="attr">name</span>=<span class="string">&quot;insert*&quot;</span> <span class="attr">propagation</span>=<span class="string">&quot;REQUIRED&quot;</span>/&gt;</span> </span><br><span class="line">            <span class="tag">&lt;<span class="name">tx:method</span> <span class="attr">name</span>=<span class="string">&quot;update*&quot;</span> <span class="attr">propagation</span>=<span class="string">&quot;REQUIRED&quot;</span>/&gt;</span> </span><br><span class="line">            <span class="tag">&lt;<span class="name">tx:method</span> <span class="attr">name</span>=<span class="string">&quot;delete*&quot;</span> <span class="attr">propagation</span>=<span class="string">&quot;REQUIRED&quot;</span>/&gt;</span> </span><br><span class="line">            <span class="tag">&lt;<span class="name">tx:method</span> <span class="attr">name</span>=<span class="string">&quot;get*&quot;</span> <span class="attr">read-only</span>=<span class="string">&quot;true&quot;</span>/&gt;</span> </span><br><span class="line">            <span class="tag">&lt;<span class="name">tx:method</span> <span class="attr">name</span>=<span class="string">&quot;find*&quot;</span> <span class="attr">read-only</span>=<span class="string">&quot;true&quot;</span>/&gt;</span> </span><br><span class="line">            <span class="tag">&lt;<span class="name">tx:method</span> <span class="attr">name</span>=<span class="string">&quot;*&quot;</span> <span class="attr">propagation</span>=<span class="string">&quot;REQUIRED&quot;</span>/&gt;</span> </span><br><span class="line">        <span class="tag">&lt;/<span class="name">tx:attributes</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">tx:advice</span>&gt;</span> </span><br><span class="line">    <span class="comment">&lt;!-- 5.aop--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:config</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:pointcut</span> <span class="attr">id</span>=<span class="string">&quot;pointcut&quot;</span> <span class="attr">expression</span>=<span class="string">&quot;execution(* cn.itcast.service.*.*(..))&quot;</span> /&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:advisor</span> <span class="attr">advice-ref</span>=<span class="string">&quot;txAdvice&quot;</span> <span class="attr">pointcut-ref</span>=<span class="string">&quot;pointcut&quot;</span> /&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></span><br><span class="line"> </span><br><span class="line">    <span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">&quot;cn.itcast&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">context:component-scan</span>&gt;</span> </span><br><span class="line">    <span class="comment">&lt;!--组装其它 配置文件--&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>3.使用JPA注解配置映射关系</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.itcast.entity; </span><br><span class="line"><span class="keyword">import</span> javax.persistence.Column; </span><br><span class="line"><span class="keyword">import</span> javax.persistence.Entity; </span><br><span class="line"><span class="keyword">import</span> javax.persistence.GeneratedValue; </span><br><span class="line"><span class="keyword">import</span> javax.persistence.GenerationType; </span><br><span class="line"><span class="keyword">import</span> javax.persistence.Id; </span><br><span class="line"><span class="keyword">import</span> javax.persistence.Table; </span><br><span class="line"><span class="comment">/**** </span></span><br><span class="line"><span class="comment">* 所有的注解都是使用JPA的规范提供的注解， * </span></span><br><span class="line"><span class="comment">* 所以在导入注解包的时候，一定要导入javax.persistence下的 */</span> </span><br><span class="line"><span class="meta">@Entity</span> </span><br><span class="line"><span class="comment">//声明实体类 </span></span><br><span class="line"><span class="meta">@Table(name=&quot;cst_customer&quot;)</span></span><br><span class="line"><span class="comment">//建立实体类和表的映射关系 </span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Customer</span> </span>&#123; </span><br><span class="line">    <span class="meta">@Id</span></span><br><span class="line">    <span class="comment">//声明当前私有属性为主键 </span></span><br><span class="line">    <span class="meta">@GeneratedValue(strategy=GenerationType.IDENTITY)</span> </span><br><span class="line">    <span class="comment">//配置主键的生成策略 </span></span><br><span class="line">    <span class="meta">@Column(name=&quot;cust_id&quot;)</span> </span><br><span class="line">    <span class="comment">//指定和表中cust_id字段的映射关系 </span></span><br><span class="line">    <span class="keyword">private</span> Long custId; </span><br><span class="line">    <span class="meta">@Column(name=&quot;cust_name&quot;)</span> </span><br><span class="line">    <span class="comment">//指定和表中cust_name字段的映射关系</span></span><br><span class="line">    <span class="keyword">private</span> String custName; </span><br><span class="line">    <span class="meta">@Column(name=&quot;cust_source&quot;)</span></span><br><span class="line">    <span class="comment">//指定和表中cust_source字段的映射关系 </span></span><br><span class="line">    <span class="keyword">private</span> String custSource; </span><br><span class="line">    <span class="meta">@Column(name=&quot;cust_industry&quot;)</span></span><br><span class="line">    <span class="comment">//指定和表中cust_industry字段的映射关系</span></span><br><span class="line">    <span class="keyword">private</span> String custIndustry;</span><br><span class="line">    <span class="meta">@Column(name=&quot;cust_level&quot;)</span></span><br><span class="line">    <span class="comment">//指定和表中cust_level字段的映射关系 </span></span><br><span class="line">    <span class="keyword">private</span> String custLevel; </span><br><span class="line">    <span class="meta">@Column(name=&quot;cust_address&quot;)</span></span><br><span class="line">    <span class="comment">//指定和表中cust_address字段的映射关系</span></span><br><span class="line">    <span class="keyword">private</span> String custAddress; </span><br><span class="line">    <span class="meta">@Column(name=&quot;cust_phone&quot;)</span></span><br><span class="line">    <span class="comment">//指定和表中cust_phone字段的映射关系</span></span><br><span class="line">    <span class="keyword">private</span> String custPhone;</span><br><span class="line">    getter/setter...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="完成需求"><a href="#完成需求" class="headerlink" title="完成需求"></a>完成需求</h3><p>1.编写Dao层的接口 SDJPA是spring提供的一款对于数据访问层的框架，使用springdataJPA，只需要按照框架的规范提供Dao接口，不需要实现类就可以完成数据库的增删改查等。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.itcast.dao; </span><br><span class="line"><span class="keyword">import</span> java.util.List; </span><br><span class="line"><span class="keyword">import</span> org.springframework.data.jpa.repository.JpaRepository; </span><br><span class="line"><span class="keyword">import</span> org.springframework.data.jpa.repository.JpaSpecificationExecutor; </span><br><span class="line"><span class="keyword">import</span> cn.itcast.entity.Customer; </span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* JpaRepository&lt;实体类类型，主键类型&gt;：用来完成基本CRUD操作 </span></span><br><span class="line"><span class="comment">* JpaSpecificationExecutor&lt;实体类类型&gt;：用于复杂查询（分页等查询操作） */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">CustomerDao</span> <span class="keyword">extends</span> <span class="title">JpaRepository</span>&lt;<span class="title">Customer</span>, <span class="title">Long</span>&gt;, <span class="title">JpaSpecificationExecutor</span>&lt;<span class="title">Customer</span>&gt; </span>&#123; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2.CRUD操作</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RunWith(SpringJUnit4ClassRunner.class)</span> </span><br><span class="line"><span class="meta">@ContextConfiguration(locations=&quot;classpath:applicationContext.xml&quot;)</span> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerDaoTest</span> </span>&#123; </span><br><span class="line">    <span class="meta">@Autowired</span> </span><br><span class="line">    <span class="keyword">private</span> CustomerDao customerDao; </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * 保存客户：调用save(obj)方法 </span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="meta">@Test</span> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testSave</span><span class="params">()</span> </span>&#123; </span><br><span class="line">        Customer c = <span class="keyword">new</span> Customer(); </span><br><span class="line">        c.setCustName(<span class="string">&quot;传智播客&quot;</span>); </span><br><span class="line">        customerDao.save(c);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * 修改客户：调用save(obj)方法 </span></span><br><span class="line"><span class="comment">    * 对于save方法的解释：如果执行此方法是对象中存在id属性，即为更新操作会先根据id查询，再更新 </span></span><br><span class="line"><span class="comment">    * 如果执行此方法中对象中不存在id属性，即为保存操作</span></span><br><span class="line"><span class="comment">    **/</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testUpdate</span><span class="params">()</span> </span>&#123; </span><br><span class="line">        <span class="comment">//根据id查询id为1的客户 </span></span><br><span class="line">        Customer customer = customerDao.findOne(<span class="number">1l</span>); </span><br><span class="line">        <span class="comment">//修改客户名称 </span></span><br><span class="line">        customer.setCustName(<span class="string">&quot;传智播客顺义校区&quot;</span>); </span><br><span class="line">        <span class="comment">//更新 </span></span><br><span class="line">        customerDao.save(customer); </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * 根据id删除：调用delete(id)方法 */</span> </span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testDelete</span><span class="params">()</span> </span>&#123; </span><br><span class="line">        customerDao.delete(<span class="number">1l</span>); </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * 根据id查询：调用findOne(id)方法 </span></span><br><span class="line"><span class="comment">    */</span> </span><br><span class="line">    <span class="meta">@Test</span> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testFindById</span><span class="params">()</span> </span>&#123; </span><br><span class="line">        Customer customer = customerDao.findOne(<span class="number">2l</span>); </span><br><span class="line">        System.out.println(customer);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="SpringData-JPA的内部原理剖析"><a href="#SpringData-JPA的内部原理剖析" class="headerlink" title="SpringData JPA的内部原理剖析"></a>SpringData JPA的内部原理剖析</h2><p>1.常用接口分析</p>
+<ul>
+<li>为什么不用实现Dao接口就能对数据库进行访问？<br>Dao接口继承了JpaRepository、JpaSpecificationExecutor，SDJPA对这两个接口的方法都进行了实现，所以我们可以使用这两个接口的所有方法。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">CustomerDao</span> <span class="keyword">extends</span> <span class="title">JpaRepository</span>&lt;<span class="title">Customer</span>, <span class="title">Long</span>&gt;, <span class="title">JpaSpecificationExecutor</span>&lt;<span class="title">Customer</span>&gt; </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2.实现过程</p>
+<ul>
+<li>代理子类的实现过程<br>自动注入的customerDao对象是由JdkDynamicAopProxy生成的代理对象。</li>
+</ul>
+<p><img src="/images/SpringDataJPA/daoProxy.png" alt="img"></p>
+<ul>
+<li>代理对象中方法调用的分析<br>当程序执行时，通过JdkDynamicAopProxy的invoke方法，对customerDao对象生成动态代理对象。通过动态代理对象SimpleJpaRepository，实现对数据库的访问。<br>在SimpleJpaRepository中，有各种已经编写好的方法。 </li>
+</ul>
+<p><img src="/images/SpringDataJPA/invoke.png" alt="img"></p>
+<p><img src="/images/SpringDataJPA/method.png" alt="img"></p>
+<p>Spring Data JPA 是对标准 JPA 操作进行了进一步封装，简化了 Dao 层代码的开发。</p>
+<p>3.SDJPA完整的调用过程分析 </p>
+<p><img src="/images/SpringDataJPA/process.png" alt="img"></p>
+<h2 id="Spring-Data-JPA-的查询方式"><a href="#Spring-Data-JPA-的查询方式" class="headerlink" title="Spring Data JPA 的查询方式"></a>Spring Data JPA 的查询方式</h2><p>1.使用SDJPA中接口定义的方法进行查询</p>
+<ul>
+<li>继承JpaRepository </li>
+</ul>
+<p><img src="/images/SpringDataJPA/jpaRep.png" alt="img"></p>
+<ul>
+<li>继承JpaSpecificationExecutor </li>
+</ul>
+<p><img src="/images/SpringDataJPA/JSE.png" alt="img"></p>
+<p>2.使用JPQL的方式查询 使用@Query注解，结合JPQL的语句方式完成查询 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">CustomerDao</span> <span class="keyword">extends</span> <span class="title">JpaRepository</span>&lt;<span class="title">Customer</span>, <span class="title">Long</span>&gt;,<span class="title">JpaSpecificationExecutor</span>&lt;<span class="title">Customer</span>&gt; </span>&#123; </span><br><span class="line">    <span class="comment">//@Query 使用jpql的方式查询。 </span></span><br><span class="line">    <span class="meta">@Query(value=&quot;from Customer&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Customer&gt; <span class="title">findAllCustomer</span><span class="params">()</span></span>; </span><br><span class="line">    <span class="comment">//@Query 使用jpql的方式查询。?1代表参数的占位符，其中1对应方法中的参数索引 </span></span><br><span class="line">    <span class="meta">@Query(value=&quot;from Customer where custName = ?1&quot;)</span> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> Customer <span class="title">findCustomer</span><span class="params">(String custName)</span></span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此外，也可以通过使用 @Query 来执行一个更新操作，为此，我们需要在使用 @Query 的同时， 用 @Modifying 来将该操作标识为修改查询，这样框架最终会生成一个更新的操作，而非查询</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Query(value=&quot;update Customer set custName = ?1 where custId = ?2&quot;)</span> </span><br><span class="line"><span class="meta">@Modifying</span> </span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">updateCustomer</span><span class="params">(String custName,Long custId)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>3.使用SQL语句查询 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* nativeQuery : 使用本地sql的方式查询 </span></span><br><span class="line"><span class="comment">*/</span> </span><br><span class="line"><span class="meta">@Query(value=&quot;select * from cst_customer&quot;,nativeQuery=true)</span> </span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">findSql</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>4.方法命名规则查询 根据方法的名字，创建对应的查询。SDJPA在程序执行时，会解析方法名称，自动生成查询语句进行查询。</p>
+<p><img src="/images/SpringDataJPA/method_rule.png" alt="img"></p>
+<p><img src="/images/SpringDataJPA/method_rule2.png" alt="img"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/02/05/202125-SpringData-JPA(%E4%B8%80)/" rel="prev" title="SpringData JPA(一)">
+                  <i class="fa fa-chevron-left"></i> SpringData JPA(一)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/06/04/202164-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" rel="next" title="设计模式——单例模式">
+                  设计模式——单例模式 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">QTLin</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">222k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:22</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
