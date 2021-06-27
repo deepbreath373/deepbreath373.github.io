@@ -4473,4 +4473,37 @@
         <category>JavaWeb</category>
       </categories>
   </entry>
+  <entry>
+    <title>final/finally/finalize</title>
+    <url>/2021/06/27/2021627-finalfinallyfinalize/</url>
+    <content><![CDATA[<p>final/finally/finalize 之间的区别 </p>
+<span id="more"></span>
+
+<ol>
+<li>final 用于声明属性、方法和类：<ul>
+<li>final 属性不可变，指的是<strong>引用不可变</strong>，而不关心指向对象内容的变化，被final 修饰的变量必须初始化 </li>
+<li>final 方法不可被子类重写，可以实现 inline (内联)的机制 </li>
+<li>final 类不可以被继承(如 String 、StringBuffer )，所有的方法不可以被重写，但其内的非 final 变量可以被修改 </li>
+</ul>
+</li>
+<li>finally 作为异常处理的一部分，只能用在 try/catch 语句中，并且附带一个语句块，表示这段语句最终一定被执行(特殊情况不会被执行，如 try 语句前出现异常或 try 语句块中出现的异常没有被捕获)，经常被用在需要释放资源的情况下或是释放锁 </li>
+<li>finalize 是 Object 类的一个方法，在垃圾回收器执行时会调用被回收对象的 finalize() 方法，可以覆盖此方法来实现对其他资源的回收(一旦垃圾回收器准备好释放对象占用的空间，将首先调用该方法，并且在下一次垃圾回收动作发生时，才会真正回收对象占用的内存)，从功能上来说，finalize() 方法与 c++ 中的析构函数比较相似，但是 Java 采用的是基于垃圾回收器的自动内存管理机制，所以 finalize() 方法在本质上不同于 C++ 中的析构函数。 </li>
+</ol>
+<p><strong>关于finalize的补充！</strong></p>
+<p>判定一个对象 objA 是否可回收，至少要经历两次标记过程：</p>
+<ul>
+<li>如果对象 objA 到 GC Roots 没有引用链，则进行第一次标记。</li>
+<li>进行筛选，判断此对象是否有必要执行 finalize() 方法<ul>
+<li>如果对象 objA 没有重写 finalize() 方法，或者 finalize() 方法已经被虚拟机调用过，则虚拟机视为“没有必要执行”，objA 被判定为不可触及的。 </li>
+<li>如果对象 objA 重写了 finalize() 方法，且还未执行过，<strong>那么 objA 会被插入到 F-Queue 队列中，由一个虚拟机自动创建的、低优先级的 Finalizer 线程触发其 finalize() 方法执行。</strong> </li>
+<li><strong>finalize() 方法是对象逃脱死亡的最后机会</strong>，稍后 GC 会对 F-Queue 队列中的对象进行第二次标记。<strong>如果 objA 在 finalize() 方法中与引用链上的任何一个对象建立了联系</strong>，那么在第二次标记时，objA 会被移出“即将回收”集合。之后，对象会再次出现没有引用存在的情况。在这个情况下，finalize 方法不会被再次调用，对象会直接变成不可触及的状态，也就是说，<strong>一个对象的 finalize 方法只会被调用一次</strong>。 </li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Java</category>
+        <category>知识整理</category>
+      </categories>
+  </entry>
 </search>
