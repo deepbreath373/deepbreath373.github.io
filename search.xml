@@ -159,7 +159,7 @@
 <h2 id="DCL"><a href="#DCL" class="headerlink" title="DCL"></a>DCL</h2><h3 id="操作用户"><a href="#操作用户" class="headerlink" title="操作用户"></a>操作用户</h3><ul>
 <li><p><strong>创建</strong><br><code>CREATE USER &#39;用户名&#39;@&#39;主机名&#39; IDENTIFIED BY &#39;密码&#39;;</code></p>
 </li>
-<li><p><strong>授权</strong><br><code>GRANT 权限 1, 权限 2... ON 数据库名.表名 TO &#39;用户名&#39;@&#39;主机名&#39;;</code><br><img src="/images/MySQL-Grant.png" alt="MySQL-Grant"></p>
+<li><p><strong>授权</strong><br><code>GRANT 权限 1, 权限 2... ON 数据库名.表名 TO &#39;用户名&#39;@&#39;主机名&#39;;</code><br><img src="/images/MySQL/MySQL-Grant.png" alt="MySQL-Grant"></p>
 </li>
 <li><p><strong>撤销授权</strong><br><code>REVOKE 权限 1, 权限 2... ON 数据库.表名 revoke all on test.* from &#39;user1&#39;@&#39;localhost&#39;; </code><br><code>&#39;用户名&#39;@&#39;主机名&#39;;</code></p>
 </li>
@@ -253,11 +253,11 @@
 <li>语法：<ol>
 <li>html文档后缀名 .html 或者 .htm</li>
 <li>标签分为<ol>
-<li><strong>围堵</strong>标签：有开始标签和结束标签。如 <html> </html></li>
+<li><strong>围堵</strong>标签：有开始标签和结束标签。如 &lt;html&gt; &lt;/html&gt;</li>
 <li><strong>自闭和</strong>标签：开始标签和结束标签在一起。如</li>
 </ol>
 </li>
-<li>标签可以嵌套： 需要正确嵌套，不能你中有我，我中有你<br>错误：<b></b> 正确：<b></b></li>
+<li>标签可以嵌套： 需要正确嵌套，不能你中有我，我中有你<br>错误：&lt;b&gt;&lt;/b&gt; 正确：&lt;b&gt;&lt;/b&gt;</li>
 <li>在开始标签中可以定义属性。<br>属性是由键值对构成，值需要用引号(单双都可)引起</li>
 <li>html的标签不区分大小写，但是建议使用小写。</li>
 </ol>
@@ -280,27 +280,27 @@
 <li><p>文本标签</p>
 <p>：和文本有关的标签</p>
 <ul>
-<li>注释：<!-- 注释内容 --></li>
-<li><h1> ~ <h6>：标题标签 * h1~h6:字体大小逐渐递减</li>
-<li><p>：段落标签</li>
-<li><br>：换行标签</li>
-<li><hr>：展示一条水平线
- \* 属性：
-            \* color：颜色 
-            \* width：宽度 
-            \* size：高度 
-            \* align：对其方式
-            \* center：居中 
-            \* left：左对齐 
-            \* right：右对齐​</li>
-<li><b>：字体加粗</li>
-<li><i>：字体斜体</li>
-<li><font>:字体标签</li>
-<li><center>:文本居中 
-\* 属性： 
-    \* color：颜色 
-    \* size：大小 
-    \* face：字体​</li>
+<li>注释：&lt;!– 注释内容 –&gt;</li>
+<li>&lt;h1&gt; ~ &lt;h6&gt;：标题标签  h1~h6:字体大小逐渐递减</li>
+<li>&lt;p&gt;：段落标签</li>
+<li>&lt;br&gt;：换行标签</li>
+<li>&lt;hr&gt;：展示一条水平线<br> * 属性：<pre><code>        \* color：颜色 
+        \* width：宽度 
+        \* size：高度 
+        \* align：对其方式
+        \* center：居中 
+        \* left：左对齐 
+        \* right：右对齐​
+</code></pre>
+</li>
+<li>&lt;b&gt;：字体加粗</li>
+<li>&lt;i&gt;：字体斜体</li>
+<li>&lt;font&gt;:字体标签</li>
+<li>&lt;center&gt;:文本居中<br>* 属性： <pre><code>\* color：颜色 
+\* size：大小 
+\* face：字体​
+</code></pre>
+</li>
 <li>属性定义：<ul>
 <li>color：<ol>
 <li>英文单词：red,green,blue</li>
@@ -324,23 +324,24 @@
 <li>src：指定图片的位置</li>
 </ul>
 </li>
-<li>代码： <!--展示一张图片 img--> <!-- 相对路径 
-       \* 以.开头的路径 ：
-             \* ./：代表当前目录
-             \* ../:代表上一级目录 --></li>
+<li>代码： &lt;!–展示一张图片 img–&gt;<br>&lt;!– 相对路径 <pre><code>  \* 以.开头的路径 ：
+  \* ./：代表当前目录
+  \* ../:代表上一级目录 --&gt;
+</code></pre>
+</li>
 </ul>
 </li>
 </ul>
 </li>
 <li><p>列表标签：</p>
 <ul>
-<li>有序列表：<ol><li>内容<li></ol></li>
-<li>无序列表：<ul><li>内容<li></ul></li>
+<li>有序列表：&lt;ol&gt;&lt;li&gt;内容&lt;li&gt;&lt;/ol&gt;</li>
+<li>无序列表：&lt;ul&gt;&lt;li&gt;内容&lt;li&gt;&lt;/ul&gt;</li>
 </ul>
 </li>
 <li><p>链接标签：</p>
 <ul>
-<li><a>:定义一个超链接</li>
+<li>&lt;a&gt;:定义一个超链接</li>
 </ul>
 </li>
 <li><p>div和span：</p>
@@ -352,8 +353,8 @@
 <li><p>语义化标签：</p>
 <p> html5中为了提高程序的可读性，提供了一些标签。</p>
 <ol>
-<li>：<header>页眉</li>
-<li>：<footer>页脚</li>
+<li>：&lt;header&gt;页眉</li>
+<li>：&lt;footer&gt;页脚</li>
 </ol>
 </li>
 <li><p>表格标签：</p>
@@ -388,10 +389,14 @@
 </li>
 <li><p>th：定义表头单元格</p>
 </li>
-<li><caption>：表格标题</li>
-<li><thead>：表示表格的头部分</li>
-<li><tbody>：表示表格的体部分</li>
-<li><tfoot>：表示表格的脚部分</li>
+<li><p>&lt;caption&gt;：表格标题</p>
+</li>
+<li><p>&lt;thead&gt;：表示表格的头部分</p>
+</li>
+<li><p>&lt;tbody&gt;：表示表格的体部分</p>
+</li>
+<li><p>&lt;tfoot&gt;：表示表格的脚部分</p>
+</li>
 </ul>
 </li>
 <li><p><strong>表单标签</strong></p>
@@ -617,18 +622,18 @@
 <li><p>与html结合方式</p>
 <ol>
 <li>内部JS：<ul>
-<li>定义<script>，标签体内容就是js代码</li>
+<li>定义&lt;script&gt;，标签体内容就是js代码</li>
 </ul>
 </li>
 <li>外部JS：<ul>
-<li>定义<script>，通过src属性引入外部的js文件</li>
+<li>定义&lt;script&gt;，通过src属性引入外部的js文件</li>
 </ul>
 </li>
 </ol>
 <ul>
 <li>注意：<ol>
-<li><script>可以定义在html页面的任何地方。但是定义的位置会影响执行顺序。</li>
-<li><script>可以定义多个。</li>
+<li>&lt;script&gt;可以定义在html页面的任何地方。但是定义的位置会影响执行顺序。</li>
+<li>&lt;script&gt;可以定义多个。</li>
 </ol>
 </li>
 </ul>
@@ -1653,7 +1658,7 @@
 <p>在 Java 中，JVM 可以理解的代码就叫做<code>字节码</code>（即扩展名为 <code>.class</code> 的文件），它不面向任何特定的处理器，只面向虚拟机。Java 语言通过字节码的方式，在一定程度上解决了传统解释型语言执行效率低的问题，同时又保留了解释型语言可移植的特点。所以 Java 程序运行时比较高效，而且，由于字节码并不针对一种特定的机器，因此，Java 程序无须重新编译便可在多种不同操作系统的计算机上运行。</p>
 </blockquote>
 <p><strong>Java 程序从源代码到运行一般有下面 3 步：</strong></p>
-<p><img src="/images/Java%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E8%BF%87%E7%A8%8B.png" alt="Java程序运行过程"></p>
+<p><img src="/images/Java/Java%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E8%BF%87%E7%A8%8B.png" alt="Java程序运行过程"></p>
 <p>我们需要格外注意的是 .class-&gt;机器码 这一步。在这一步 JVM 类加载器首先加载字节码文件，然后通过解释器逐行解释执行，这种方式的执行速度会相对比较慢。而且，有些方法和代码块是经常需要被调用的(也就是所谓的热点代码)，所以后面引进了 JIT 编译器，而 JIT 属于运行时编译。当 JIT 编译器完成第一次编译后，其会将字节码对应的机器码保存下来，下次可以直接使用。而我们知道，机器码的运行效率肯定是高于 Java 解释器的。这也解释了我们为什么经常会说 Java 是编译与解释共存的语言。</p>
 <blockquote>
 <p>HotSpot 采用了惰性评估(Lazy Evaluation)的做法，根据二八定律，消耗大部分系统资源的只有那一小部分的代码（热点代码），而这也就是 JIT 所需要编译的部分。JVM 会根据代码每次被执行的情况收集信息并相应地做出一些优化，因此执行的次数越多，它的速度就越快。JDK 9 引入了一种新的编译模式 AOT(Ahead of Time Compilation)，它是直接将字节码编译成机器码，这样就避免了 JIT 预热等各方面的开销。JDK 支持分层编译和 AOT 协作使用。但是 ，AOT 编译器的编译质量是肯定比不上 JIT 编译器的。</p>
@@ -1694,7 +1699,7 @@
 <li>占内存大小 字符常量只占 2 个字节; 字符串常量占若干个字节 (<strong>注意： char 在 Java 中占两个字节</strong>)</li>
 </ol>
 <blockquote>
-<p>java 编程思想第四版：2.2.2 节 <img src="/images/Java%E5%90%84%E7%B1%BB%E5%9E%8B%E5%A4%A7%E5%B0%8F.png" alt="img"></p>
+<p>java 编程思想第四版：2.2.2 节 <img src="/images/Java/Java%E5%90%84%E7%B1%BB%E5%9E%8B%E5%A4%A7%E5%B0%8F.png" alt="img"></p>
 </blockquote>
 <h2 id="9-构造器-Constructor-是否可被-override"><a href="#9-构造器-Constructor-是否可被-override" class="headerlink" title="9. 构造器 Constructor 是否可被 override?"></a>9. 构造器 Constructor 是否可被 override?</h2><p>Constructor 不能被 override（重写）,但是可以 overload（重载）,所以你可以看到一个类中有多个构造函数的情况。</p>
 <h2 id="10-重载和重写的区别"><a href="#10-重载和重写的区别" class="headerlink" title="10. 重载和重写的区别"></a>10. 重载和重写的区别</h2><blockquote>
@@ -1703,7 +1708,7 @@
 </blockquote>
 <h4 id="重载"><a href="#重载" class="headerlink" title="重载"></a>重载</h4><p>发生在同一个类中，方法名必须相同，参数类型不同、个数不同、顺序不同，方法返回值和访问修饰符可以不同。</p>
 <p>下面是《Java 核心技术》对重载这个概念的介绍：</p>
-<p><img src="/images/java%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF-%E9%87%8D%E8%BD%BD.jpg" alt="img"></p>
+<p><img src="/images/Java/java%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF-%E9%87%8D%E8%BD%BD.jpg" alt="img"></p>
 <p><strong>综上：重载就是同一个类中多个同名方法根据不同的传参来执行不同的逻辑处理。</strong></p>
 <h4 id="重写"><a href="#重写" class="headerlink" title="重写"></a>重写</h4><p>重写发生在运行期，是子类对父类的允许访问的方法的实现过程进行重新编写。</p>
 <ol>
@@ -1860,15 +1865,15 @@
 <p><strong>程序</strong>是含有指令和数据的文件，被存储在磁盘或其他的数据存储设备中，也就是说程序是静态的代码。</p>
 <p><strong>进程</strong>是程序的一次执行过程，是系统运行程序的基本单位，因此进程是动态的。系统运行一个程序即是一个进程从创建，运行到消亡的过程。简单来说，一个进程就是一个执行中的程序，它在计算机中一个指令接着一个指令地执行着，同时，每个进程还占有某些系统资源如 CPU 时间，内存空间，文件，输入输出设备的使用权等等。换句话说，当程序在执行时，将会被操作系统载入内存中。 线程是进程划分成的更小的运行单位。线程和进程最大的不同在于基本上各进程是独立的，而各线程则不一定，因为同一进程中的线程极有可能会相互影响。从另一角度来说，进程属于操作系统的范畴，主要是同一段时间内，可以同时执行一个以上的程序，而线程则是在同一程序内几乎同时执行一个以上的程序段。</p>
 <h2 id="30-线程有哪些基本状态"><a href="#30-线程有哪些基本状态" class="headerlink" title="30. 线程有哪些基本状态?"></a>30. 线程有哪些基本状态?</h2><p>Java 线程在运行的生命周期中的指定时刻只可能处于下面 6 种不同状态的其中一个状态（图源《Java 并发编程艺术》4.1.4 节）。</p>
-<p><img src="/images/Java%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%8A%B6%E6%80%81.png" alt="Java线程的状态"></p>
+<p><img src="/images/Java/Java%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%8A%B6%E6%80%81.png" alt="Java线程的状态"></p>
 <p>线程在生命周期中并不是固定处于某一个状态而是随着代码的执行在不同状态之间切换。Java 线程状态变迁如下图所示（图源《Java 并发编程艺术》4.1.4 节）：</p>
-<p><img src="/images/Java%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E5%8F%98%E8%BF%81.png" alt="Java线程状态变迁"></p>
+<p><img src="/images/Java/Java%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E5%8F%98%E8%BF%81.png" alt="Java线程状态变迁"></p>
 <p>由上图可以看出：</p>
 <p>线程创建之后它将处于 <strong>NEW（新建）</strong> 状态，调用 <code>start()</code> 方法后开始运行，线程这时候处于 <strong>READY（可运行）</strong> 状态。可运行状态的线程获得了 cpu 时间片（timeslice）后就处于 <strong>RUNNING（运行）</strong> 状态。</p>
 <blockquote>
 <p>操作系统隐藏 Java 虚拟机（JVM）中的 READY 和 RUNNING 状态，它只能看到 RUNNABLE 状态（图源：<a href="https://howtodoinjava.com/">HowToDoInJava</a>：<a href="https://howtodoinjava.com/java/multi-threading/java-thread-life-cycle-and-thread-states/">Java Thread Life Cycle and Thread States</a>），所以 Java 系统一般将这两个状态统称为 <strong>RUNNABLE（运行中）</strong> 状态 。</p>
 </blockquote>
-<p><img src="/images/RUNNABLE-VS-RUNNING.png" alt="RUNNABLE-VS-RUNNING"></p>
+<p><img src="/images/Java/RUNNABLE-VS-RUNNING.png" alt="RUNNABLE-VS-RUNNING"></p>
 <p>当线程执行 <code>wait()</code>方法之后，线程进入 <strong>WAITING（等待）</strong>状态。进入等待状态的线程需要依靠其他线程的通知才能够返回到运行状态，而 <strong>TIME_WAITING(超时等待)</strong> 状态相当于在等待状态的基础上增加了超时限制，比如通过 <code>sleep（long millis）</code>方法或 <code>wait（long millis）</code>方法可以将 Java 线程置于 TIMED WAITING 状态。当超时时间到达后 Java 线程将会返回到 RUNNABLE 状态。当线程调用同步方法时，在没有获取到锁的情况下，线程将会进入到 <strong>BLOCKED（阻塞）</strong> 状态。线程在执行 Runnable 的<code>run()</code>方法之后将会进入到 <strong>TERMINATED（终止）</strong> 状态。</p>
 <h2 id="31-关于-final-关键字的一些总结"><a href="#31-关于-final-关键字的一些总结" class="headerlink" title="31 关于 final 关键字的一些总结"></a>31 关于 final 关键字的一些总结</h2><p>final 关键字主要用在三个地方：变量、方法、类。</p>
 <ol>
@@ -1876,9 +1881,9 @@
 <li>当用 final 修饰一个类时，表明这个类不能被继承。final 类中的所有成员方法都会被隐式地指定为 final 方法。</li>
 <li>使用 final 方法的原因有两个。第一个原因是把方法锁定，以防任何继承类修改它的含义；第二个原因是效率。在早期的 Java 实现版本中，会将 final 方法转为内嵌调用。但是如果方法过于庞大，可能看不到内嵌调用带来的任何性能提升（现在的 Java 版本已经不需要使用 final 方法进行这些优化了）。类中所有的 private 方法都隐式地指定为 final。</li>
 </ol>
-<h2 id="32-Java-中的异常处理"><a href="#32-Java-中的异常处理" class="headerlink" title="32 Java 中的异常处理"></a>32 Java 中的异常处理</h2><h3 id="Java-异常类层次结构图"><a href="#Java-异常类层次结构图" class="headerlink" title="Java 异常类层次结构图"></a>Java 异常类层次结构图</h3><p><img src="/images/java%E5%BC%82%E5%B8%B8%E7%B1%BB%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84%E5%9B%BE.jpg" alt="Java异常类层次结构图"></p>
+<h2 id="32-Java-中的异常处理"><a href="#32-Java-中的异常处理" class="headerlink" title="32 Java 中的异常处理"></a>32 Java 中的异常处理</h2><h3 id="Java-异常类层次结构图"><a href="#Java-异常类层次结构图" class="headerlink" title="Java 异常类层次结构图"></a>Java 异常类层次结构图</h3><p><img src="/images/Java/java%E5%BC%82%E5%B8%B8%E7%B1%BB%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84%E5%9B%BE.jpg" alt="Java异常类层次结构图"></p>
 <p>图片来自：<a href="https://simplesnippets.tech/exception-handling-in-java-part-1/">https://simplesnippets.tech/exception-handling-in-java-part-1/</a></p>
-<p><img src="/images/java%E5%BC%82%E5%B8%B8%E7%B1%BB%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84%E5%9B%BE%E4%BA%8C.png" alt="Java异常类层次结构图"></p>
+<p><img src="/images/Java/java%E5%BC%82%E5%B8%B8%E7%B1%BB%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84%E5%9B%BE%E4%BA%8C.png" alt="Java异常类层次结构图"></p>
 <p>图片来自：<a href="https://chercher.tech/java-programming/exceptions-java">https://chercher.tech/java-programming/exceptions-java</a></p>
 <p>在 Java 中，所有的异常都有一个共同的祖先 java.lang 包中的 <strong>Throwable 类</strong>。Throwable： 有两个重要的子类：<strong>Exception（异常）</strong> 和 <strong>Error（错误）</strong> ，二者都是 Java 异常处理的重要子类，各自都包含大量子类。</p>
 <p><strong>Error（错误）:是程序无法处理的错误</strong>，表示运行应用程序中较严重问题。大多数错误与代码编写者执行的操作无关，而表示代码运行时 JVM（Java 虚拟机）出现的问题。例如，Java 虚拟机运行错误（Virtual MachineError），当 JVM 不再有继续执行操作所需的内存资源时，将出现 OutOfMemoryError。这些异常发生时，Java 虚拟机（JVM）一般会选择线程终止。</p>
@@ -1927,9 +1932,9 @@
 <li>OutputStream/Writer: 所有输出流的基类，前者是字节输出流，后者是字符输出流。</li>
 </ul>
 <p>按操作方式分类结构图：</p>
-<p><img src="/images/IO-%E6%93%8D%E4%BD%9C%E6%96%B9%E5%BC%8F%E5%88%86%E7%B1%BB.jpg" alt="IO-操作方式分类"></p>
+<p><img src="/images/Java/IO-%E6%93%8D%E4%BD%9C%E6%96%B9%E5%BC%8F%E5%88%86%E7%B1%BB.jpg" alt="IO-操作方式分类"></p>
 <p>按操作对象分类结构图：</p>
-<p><img src="/images/IO-%E6%93%8D%E4%BD%9C%E5%AF%B9%E8%B1%A1%E5%88%86%E7%B1%BB.jpg" alt="IO-操作对象分类"></p>
+<p><img src="/images/Java/IO-%E6%93%8D%E4%BD%9C%E5%AF%B9%E8%B1%A1%E5%88%86%E7%B1%BB.jpg" alt="IO-操作对象分类"></p>
 <h3 id="既然有了字节流-为什么还要有字符流"><a href="#既然有了字节流-为什么还要有字符流" class="headerlink" title="既然有了字节流,为什么还要有字符流?"></a>既然有了字节流,为什么还要有字符流?</h3><p>问题本质想问：<strong>不管是文件读写还是网络发送接收，信息的最小存储单元都是字节，那为什么 I/O 流操作要分为字节流操作和字符流操作呢？</strong></p>
 <p>回答：字符流是由 Java 虚拟机将字节转换得到的，问题就出在这个过程还算是非常耗时，并且，如果我们不知道编码类型就很容易出现乱码问题。所以， I/O 流就干脆提供了一个直接操作字符的接口，方便我们平时对字符进行流操作。如果音频文件、图片等媒体文件用字节流比较好，如果涉及到字符的话使用字符流比较好。</p>
 <h3 id="BIO-NIO-AIO-有什么区别"><a href="#BIO-NIO-AIO-有什么区别" class="headerlink" title="BIO,NIO,AIO 有什么区别?"></a>BIO,NIO,AIO 有什么区别?</h3><ul>
@@ -1943,7 +1948,7 @@
 <li><strong>浅拷贝</strong>：对基本数据类型进行值传递，对引用数据类型进行引用传递般的拷贝，此为浅拷贝。</li>
 <li><strong>深拷贝</strong>：对基本数据类型进行值传递，对引用数据类型，创建一个新的对象，并复制其内容，此为深拷贝。</li>
 </ol>
-<p><img src="/images/java-deep-and-shallow-copy.jpg" alt="deep and shallow copy"></p>
+<p><img src="/images/Java/java-deep-and-shallow-copy.jpg" alt="deep and shallow copy"></p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li><a href="https://stackoverflow.com/questions/1906445/what-is-the-difference-between-jdk-and-jre">https://stackoverflow.com/questions/1906445/what-is-the-difference-between-jdk-and-jre</a></li>
 <li><a href="https://www.educba.com/oracle-vs-openjdk/">https://www.educba.com/oracle-vs-openjdk/</a></li>
@@ -1952,7 +1957,7 @@
 <h2 id="公众号"><a href="#公众号" class="headerlink" title="公众号"></a>公众号</h2><p>如果大家想要实时关注我更新的文章以及分享的干货的话，可以关注我的公众号。</p>
 <p><strong>《Java 面试突击》:</strong> 由本文档衍生的专为面试而生的《Java 面试突击》V2.0 PDF 版本<a href="#%E5%85%AC%E4%BC%97%E5%8F%B7">公众号</a>后台回复 <strong>“Java 面试突击”</strong> 即可免费领取！</p>
 <p><strong>Java 工程师必备学习资源:</strong> 一些 Java 工程师常用学习资源公众号后台回复关键字 <strong>“1”</strong> 即可免费无套路获取。</p>
-<p><img src="/images/JavaGuide.jpg" alt="我的公众号"></p>
+<p><img src="/images/Java/JavaGuide.jpg" alt="我的公众号"></p>
 <p><strong>全文转载自：</strong><a href="https://github.com/Snailclimb/JavaGuide/blob/master/docs/java/Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.md">https://github.com/Snailclimb/JavaGuide/blob/master/docs/java/Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.md</a></p>
 ]]></content>
       <categories>
@@ -4285,6 +4290,187 @@
 ]]></content>
       <categories>
         <category>问题整理</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>学成在线--项目总结</title>
+    <url>/2021/04/15/2021415-%E5%AD%A6%E6%88%90%E5%9C%A8%E7%BA%BF--%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<p>一个简单的基于 SpringBoot 的练手项目</p>
+<span id="more"></span>
+
+<p><a href="https://github.com/deepbreath373/xcEduService.git">Github源码</a></p>
+<h2 id="项目介绍"><a href="#项目介绍" class="headerlink" title="项目介绍"></a>项目介绍</h2><p>学成在线是一个在线教育平台，包括前台课程学习系统、后台课程管理系统以及CMS（内容管理系统）。该项目为前后端分离开发，前端基于vue.js技术，服务端基于SpringBoot、SpringCloud等Spring全家桶技术。</p>
+<p>前台课程学习系统：首页门户、课程搜索、课程详情、在线学习、用户登录</p>
+<p>后台课程管理系统：课程管理、文件上传</p>
+<p>CMS：页面管理</p>
+<h2 id="组织结构"><a href="#组织结构" class="headerlink" title="组织结构"></a>组织结构</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">xc</span><br><span class="line">├── xc-framework-common -- 通用代码</span><br><span class="line">├── xc-framework-model -- 各服务所需的模型类</span><br><span class="line">├── xc-framework-parent -- 父工程(负责依赖导入)</span><br><span class="line">├── xc-framework-utils -- 工具类</span><br><span class="line">├── xc-govern-center -- EurekaServer</span><br><span class="line">├── xc-govern-gateway -- zuul网关</span><br><span class="line">├── xc-service-api -- api接口定义</span><br><span class="line">├── xc-service-base-filesystem -- 文件系统</span><br><span class="line">├── xc-service-learning -- 在线播放视频</span><br><span class="line">├── xc-service-manage-cms -- cms页面管理(增删改查)</span><br><span class="line">├── xc-service-manage-cms-client -- cms页面发布</span><br><span class="line">├── xc-service-manage-course -- 课程管理</span><br><span class="line">├── xc-service-manage-media -- 媒资文件管理</span><br><span class="line">├── xc-service-manage-media-processor -- 媒资文件格式处理工程</span><br><span class="line">├── xc-service-manage-order -- 订单管理</span><br><span class="line">├── xc-service-search -- 基于elasticsearch的课程搜索</span><br><span class="line">├── xc-service-ucenter -- 用户中心</span><br><span class="line">└── xc-service-ucenter-auth -- 用户的登录认证</span><br></pre></td></tr></table></figure>
+
+<h2 id="技术选型"><a href="#技术选型" class="headerlink" title="技术选型"></a>技术选型</h2><h3 id="后端技术"><a href="#后端技术" class="headerlink" title="后端技术"></a>后端技术</h3><table>
+<thead>
+<tr>
+<th>技术</th>
+<th>说明</th>
+<th>官网</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SpringBoot</td>
+<td>容器+MVC框架</td>
+<td><a href="https://spring.io/projects/spring-boot">https://spring.io/projects/spring-boot</a></td>
+</tr>
+<tr>
+<td>SpringCloud</td>
+<td>微服务</td>
+<td><a href="https://spring.io/projects/spring-cloud">https://spring.io/projects/spring-cloud</a></td>
+</tr>
+<tr>
+<td>SpringSecurity Oauth2</td>
+<td>认证和授权框架</td>
+<td><a href="https://spring.io/projects/spring-security-oauth">https://spring.io/projects/spring-security-oauth</a></td>
+</tr>
+<tr>
+<td>SpringTask</td>
+<td>任务处理</td>
+<td></td>
+</tr>
+<tr>
+<td>Swagger-UI</td>
+<td>服务端测试工具</td>
+<td><a href="https://github.com/swagger-api/swagger-ui">https://github.com/swagger-api/swagger-ui</a></td>
+</tr>
+<tr>
+<td>MyBatis</td>
+<td>ORM框架(MySQL)</td>
+<td><a href="http://www.mybatis.org/mybatis-3/zh/index.html">http://www.mybatis.org/mybatis-3/zh/index.html</a></td>
+</tr>
+<tr>
+<td>PageHelper</td>
+<td>MyBatis物理分页插件</td>
+<td><a href="http://git.oschina.net/free/Mybatis_PageHelper">http://git.oschina.net/free/Mybatis_PageHelper</a></td>
+</tr>
+<tr>
+<td>ElasticSearch</td>
+<td>搜索引擎</td>
+<td><a href="https://github.com/elastic/elasticsearch">https://github.com/elastic/elasticsearch</a></td>
+</tr>
+<tr>
+<td>RabbitMq</td>
+<td>消息队列</td>
+<td><a href="https://www.rabbitmq.com/">https://www.rabbitmq.com/</a></td>
+</tr>
+<tr>
+<td>Redis</td>
+<td>分布式缓存</td>
+<td><a href="https://redis.io/">https://redis.io/</a></td>
+</tr>
+<tr>
+<td>MongoDb</td>
+<td>NoSql数据库</td>
+<td><a href="https://www.mongodb.com/">https://www.mongodb.com/</a></td>
+</tr>
+<tr>
+<td>MySQL</td>
+<td>关系型数据库</td>
+<td><a href="https://www.mysql.com/cn/">https://www.mysql.com/cn/</a></td>
+</tr>
+<tr>
+<td>JWT</td>
+<td>JWT登录支持</td>
+<td><a href="https://github.com/jwtk/jjwt">https://github.com/jwtk/jjwt</a></td>
+</tr>
+<tr>
+<td>LogStash</td>
+<td>数据采集</td>
+<td><a href="https://github.com/logstash/logstash-logback-encoder">https://github.com/logstash/logstash-logback-encoder</a></td>
+</tr>
+<tr>
+<td>Lombok</td>
+<td>简化对象封装工具</td>
+<td><a href="https://github.com/rzwitserloot/lombok">https://github.com/rzwitserloot/lombok</a></td>
+</tr>
+</tbody></table>
+<h3 id="前端技术"><a href="#前端技术" class="headerlink" title="前端技术"></a>前端技术</h3><table>
+<thead>
+<tr>
+<th>技术</th>
+<th>说明</th>
+<th>官网</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Vue</td>
+<td>前端框架</td>
+<td><a href="https://vuejs.org/">https://vuejs.org/</a></td>
+</tr>
+<tr>
+<td>Element-UI</td>
+<td>前端UI框架</td>
+<td><a href="https://element.eleme.io/">https://element.eleme.io</a></td>
+</tr>
+</tbody></table>
+<h2 id="开发工具"><a href="#开发工具" class="headerlink" title="开发工具"></a>开发工具</h2><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IDEA</td>
+<td>java开发IDE</td>
+</tr>
+<tr>
+<td>WebStorm</td>
+<td>前端开发IDE</td>
+</tr>
+<tr>
+<td>RedisDesktop</td>
+<td>redis客户端连接工具</td>
+</tr>
+<tr>
+<td>SQLyog</td>
+<td>MySQL连接工具</td>
+</tr>
+<tr>
+<td>Studio-3T</td>
+<td>MongoDB连接工具</td>
+</tr>
+<tr>
+<td>Postman</td>
+<td>API接口调试工具</td>
+</tr>
+<tr>
+<td>Typora</td>
+<td>Markdown编辑器</td>
+</tr>
+</tbody></table>
+<h2 id="架构图"><a href="#架构图" class="headerlink" title="架构图"></a>架构图</h2><p><img src="/images/Java/construct.png" alt="img"></p>
+]]></content>
+      <categories>
+        <category>Java</category>
+        <category>案例</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Access-Control-Allow-Origin跨域问题</title>
+    <url>/2021/04/02/202142-Access-Control-Allow-Origin%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<p>浏览器进行跨域调用时拒绝接收返回的资源</p>
+<span id="more"></span>
+
+<h2 id="浏览器的同源安全策略"><a href="#浏览器的同源安全策略" class="headerlink" title="浏览器的同源安全策略"></a>浏览器的同源安全策略</h2><p><strong>同源：</strong>协议 + 域名 + 端口（均相同）</p>
+<p><strong>同源策略：</strong>它是由 Netscape 提出的一个著名的安全策略。现在所有支持 JavaScript 的浏览器都会使用这个策略。同源策略是浏览器的行为，是为了保护本地数据不被 JavaScript 代码获取回来的数据污染，因此它将会拦截客户端发出 request 后响应回来的 response 。即使请求发送了，服务器也成功响应，但是却被浏览器拒绝接收。</p>
+<p>所以，怎么才算跨域呢？</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">请求协议 —— http,https 的不同</span><br><span class="line">域 —— domain 的不同</span><br><span class="line">端口 —— port 的不同</span><br></pre></td></tr></table></figure>
+
+<p>既然是浏览器的策略，则说明资源请求是可以正常返回的，只是浏览器拒绝接收这个资源。</p>
+<h2 id="浏览器报错"><a href="#浏览器报错" class="headerlink" title="浏览器报错"></a>浏览器报错</h2><p>当出现跨域调用时，浏览器便会发出如下信息：</p>
+<p><img src="/images/JavaWeb/access_error.png" alt="img"></p>
+<p>在信息末尾提到 “No ‘Access-Control-Allow-Origin’ header is present on the requested resource.”</p>
+<p>所以，我们要在 Nginx 中为该请求设置一个 header，让他被 Nginx 进行代理转发，实现跨域访问。</p>
+<h2 id="基于Nginx配置请求的CORS"><a href="#基于Nginx配置请求的CORS" class="headerlink" title="基于Nginx配置请求的CORS"></a>基于Nginx配置请求的CORS</h2><p><strong>CORS：</strong>全称是“跨域资源共享” (Cross-Origin Resource Sharing)<br>它具有以下三个参数：<br><strong>Access-Control-Allow-Origin：</strong>允许跨域访问的外域地址<br>允许的站点如果是多个，可以设置一个map来存放，或者，使用 * 来代表允许所有域名进行跨域访问。<br><strong>Access-Control-Allow-Credentials：</strong>允许客户端携带证书访问<br><strong>Access-Control-Allow-Methods：</strong>允许客户端跨域访问的方法(GET/POST/DELETE…)</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">map</span> $http_origin $origin_list&#123; </span><br><span class="line">	<span class="attribute">default</span> http://www.xxx.com;</span><br><span class="line">	&quot;~http://www.xxx.com&quot; http://www.xxx.com; </span><br><span class="line">	&quot;~http://xxx.xxx.com&quot; http://xxx.xxx.com; </span><br><span class="line">&#125;</span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">  <span class="attribute">location</span> /xxx &#123;</span><br><span class="line">    <span class="comment">#add_header Access-Control-Allow-Origin *;</span></span><br><span class="line">    <span class="attribute">add_header</span> Access-Control-Allow-Origin $origin_list;</span><br><span class="line">    <span class="attribute">add_header</span> Access-Control-Allow-Credentials <span class="literal">true</span>;</span><br><span class="line">    <span class="attribute">add_header</span> Access-Control-Allow-Methods GET;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>JavaWeb</category>
       </categories>
   </entry>
 </search>
