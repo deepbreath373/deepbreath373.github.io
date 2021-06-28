@@ -4207,7 +4207,7 @@
 <p><img src="/images/SpringBoot/res.png" alt="image-20210314103829462"></p>
 ]]></content>
       <categories>
-        <category>JavaWeb - SpringBoot</category>
+        <category>JavaWeb</category>
       </categories>
   </entry>
   <entry>
@@ -4499,6 +4499,144 @@
 </ul>
 </li>
 </ul>
+]]></content>
+      <categories>
+        <category>Java</category>
+        <category>知识整理</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Java中的引用类型</title>
+    <url>/2021/04/15/2021415-Java%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B/</url>
+    <content><![CDATA[<p>四种引用类型：强引用、软引用、弱引用、虚引用</p>
+<span id="more"></span>
+
+<p><strong>四种引用类型</strong></p>
+<p>JDK1.2 之前，一个对象只有“已被引用”和”未被引用”两种状态，这将无法描述某些特殊情况下的对象，比如，当内存充足时需要保留，而内存紧张时才需要被抛弃的一类对象。 </p>
+<p>JDK.1.2 之后，Java 对引用的概念进行了扩充，将引用分为了：强引用（Strong Reference）、软引用（Soft Reference）、弱引用（Weak Reference）、虚引用（Phantom Reference）4 种，这 4 种引用的强度依次减弱。</p>
+<p><strong>一，强引用</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Object obj = new Object(); //只要obj还指向Object对象，Object对象就不会被回收 </span><br><span class="line">obj = null; //手动置null</span><br></pre></td></tr></table></figure>
+
+<p><strong>只要强引用存在，垃圾回收器将永远不会回收被引用的对象</strong>，哪怕内存不足时，JVM 也会直接抛出 OutOfMemoryError，不会去回收。如果想中断强引用与对象之间的联系，可以显示的将强引用赋值为 null，这样一来，JVM 就可以适时的回收对象了</p>
+<p><strong>二，软引用</strong></p>
+<p>软引用是用来描述一些非必需但仍有用的对象。<strong>在内存足够的时候，软引用对象不会被回收，只有在内存不足时，系统则会回收软引用对象，如果回收了软引用对象之后仍然没有足够的内存，才会抛出内存溢出异常</strong>。这种特性常常被用来实现缓存技术，比如网页缓存，图片缓存等。在 JDK1.2 之后，用 java.lang.ref.SoftReference 类来表示软引用。</p>
+<p><strong>三，弱引用</strong></p>
+<p>弱引用的引用强度比软引用要更弱一些，<strong>无论内存是否足够，只要 JVM 开始进行垃圾回收，那些被弱引用关联的对象都会被回收</strong>。在 JDK1.2 之后，用 java.lang.ref.WeakReference 来表示弱引用。</p>
+<p><strong>四，虚引用</strong></p>
+<p>虚引用是最弱的一种引用关系，<strong>如果一个对象仅持有虚引用，那么它就和没有任何引用一样，它随时可能会被回收，</strong>在 JDK1.2 之后，用 PhantomReference 类来表示，通过查看这个类的源码，发现它只有一个构造函数和一个 get() 方法，而且它的 get() 方法仅仅是返回一个null，也就是说将永远无法通过虚引用来获取对象，虚引用必须要和 ReferenceQueue 引用队列一起使用。</p>
+]]></content>
+      <categories>
+        <category>Java</category>
+        <category>JVM</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>多态——“编译看左边，运行看右边”</title>
+    <url>/2021/04/16/2021416-%E5%A4%9A%E6%80%81%E2%80%94%E2%80%94%E2%80%9C%E7%BC%96%E8%AF%91%E7%9C%8B%E5%B7%A6%E8%BE%B9%EF%BC%8C%E8%BF%90%E8%A1%8C%E7%9C%8B%E5%8F%B3%E8%BE%B9%E2%80%9D/</url>
+    <content><![CDATA[<p>Fu f = new Zi() 的情况下创建的对象是怎样的</p>
+<span id="more"></span>
+
+<p>首先看一个例子：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Fu</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> num = <span class="number">5</span>;</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">method4</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;fu method_4&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">method3</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;fu method_3&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Zi</span> <span class="keyword">extends</span> <span class="title">Fu</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> num =<span class="number">8</span>;</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">method4</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;zi method_4&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">method3</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;zi method_3&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DuoTaiDemo4</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Fu f = <span class="keyword">new</span> Zi();</span><br><span class="line">        System.out.println(f.num);<span class="comment">//与父类一致</span></span><br><span class="line">        f.method4();<span class="comment">//与父类一致</span></span><br><span class="line">        f.method3();<span class="comment">//编译时与父类一致，运行时与子类一致</span></span><br><span class="line">        Zi z = <span class="keyword">new</span> Zi();</span><br><span class="line">        System.out.println(z.num);</span><br><span class="line">        z.method4();</span><br><span class="line">        z.method3();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行该程序，结果如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">5</span><br><span class="line">fu method_4</span><br><span class="line">zi method_3</span><br><span class="line">8</span><br><span class="line">zi method_4</span><br><span class="line">zi method_3</span><br></pre></td></tr></table></figure>
+
+<p>分析：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Fu f = <span class="keyword">new</span> Zi();</span><br></pre></td></tr></table></figure>
+
+<p>首先，Fu f 声明了一个变量名为 f 的 Fu 类，所以可以得出 f 就是一个 Fu 类。接着，new Zi(); 则是新建了一个 Zi 类对象，并且赋值给了 f 。最后可以得出，f 是一个被 Zi 类方法重写后的 Fu 类对象。</p>
+<p>在当前这个 Fu 类中，只有 Zi 类的方法重写改变了原本父类的方法，而父类中的成员变量 num 、静态方法 method4 均不改变。所以 <strong>f 所代表的仅仅是一个只有方法被重写之后的 Fu 类，原本的成员变量、静态方法都是父类的。</strong></p>
+<p>那么，为什么成员变量和静态方法不会改变？</p>
+<p>重写针对的是方法，所以 f 作为一个 Fu 类，所拥有的成员变量仍旧是 Fu 类的成员变量。</p>
+<p>而静态方法则是在 Fu 类加载时被加载，当创建 Zi 类对象时，父类的静态方法已经存在，不能被之后出现的 Zi 类对象所重写。因此，静态方法还是 Fu 类的静态方法。</p>
+<p>结论：</p>
+<ul>
+<li>成员变量：编译和运行都看父类</li>
+<li>非静态方法：编译看父类，运行看子类</li>
+<li>静态方法：编译和运行都看父类</li>
+</ul>
+<p>练习：</p>
+<p>假定 Base b = new Derived(); 调用执行 b.methodOne() 后，输出结果是什么？</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Base</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methodOne</span><span class="params">()</span> <span class="comment">//(2)</span></span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">      System.out.print(<span class="string">&quot;A&quot;</span>); <span class="comment">//(3)</span></span><br><span class="line">      methodTwo(); <span class="comment">//(4)没写super则是调用当前对象，即子类的方法</span></span><br><span class="line">   &#125;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methodTwo</span><span class="params">()</span> <span class="comment">//(5)</span></span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">      System.out.print(<span class="string">&quot;B&quot;</span>); <span class="comment">//(6)</span></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Derived</span> <span class="keyword">extends</span> <span class="title">Base</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methodOne</span><span class="params">()</span> <span class="comment">//(1)首先调用的是重写后的子类方法</span></span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">      <span class="keyword">super</span>.methodOne(); <span class="comment">//(2)由super调用的父类方法</span></span><br><span class="line">      System.out.print(<span class="string">&quot;C&quot;</span>);<span class="comment">//(8)</span></span><br><span class="line">   &#125;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methodTwo</span><span class="params">()</span> <span class="comment">//(4)</span></span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">      <span class="keyword">super</span>.methodTwo(); <span class="comment">//(5)由super调用的父类方法</span></span><br><span class="line">      System.out.print(<span class="string">&quot;D&quot;</span>); <span class="comment">//(7)</span></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>分析：</p>
+<p>1.多态中成员方法使用规则 编译看左边，运行看右边。<br>2.多态中，子类重写的方法，当super调用就是调用父类方法。如果没有写，因为当前对象是子类，所以默认调用子类的方法。</p>
+<p>结果：<br>ABDC</p>
+]]></content>
+      <categories>
+        <category>Java</category>
+        <category>知识整理</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>消息队列的作用</title>
+    <url>/2021/04/16/2021416-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E4%BD%9C%E7%94%A8/</url>
+    <content><![CDATA[<p>解耦、异步、削峰</p>
+<span id="more"></span>
+
+<h2 id="解耦"><a href="#解耦" class="headerlink" title="解耦"></a>解耦</h2><p>将消息写入消息队列，需要消息的模块通过订阅消息队列，自动从队列获取相关数据。</p>
+<p>这样，模块之间<strong>不存在直接调用</strong>，那么当新增模块或者修改模块时对其他模块的影响较小，同时增强了系统的<strong>可扩展性</strong>。</p>
+<p><img src="/images/msgQueue/msg_queue.png" alt="img"></p>
+<p>生产者发送消息到消息队列中去，消费者去消息队列中取出对应的消息进行消费。这样，生产者和消费者之间不存在直接调用，减少了系统之间的耦合性，提高系统的扩展性。</p>
+<h2 id="异步-amp-削峰"><a href="#异步-amp-削峰" class="headerlink" title="异步&amp;削峰"></a>异步&amp;削峰</h2><p>将消息写入消息队列后，非必要的业务逻辑以异步的方式运行，<strong>加快了系统的响应速度</strong>，<strong>增强用户的体验性</strong>。</p>
+<p>消费者按照数据库能处理的并发量，从消息队列中分次拉取消息，<strong>减轻数据库压力</strong>。</p>
+<p>当我们不使用消息队列的时候，所有的用户请求会直接调用服务器，然后通过数据库或者缓存来做出响应。假如遇到了高并发的情况，大量的请求落在数据库或者缓存上，如果数据库或者缓存无法承受这么大的压力，那么会造成响应速度缓慢，甚至造成数据库宕机。但是，在使用消息队列之后，用户在请求数据发送给消息队列之后就能立即返回，不用等待服务端完成工作。再由消息队列的消费者进程从中获取数据，异步写入数据库。由于消息队列服务器处理速度快于数据库，所以会大幅提升响应速度。</p>
+<p><img src="/images/msgQueue/msg_process.png" alt="img"></p>
+<p>而削峰作用即是借助于消息队列的异步处理，将短时间内高并发产生的事务消息存储在消息队列中，从而削平高峰期的并发事务。例如，在电商系统中的秒杀、促销活动中，在一定的时间中，会产生大量的用户请求，那么，合理使用消息队列就可以有效降低数据的压力，减少系统崩溃的概率。</p>
+<p><img src="/images/msgQueue/msg_slash.png" alt="img"></p>
+<h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2><ul>
+<li>系统<strong>可用性降低</strong><br>在使用消息队列后，需要考虑MQ中间件可能会出现宕机的情况，或者消息在传输过程中的丢失问题。</li>
+<li>系统<strong>复杂性增加</strong><br>消息是否被重复消费、处理消息的丢失、保证消息传递的顺序性</li>
+<li><strong>一致性</strong>问题<br>异步情况下，真正的消费者没有正确消费信息导致的数据不一致</li>
+</ul>
+]]></content>
+      <categories>
+        <category>消息队列</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>HashMap/Hashtable/ConcurrentHashMap</title>
+    <url>/2021/04/18/2021418-HashMapHashtableConcurrentHashMap/</url>
+    <content><![CDATA[<p>关于HashMap/Hashtable/ConcurrentHashMap的区别</p>
+<span id="more"></span>
+
+<h2 id="线程安全性："><a href="#线程安全性：" class="headerlink" title="线程安全性："></a>线程安全性：</h2><p>HashMap 是非线程安全的，在高并发状态下可能会因为 rehash 进入死循环。</p>
+<p>HashTable 是线程安全的，它使用 synchronized 修饰了大部分的方法。</p>
+<p>ConcurrentHashMap 是线程安全的，在 JDK1.7 中，它将数据分割分段（Segment），每一把锁只负责容器中的一部分数据，当一段数据被访问时，访问其他段数据的线程也不会堵塞。这样就提高了并发效率，同时实现了线程安全。到了 JDK1.8 ，直接使用 Node 数组+链表/红黑树的数据结构实现，并发控制使用 synchronized 和 CAS 来操作。</p>
+<h2 id="对null的支持"><a href="#对null的支持" class="headerlink" title="对null的支持"></a>对null的支持</h2><table>
+<thead>
+<tr>
+<th>Map集合类</th>
+<th>key</th>
+<th>value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>HashMap</td>
+<td>null</td>
+<td>null</td>
+</tr>
+<tr>
+<td>HashTable</td>
+<td>not null</td>
+<td>not null</td>
+</tr>
+<tr>
+<td>ConcurrentMap</td>
+<td>not null</td>
+<td>not null</td>
+</tr>
+</tbody></table>
+<h2 id="底层数据结构"><a href="#底层数据结构" class="headerlink" title="底层数据结构"></a>底层数据结构</h2><h3 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h3><p>JDK1.8 之前 <code>HashMap</code> 底层是 <strong>数组和链表</strong> 结合在一起使用也就是 <strong>链表散列</strong>。</p>
+<p>JDK1.8 之后在解决哈希冲突时有了较大的变化，当链表长度大于阈值（默认为 8）（将链表转换成红黑树前会判断，如果当前数组的长度小于 64，那么会选择先进行数组扩容，而不是转换为红黑树）时，将链表转化为红黑树，以减少搜索时间。</p>
+<p><img src="/images/Java/HashMap.png" alt="img"></p>
+<h3 id="HashTable"><a href="#HashTable" class="headerlink" title="HashTable"></a>HashTable</h3><p>将所有的数据加锁</p>
+<p><img src="/images/Java/HashTable.png" alt="img"></p>
+<h3 id="ConcurrentHashMap"><a href="#ConcurrentHashMap" class="headerlink" title="ConcurrentHashMap"></a>ConcurrentHashMap</h3><p>JDK1.7：将数据分割分段为一个个 Segment ，并为每个 Segment 加锁</p>
+<p><img src="/images/Java/ConcurrentHashMap7.png" alt="img"></p>
+<p>JDK1.8：Node数组/TreeNode+链表/红黑树，链表用Node数组，红黑树用TreeNode</p>
+<p><img src="/images/Java/ConcurrentHashMap8.png" alt="img"></p>
 ]]></content>
       <categories>
         <category>Java</category>
