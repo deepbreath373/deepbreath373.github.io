@@ -4780,8 +4780,45 @@
 ]]></content>
       <categories>
         <category>Java</category>
-        <category>知识整理</category>
         <category>线程</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>JVM内存区域解读</title>
+    <url>/2021/04/20/2021420-JVM%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E8%A7%A3%E8%AF%BB/</url>
+    <content><![CDATA[<p>JVM 内存区域：堆、方法区、PCR、虚拟机栈、本地方法栈</p>
+<span id="more"></span>
+
+<h2 id="Java内存区域"><a href="#Java内存区域" class="headerlink" title="Java内存区域"></a>Java内存区域</h2><p>JDK1.8之前：</p>
+<p><img src="/images/Java/JVM1_6.png" alt="img"></p>
+<p>JDK1.8：</p>
+<p><img src="/images/Java/JVM1_8.png" alt="img"></p>
+<h2 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h2><p>程序计数器主要有两个作⽤：</p>
+<ol>
+<li>字节码解释器通过改变程序计数器来依次读取指令，从⽽实现代码的流程控制，如：顺序执 ⾏、选择、循环、异常处理。</li>
+<li>在多线程的情况下，程序计数器⽤于记录当前线程执⾏的位置，从⽽当线程被切换回来的时 候能够知道该线程上次运⾏到哪⼉了。</li>
+</ol>
+<p>注意：程序计数器是唯⼀⼀个不会出现 OutOfMemoryError 的内存区域，它的⽣命周期随着线程的创建⽽创建，随着线程的结束⽽死亡。</p>
+<h2 id="Java虚拟机栈"><a href="#Java虚拟机栈" class="headerlink" title="Java虚拟机栈"></a>Java虚拟机栈</h2><p>与程序计数器⼀样，Java 虚拟机栈也是线程私有的，它的⽣命周期和线程相同，描述的是 Java ⽅法执⾏的内存模型，每次⽅法调⽤的数据都是通过栈传递的。</p>
+<p><strong>Java</strong> 虚拟机栈会出现两种错误： <strong>StackOverFlowError</strong> 和 <strong>OutOfMemoryError</strong> 。</p>
+<p><strong>StackOverFlowError</strong> ： 若 Java 虚拟机栈的内存⼤⼩不允许动态扩展，那么当线程请求栈的深度超过当前 Java 虚拟机栈的最⼤深度的时候，就抛出StackOverFlowError 错误。</p>
+<p><strong>OutOfMemoryError</strong> ： 若 Java 虚拟机堆中没有空闲内存，并且垃圾回收器也⽆法提供更多内存的话。就会抛出 OutOfMemoryError 错误。</p>
+<p>Java 虚拟机栈也是线程私有的，每个线程都有各⾃的 Java 虚拟机栈，⽽且随着线程的创建⽽创建，随着线程的死亡⽽死亡。</p>
+<h2 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h2><p>和虚拟机栈所发挥的作⽤⾮常相似，区别是： 虚拟机栈为虚拟机执⾏ Java ⽅法 （也就是字节码）服务，⽽本地⽅法栈则为虚拟机使⽤到的 Native ⽅法服务。</p>
+<p>本地⽅法被执⾏的时候，在本地⽅法栈也会创建⼀个栈帧，⽤于存放该本地⽅法的局部变量表、 操作数栈、动态链接、出⼝信息。</p>
+<p>⽅法执⾏完毕后相应的栈帧也会出栈并释放内存空间，也会出现 StackOverFlowError 和 OutOfMemoryError 两种错误。</p>
+<h2 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h2><p>Java 虚拟机所管理的内存中最⼤的⼀块，Java 堆是所有线程共享的⼀块内存区域，在虚拟机启动时创建。此内存区域的唯⼀⽬的就是<strong>存放对象实例</strong>，⼏乎所有的对象实例以及数组都在这⾥分 配内存。</p>
+<h2 id="方法区和元空间"><a href="#方法区和元空间" class="headerlink" title="方法区和元空间"></a>方法区和元空间</h2><p>⽅法区与 Java 堆⼀样，是各个线程共享的内存区域，它⽤于存储已被虚拟机加载的<strong>类信息、常量、静态变量、即时编译器编译后的代码</strong>等数据。</p>
+<p>那么，方法区和元空间的关系是什么？</p>
+<p>1.方法区是 JVM 规范的一个概念定义，并不是一个具体的实现，每一个 JVM 的实现都可以有各自的实现。</p>
+<p>2.在 Java 官方的 HotSpot 虚拟机中，Java8 版本以后，是用元空间来实现的方法区；在 Java8 之前的版本，则是用永久代实现的方法区。</p>
+<p>3.“元空间” 和 “方法区”，一个是 HotSpot 的具体实现技术，一个是 JVM 规范的抽象定义。</p>
+<p><strong>可以说在 Java 8 之后的 HotSpot 中 ”元空间用来实现了方法区“ 。</strong></p>
+<p>Reference:<br><a href="https://www.zhihu.com/question/358312524">Java 8 中的 JVM 元空间是不是方法区</a></p>
+]]></content>
+      <categories>
+        <category>Java</category>
+        <category>JVM</category>
       </categories>
   </entry>
 </search>

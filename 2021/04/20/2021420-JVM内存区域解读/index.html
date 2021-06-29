@@ -20,27 +20,30 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;example.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.5.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:1,&quot;unescape&quot;:false,&quot;preload&quot;:false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="final&#x2F;finally&#x2F;finalize 之间的区别">
+<meta name="description" content="JVM 内存区域：堆、方法区、PCR、虚拟机栈、本地方法栈">
 <meta property="og:type" content="article">
-<meta property="og:title" content="final&#x2F;finally&#x2F;finalize">
-<meta property="og:url" content="http://example.com/2021/06/27/2021627-finalfinallyfinalize/index.html">
+<meta property="og:title" content="JVM内存区域解读">
+<meta property="og:url" content="http://example.com/2021/04/20/2021420-JVM%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E8%A7%A3%E8%AF%BB/index.html">
 <meta property="og:site_name" content="深海学者">
-<meta property="og:description" content="final&#x2F;finally&#x2F;finalize 之间的区别">
+<meta property="og:description" content="JVM 内存区域：堆、方法区、PCR、虚拟机栈、本地方法栈">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-06-27T08:43:23.000Z">
-<meta property="article:modified_time" content="2021-06-27T08:44:02.291Z">
+<meta property="og:image" content="http://example.com/images/Java/JVM1_6.png">
+<meta property="og:image" content="http://example.com/images/Java/JVM1_8.png">
+<meta property="article:published_time" content="2021-04-20T01:23:34.000Z">
+<meta property="article:modified_time" content="2021-06-29T01:38:01.716Z">
 <meta property="article:author" content="QTLin">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/Java/JVM1_6.png">
 
 
-<link rel="canonical" href="http://example.com/2021/06/27/2021627-finalfinallyfinalize/">
+<link rel="canonical" href="http://example.com/2021/04/20/2021420-JVM%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E8%A7%A3%E8%AF%BB/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;2021&#x2F;06&#x2F;27&#x2F;2021627-finalfinallyfinalize&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;06&#x2F;27&#x2F;2021627-finalfinallyfinalize&#x2F;&quot;,&quot;title&quot;:&quot;final&#x2F;finally&#x2F;finalize&quot;}</script>
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;2021&#x2F;04&#x2F;20&#x2F;2021420-JVM%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E8%A7%A3%E8%AF%BB&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;04&#x2F;20&#x2F;2021420-JVM内存区域解读&#x2F;&quot;,&quot;title&quot;:&quot;JVM内存区域解读&quot;}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
-<title>final/finally/finalize | 深海学者</title>
+<title>JVM内存区域解读 | 深海学者</title>
   
 
 
@@ -133,7 +136,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -146,6 +149,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F"><span class="nav-text">Java内存区域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8"><span class="nav-text">程序计数器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88"><span class="nav-text">Java虚拟机栈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88"><span class="nav-text">本地方法栈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A0%86"><span class="nav-text">堆</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E5%8C%BA%E5%92%8C%E5%85%83%E7%A9%BA%E9%97%B4"><span class="nav-text">方法区和元空间</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -213,7 +217,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/27/2021627-finalfinallyfinalize/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/20/2021420-JVM%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E8%A7%A3%E8%AF%BB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -226,7 +230,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          final/finally/finalize
+          JVM内存区域解读
         </h1>
 
         <div class="post-meta-container">
@@ -236,10 +240,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2021-06-27 16:43:23 / 修改时间：16:44:02" itemprop="dateCreated datePublished" datetime="2021-06-27T16:43:23+08:00">2021-06-27</time>
+      <time title="创建时间：2021-04-20 09:23:34" itemprop="dateCreated datePublished" datetime="2021-04-20T09:23:34+08:00">2021-04-20</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-06-29 09:38:01" itemprop="dateModified" datetime="2021-06-29T09:38:01+08:00">2021-06-29</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -250,7 +260,7 @@
         </span>
           ，
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Java/%E7%9F%A5%E8%AF%86%E6%95%B4%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">知识整理</span></a>
+          <a href="/categories/Java/JVM/" itemprop="url" rel="index"><span itemprop="name">JVM</span></a>
         </span>
     </span>
 
@@ -262,7 +272,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1k</span>
+      <span>1.2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -280,30 +290,35 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>final/finally/finalize 之间的区别 </p>
+        <p>JVM 内存区域：堆、方法区、PCR、虚拟机栈、本地方法栈</p>
 <span id="more"></span>
 
+<h2 id="Java内存区域"><a href="#Java内存区域" class="headerlink" title="Java内存区域"></a>Java内存区域</h2><p>JDK1.8之前：</p>
+<p><img src="/images/Java/JVM1_6.png" alt="img"></p>
+<p>JDK1.8：</p>
+<p><img src="/images/Java/JVM1_8.png" alt="img"></p>
+<h2 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h2><p>程序计数器主要有两个作⽤：</p>
 <ol>
-<li>final 用于声明属性、方法和类：<ul>
-<li>final 属性不可变，指的是<strong>引用不可变</strong>，而不关心指向对象内容的变化，被final 修饰的变量必须初始化 </li>
-<li>final 方法不可被子类重写，可以实现 inline (内联)的机制 </li>
-<li>final 类不可以被继承(如 String 、StringBuffer )，所有的方法不可以被重写，但其内的非 final 变量可以被修改 </li>
-</ul>
-</li>
-<li>finally 作为异常处理的一部分，只能用在 try/catch 语句中，并且附带一个语句块，表示这段语句最终一定被执行(特殊情况不会被执行，如 try 语句前出现异常或 try 语句块中出现的异常没有被捕获)，经常被用在需要释放资源的情况下或是释放锁 </li>
-<li>finalize 是 Object 类的一个方法，在垃圾回收器执行时会调用被回收对象的 finalize() 方法，可以覆盖此方法来实现对其他资源的回收(一旦垃圾回收器准备好释放对象占用的空间，将首先调用该方法，并且在下一次垃圾回收动作发生时，才会真正回收对象占用的内存)，从功能上来说，finalize() 方法与 c++ 中的析构函数比较相似，但是 Java 采用的是基于垃圾回收器的自动内存管理机制，所以 finalize() 方法在本质上不同于 C++ 中的析构函数。 </li>
+<li>字节码解释器通过改变程序计数器来依次读取指令，从⽽实现代码的流程控制，如：顺序执 ⾏、选择、循环、异常处理。</li>
+<li>在多线程的情况下，程序计数器⽤于记录当前线程执⾏的位置，从⽽当线程被切换回来的时 候能够知道该线程上次运⾏到哪⼉了。</li>
 </ol>
-<p><strong>关于finalize的补充！</strong></p>
-<p>判定一个对象 objA 是否可回收，至少要经历两次标记过程：</p>
-<ul>
-<li>如果对象 objA 到 GC Roots 没有引用链，则进行第一次标记。</li>
-<li>进行筛选，判断此对象是否有必要执行 finalize() 方法<ul>
-<li>如果对象 objA 没有重写 finalize() 方法，或者 finalize() 方法已经被虚拟机调用过，则虚拟机视为“没有必要执行”，objA 被判定为不可触及的。 </li>
-<li>如果对象 objA 重写了 finalize() 方法，且还未执行过，<strong>那么 objA 会被插入到 F-Queue 队列中，由一个虚拟机自动创建的、低优先级的 Finalizer 线程触发其 finalize() 方法执行。</strong> </li>
-<li><strong>finalize() 方法是对象逃脱死亡的最后机会</strong>，稍后 GC 会对 F-Queue 队列中的对象进行第二次标记。<strong>如果 objA 在 finalize() 方法中与引用链上的任何一个对象建立了联系</strong>，那么在第二次标记时，objA 会被移出“即将回收”集合。之后，对象会再次出现没有引用存在的情况。在这个情况下，finalize 方法不会被再次调用，对象会直接变成不可触及的状态，也就是说，<strong>一个对象的 finalize 方法只会被调用一次</strong>。 </li>
-</ul>
-</li>
-</ul>
+<p>注意：程序计数器是唯⼀⼀个不会出现 OutOfMemoryError 的内存区域，它的⽣命周期随着线程的创建⽽创建，随着线程的结束⽽死亡。</p>
+<h2 id="Java虚拟机栈"><a href="#Java虚拟机栈" class="headerlink" title="Java虚拟机栈"></a>Java虚拟机栈</h2><p>与程序计数器⼀样，Java 虚拟机栈也是线程私有的，它的⽣命周期和线程相同，描述的是 Java ⽅法执⾏的内存模型，每次⽅法调⽤的数据都是通过栈传递的。</p>
+<p><strong>Java</strong> 虚拟机栈会出现两种错误： <strong>StackOverFlowError</strong> 和 <strong>OutOfMemoryError</strong> 。</p>
+<p><strong>StackOverFlowError</strong> ： 若 Java 虚拟机栈的内存⼤⼩不允许动态扩展，那么当线程请求栈的深度超过当前 Java 虚拟机栈的最⼤深度的时候，就抛出StackOverFlowError 错误。</p>
+<p><strong>OutOfMemoryError</strong> ： 若 Java 虚拟机堆中没有空闲内存，并且垃圾回收器也⽆法提供更多内存的话。就会抛出 OutOfMemoryError 错误。</p>
+<p>Java 虚拟机栈也是线程私有的，每个线程都有各⾃的 Java 虚拟机栈，⽽且随着线程的创建⽽创建，随着线程的死亡⽽死亡。</p>
+<h2 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h2><p>和虚拟机栈所发挥的作⽤⾮常相似，区别是： 虚拟机栈为虚拟机执⾏ Java ⽅法 （也就是字节码）服务，⽽本地⽅法栈则为虚拟机使⽤到的 Native ⽅法服务。</p>
+<p>本地⽅法被执⾏的时候，在本地⽅法栈也会创建⼀个栈帧，⽤于存放该本地⽅法的局部变量表、 操作数栈、动态链接、出⼝信息。</p>
+<p>⽅法执⾏完毕后相应的栈帧也会出栈并释放内存空间，也会出现 StackOverFlowError 和 OutOfMemoryError 两种错误。</p>
+<h2 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h2><p>Java 虚拟机所管理的内存中最⼤的⼀块，Java 堆是所有线程共享的⼀块内存区域，在虚拟机启动时创建。此内存区域的唯⼀⽬的就是<strong>存放对象实例</strong>，⼏乎所有的对象实例以及数组都在这⾥分 配内存。</p>
+<h2 id="方法区和元空间"><a href="#方法区和元空间" class="headerlink" title="方法区和元空间"></a>方法区和元空间</h2><p>⽅法区与 Java 堆⼀样，是各个线程共享的内存区域，它⽤于存储已被虚拟机加载的<strong>类信息、常量、静态变量、即时编译器编译后的代码</strong>等数据。</p>
+<p>那么，方法区和元空间的关系是什么？</p>
+<p>1.方法区是 JVM 规范的一个概念定义，并不是一个具体的实现，每一个 JVM 的实现都可以有各自的实现。</p>
+<p>2.在 Java 官方的 HotSpot 虚拟机中，Java8 版本以后，是用元空间来实现的方法区；在 Java8 之前的版本，则是用永久代实现的方法区。</p>
+<p>3.“元空间” 和 “方法区”，一个是 HotSpot 的具体实现技术，一个是 JVM 规范的抽象定义。</p>
+<p><strong>可以说在 Java 8 之后的 HotSpot 中 ”元空间用来实现了方法区“ 。</strong></p>
+<p>Reference:<br><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/358312524">Java 8 中的 JVM 元空间是不是方法区</a></p>
 
     </div>
 
@@ -317,11 +332,14 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2021/06/04/202164-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" rel="prev" title="设计模式——单例模式">
-                  <i class="fa fa-chevron-left"></i> 设计模式——单例模式
+                <a href="/2021/04/18/2021418-Java%E4%B8%AD%E7%9A%84%E5%8F%8C%E9%87%8D%E6%A3%80%E6%9F%A5%E9%94%81/" rel="prev" title="Java中的双重检查锁">
+                  <i class="fa fa-chevron-left"></i> Java中的双重检查锁
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/2021/06/04/202164-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" rel="next" title="设计模式——单例模式">
+                  设计模式——单例模式 <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>
