@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/koroneko.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/koroneko.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/koroneko.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;example.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.5.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:1,&quot;unescape&quot;:false,&quot;preload&quot;:false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="操作系统中涉及到的调度算法（作业、进程、空闲分区、页面、磁盘）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统中的各种调度算法">
+<meta property="og:url" content="http://example.com/2021/05/09/202159-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84%E5%90%84%E7%A7%8D%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95/index.html">
+<meta property="og:site_name" content="深海学者">
+<meta property="og:description" content="操作系统中涉及到的调度算法（作业、进程、空闲分区、页面、磁盘）">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-09T02:06:34.000Z">
+<meta property="article:modified_time" content="2021-07-01T07:08:08.694Z">
+<meta property="article:author" content="QTLin">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2021/05/09/202159-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84%E5%90%84%E7%A7%8D%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;2021&#x2F;05&#x2F;09&#x2F;202159-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84%E5%90%84%E7%A7%8D%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;05&#x2F;09&#x2F;202159-操作系统中的各种调度算法&#x2F;&quot;,&quot;title&quot;:&quot;操作系统中的各种调度算法&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>操作系统中的各种调度算法 | 深海学者</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">深海学者</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">More Knowledge!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E6%89%B9%E5%A4%84%E7%90%86%E4%BD%9C%E4%B8%9A%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95"><span class="nav-text">常见的批处理作业调度算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95"><span class="nav-text">进程调度算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A9%BA%E9%97%B2%E5%88%86%E5%8C%BA%E5%88%86%E9%85%8D%E7%AE%97%E6%B3%95"><span class="nav-text">空闲分区分配算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E9%A1%B5%E5%BC%8F%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86%E4%B8%AD%E7%9A%84%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95"><span class="nav-text">虚拟页式存储管理中的页面置换算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A3%81%E7%9B%98%E8%B0%83%E5%BA%A6"><span class="nav-text">磁盘调度</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">QTLin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">60</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/deepbreath373" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;deepbreath373" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:qitao_lin@163.com" title="E-Mail → mailto:qitao_lin@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/09/202159-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84%E5%90%84%E7%A7%8D%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="QTLin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="深海学者">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          操作系统中的各种调度算法
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-05-09 10:06:34" itemprop="dateCreated datePublished" datetime="2021-05-09T10:06:34+08:00">2021-05-09</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-07-01 15:08:08" itemprop="dateModified" datetime="2021-07-01T15:08:08+08:00">2021-07-01</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>操作系统中涉及到的调度算法（作业、进程、空闲分区、页面、磁盘）</p>
+<span id="more"></span>
+
+<h2 id="常见的批处理作业调度算法"><a href="#常见的批处理作业调度算法" class="headerlink" title="常见的批处理作业调度算法"></a>常见的批处理作业调度算法</h2><p>1.<strong>先来先服务调度算法（FCFS）</strong>:就是<strong>按照各个作业进入系统的自然次序</strong>来调度作业。这种调度算法的优点是实现简单，公平。其缺点是没有考虑到系统中各种资源的综合使用情况，往往使短作业的用户不满意，因为短作业等待处理的时间可能比实际运行时间长得多。</p>
+<p>2.<strong>短作业优先调度算法(SPF)</strong>: 就是<strong>优先调度并处理短作业</strong>，所谓短是指作业的运行时间短。而在作业未投入运行时，并不能知道它实际的运行时间的长短，因此需要用户在提交作业时同时提交作业运行时间的估计值。</p>
+<p>3.<strong>最高响应比优先算法(HRN)：</strong>FCFS可能造成短作业用户不满，SPF可能使得长作业用户不满，于是提出HRN，选择<strong>响应比最高的作业</strong>运行。响应比=1+作业等待时间/作业处理时间。</p>
+<p>4.<strong>基于优先数调度算法(HPF)<strong>：每一个作业规定一个表示该作业优先级别的整数，当需要将新的作业由输入井调入内存处理时，优先选择</strong>优先数最高</strong>的作业。</p>
+<p>5.<strong>均衡调度算</strong>：即多级队列调度算法，具有优先级的就绪队列中按照 RR + FCFS 对队列中的作业进行调度。</p>
+<p><strong>6.时间片轮转调度算法(RR)：</strong>系统规定一个时间长度(时间片/时间量)作为允许一个进程运行的时间，如果在这段时间该进程没有执行完，则必须让出CPU等待下一次分配的时间片。</p>
+<ul>
+<li>相关概念：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">作业周转时间（Ti）＝完成时间(Tei)－提交时间(Tsi)</span><br><span class="line">作业平均周转时间(T)＝周转时间/作业个数</span><br><span class="line">作业带权周转时间（Wi）＝周转时间/运行时间</span><br><span class="line">响应比＝（等待时间＋运行时间）/运行时间</span><br></pre></td></tr></table></figure>
+
+<h2 id="进程调度算法"><a href="#进程调度算法" class="headerlink" title="进程调度算法"></a>进程调度算法</h2><p>1.<strong>先进先出算法(FIFO)：</strong>按照进程进入就绪队列的<strong>先后次序</strong>来选择。即每当进入进程调度，总是把就绪队列的队首进程投入运行。</p>
+<p>2.<strong>时间片轮转算法(RR)：</strong>分时系统的一种调度算法。轮转的基本思想是，将CPU的处理时间划分成一个个的时间片，就绪队列中的进程<strong>轮流运行一个时间片</strong>。当时间片结束时，就强迫进程让出CPU，该进程进入就绪队列，等待下一次调度，同时，进程调度又去选择就绪队列中的一个进程，分配给它一个时间片，以投入运行。</p>
+<p>3.<strong>最高优先级算法(HPF)：</strong>进程调度每次将处理机分配给具有最高优先级的就绪进程。最高优先级算法可与不同的CPU方式结合形成<strong>可抢占式</strong>最高优先级算法和<strong>不可抢占式</strong>最高优先级算法。</p>
+<ul>
+<li>可抢占式 当出现比当前执行中的进程更高优先级的进程，就将处理机分配给新进程。</li>
+<li>不可抢占式 一旦分配处理机给一个优先级最高的进程后，便会一直执行至进程完成。</li>
+</ul>
+<p>4.<strong>多级队列反馈法：</strong>几种调度算法的结合形式多级队列方式。 设置多个优先级递减、时间片递增的就绪队列，并且每个队列中按照先来先服务（FCFS）进行调度。（最后一个队列采用 RR 算法）</p>
+<h2 id="空闲分区分配算法"><a href="#空闲分区分配算法" class="headerlink" title="空闲分区分配算法"></a>空闲分区分配算法</h2><p>1.<strong>首先适应算法(FF)：</strong>当接到内存申请时，查找分区说明表，找到<strong>第一个满足申请长度的空闲区</strong>，将其分割并分配。此算法简单，可以快速做出分配决定。</p>
+<p>2.<strong>循环首次适应算法(NF)：</strong>和 FF 算法的区别是，不再是每次都从链首开始查找，而是<strong>从上次找到的空闲分区的下一个空闲分区开始查找</strong>，将其分割并分配。该算法可以使内存中的空闲分区分布得更均匀，从而减少了查找空闲分区时的开销，但这样会缺乏大的空闲分区。</p>
+<p>3.<strong>最佳适应算法(BF)：</strong>当接到内存申请时，查找分区说明表，找到第一个<strong>能满足申请长度的最小空闲区</strong>，将其进行分割并分配。此算法最节约空间，因为它尽量不分割到大的空闲区，其缺点是可能会形成很多很小的空闲分区，称为“碎片”。</p>
+<p>4.<strong>最坏适应算法(WF)：</strong>当接到内存申请时，查找分区说明表，找到能<strong>满足申请要求的最大的空闲区</strong>。该算法的优点是避免形成碎片，而缺点是分割了大的空闲区后，在遇到较大的程序申请内存时，无法满足的可能性较大。</p>
+<h2 id="虚拟页式存储管理中的页面置换算法"><a href="#虚拟页式存储管理中的页面置换算法" class="headerlink" title="虚拟页式存储管理中的页面置换算法"></a>虚拟页式存储管理中的页面置换算法</h2><p>1.<strong>理想页面置换算法(OPT)：</strong>这是一种理想的算法，在实际中不可能实现。该算法的思想是：发生缺页时，选择<strong>以后永不使用或在最长时间内不再被访问</strong>的内存页面予以淘汰。</p>
+<p>2.<strong>先进先出页面置换算法(FIFO)：</strong>选择<strong>最先进入内存</strong>的页面予以淘汰。</p>
+<p>3.<strong>最近最久未使用算法（LRU）：</strong>选择在最近一段时间内<strong>最久没有使用过</strong>的页，把它淘汰。</p>
+<p>4.<strong>最少使用算法（LFU）：</strong>选择到当前时间为止<strong>被访问次数最少</strong>的页转换。</p>
+<h2 id="磁盘调度"><a href="#磁盘调度" class="headerlink" title="磁盘调度"></a>磁盘调度</h2><p>1.<strong>先来先服务（FCFS）</strong>：根据请求访问者的<strong>先后次序</strong>，按顺序服务。</p>
+<p>2.<strong>最短寻道时间优先（SSTF）</strong>：让<strong>离当前磁道最近的请求访问者</strong>启动磁盘驱动器，即是让查找时间最短的那个作业先执行，而不考虑请求访问者到来的先后次序，这样就克服了先来先服务调度算法中磁臂移动过大的问题</p>
+<p>3.<strong>扫描算法（SCAN）或电梯调度算法：</strong>总是从磁臂当前位置开始，沿磁臂的移动方向去选择<strong>离当前磁臂最近的那个柱面的访问者</strong>。如果沿磁臂的方向无请求访问时，就改变磁臂的移动方向。在这种调度方法下磁臂的移动类似于电梯的调度，所以它也称为电梯调度算法。</p>
+<p>4.<strong>循环扫描算法（CSCAN）：</strong>循环扫描调度算法是在扫描算法的基础上改进的。磁臂改为单项移动，<strong>由外向里</strong>。当前位置开始沿磁臂的移动方向去选择离当前磁臂最近的哪个柱面的访问者。如果沿磁臂的方向无请求访问时，再回到最外，访问柱面号最小的作业请求。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/06/202156-Java%E4%B8%AD%E7%9A%84%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B/" rel="prev" title="Java中的类加载过程">
+                  <i class="fa fa-chevron-left"></i> Java中的类加载过程
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/05/11/2021511-%E5%AD%90%E7%B1%BB%E7%88%B6%E7%B1%BB%E7%9A%84%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F/" rel="next" title="子类父类的代码执行顺序">
+                  子类父类的代码执行顺序 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">QTLin</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">287k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">4:21</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
