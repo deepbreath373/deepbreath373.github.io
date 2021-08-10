@@ -5341,4 +5341,147 @@
         <category>计算机网络</category>
       </categories>
   </entry>
+  <entry>
+    <title>HTTP和HTTPS的区别</title>
+    <url>/2021/08/10/2021810-HTTP%E5%92%8CHTTPS%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+    <content><![CDATA[<p>有关 HTTP 和 HTTPS 的概念，区别，优缺点等</p>
+<span id="more"></span>
+
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p><strong>HTTP：</strong>超文本传输协议（HTTP，HyperText Transfer Protocol）是互联网上应用最为广泛的一种网络协议。设计 HTTP 最初的目的是为了提供一种发布和接收 HTML 页面的方法，<strong>用于客户端和服务器端之间的通信</strong>。但是，HTTP 具有许多安全性的漏洞，容易遭受恶意攻击。</p>
+<p><strong>HTTPS：</strong>是为了弥补 HTTP 协议的安全所提出的协议，<strong>实质是 HTTP 加上加密处理和认证以及完整性保护，身披 SSL(Secure Sockets Layer 安全套接字协议) 外壳的 HTTP</strong>。为客户端和服务器端之间的通信提供安全保障，避免黑客的攻击。</p>
+<p><strong>HTTP 的缺点</strong></p>
+<ul>
+<li><p>通信使用明文可能会被窃听</p>
+</li>
+<li><p>不验证通信方的身份就可能遭遇伪装</p>
+</li>
+<li><p>无法证明报文完整性，可以已被篡改</p>
+<p>…</p>
+</li>
+</ul>
+<p>HTTPS 就针对以上缺陷做了弥补，一是建立了一个信息安全通道，来保证数据传输的安全；另一是使用证书来保证网站的真实性、信息的完整性等。<br>总结为三点：<strong>数据保密性；数据完整性；身份校验安全性。</strong></p>
+<h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><ul>
+<li>HTTP 是<strong>无需任何费用</strong>的；HTTPS 协议需要到数字证书认证机构（CA，Certificate Authority）申请证书，需要<strong>支付一定的费用</strong></li>
+<li>HTTP 中信息采用的是<strong>明文传输</strong>；HTTPS 则是使用 SSL 协议进行<strong>加密传输</strong></li>
+<li>HTTP 的端口为 <strong>80</strong>；HTTPS 的端口为 <strong>443</strong></li>
+<li>HTTP 的连接较为<strong>简单</strong>，是<strong>无状态</strong>（不保存任何信息）的；HTTPS 是由 SSL + HTTP 构建的<strong>加密传输</strong>、<strong>身份认证</strong>的网络协议，比较<strong>安全</strong>。</li>
+</ul>
+<h2 id="HTTPS-的优点"><a href="#HTTPS-的优点" class="headerlink" title="HTTPS 的优点"></a>HTTPS 的优点</h2><p><strong>针对 HTTP 的改进</strong></p>
+<ul>
+<li><p>双向的身份认证<br>客户端和服务器端进行数据传输前，会通过 CA 颁发的证书来进行身份认证。</p>
+<ul>
+<li>客户端通过 SSL 向服务器请求连接</li>
+<li>服务器将包含服务器公钥的证书发送给客户端</li>
+<li>客户端通过浏览器内置的 CA 公钥判断证书的准确性，取出服务器公钥</li>
+<li>客户端使用服务器公钥和客户端进行通信</li>
+<li>服务器端也可以用同样的方法要求客户端发送身份证明的证书来验证客户端的身份</li>
+</ul>
+</li>
+<li><p>数据传输的机密性</p>
+<ul>
+<li>客户端和服务端在开始传输数据之前，会协商传输过程需要使用的加密算法。 </li>
+<li>客户端发送协商请求给服务端, 其中包含自己支持的非对成加密的密钥交换算法 ( 一般是RSA)，数据签名摘要算法 ( 一般是SHA或者MD5) ，加密传输数据的对称加密算法 ( 一般是DES)，以及加密密钥的长度。 </li>
+<li>服务端接收到消息之后，选中安全性最高的算法，并将选中的算法发送给客户端，完成协商。</li>
+<li>客户端生成随机的字符串，通过协商好的非对称加密算法，使用服务端的公钥对该字符串进行加密，发送给服务端。 </li>
+<li>服务端接收到之后，使用自己的私钥解密得到该字符串。在随后的数据传输当中，使用这个字符串作为密钥进行对称加密。</li>
+</ul>
+</li>
+</ul>
+<p><strong>自身的优点</strong></p>
+<ul>
+<li>使用 HTTPS 协议可认证用户和服务器，确保数据发送到正确的客户机和服务器</li>
+<li>HTTPS 协议是由SSL+HTTP 协议构建的可进行加密传输、身份认证的网络协议，要比 HTTP 协议安全，可防止数据在传输过程中不被窃取、修改，确保数据的完整性</li>
+<li>HTTPS 是现行架构下最安全的解决方案，虽然不是绝对安全，但它大幅增加了中间人攻击的成本</li>
+</ul>
+<h2 id="不足之处"><a href="#不足之处" class="headerlink" title="不足之处"></a>不足之处</h2><ul>
+<li>HTTPS 协议握手阶段比较费时，会使页面的加载时间延长</li>
+<li>HTTPS连接缓存不如HTTP高效，会增加数据开销和功耗，甚至已有的安全措施也会因此而受到影响</li>
+<li>SSL证书需要钱，功能越强大的证书费用越高，个人网站、小网站没有必要一般不会用</li>
+<li>SSL证书通常需要绑定IP，不能在同一IP上绑定多个域名，IPv4资源不可能支撑这个消耗</li>
+<li>HTTPS协议的加密范围也比较有限，在黑客攻击、拒绝服务攻击、服务器劫持等方面几乎起不到什么作用</li>
+<li>最关键的，SSL证书的信用链体系并不安全，特别是在某些国家可以控制CA根证书的情况下，中间人攻击一样可行</li>
+</ul>
+<h2 id="HTTPS-的通信过程"><a href="#HTTPS-的通信过程" class="headerlink" title="HTTPS 的通信过程"></a>HTTPS 的通信过程</h2><p><img src="../images/ComputerNetworks/HTTPS_Process.jpg" alt="HTTPS_Process"></p>
+]]></content>
+      <categories>
+        <category>计算机网络</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>HTTP常用状态码</title>
+    <url>/2021/08/09/202189-HTTP%E7%8A%B6%E6%80%81%E7%A0%81/</url>
+    <content><![CDATA[<p>HTTP 中返回结果的状态码一般有 1xx，2xx，3xx，4xx，5xx 几类</p>
+<span id="more"></span>
+
+<p>状态码的职责就是当客户端向服务器端发送请求时，描述返回的请求结果。这样，根据返回的状态码，用户就可以知道服务器端是否正常处理了发送的请求。</p>
+<table>
+<thead>
+<tr>
+<th>状态码</th>
+<th>类别</th>
+<th>原因短语</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1XX</td>
+<td>Informational（信息性状态码）</td>
+<td>接收的请求正在处理</td>
+</tr>
+<tr>
+<td>2XX</td>
+<td>Success（成功状态码）</td>
+<td>请求正常处理完毕</td>
+</tr>
+<tr>
+<td>3XX</td>
+<td>Redirection（重定向状态码）</td>
+<td>需要进行附加操作以完成请求</td>
+</tr>
+<tr>
+<td>4XX</td>
+<td>Client Error（客户端错误状态码）</td>
+<td>服务器无法处理请求</td>
+</tr>
+<tr>
+<td>5XX</td>
+<td>Server Error（服务器错误状态码）</td>
+<td>服务器处理请求出错</td>
+</tr>
+</tbody></table>
+<p><img src="/images/ComputerNetworks/statusCode.jpg" alt="statuscode"></p>
+<h2 id="1XX-正在处理"><a href="#1XX-正在处理" class="headerlink" title="1XX 正在处理"></a>1XX 正在处理</h2><p><strong>100 Continue</strong></p>
+<p>表示服务器收到了请求的初始部分，并请客户端继续发生剩余部分。</p>
+<h2 id="2XX-成功"><a href="#2XX-成功" class="headerlink" title="2XX 成功"></a>2XX 成功</h2><p><strong>200 OK</strong></p>
+<p>表示从客户端发来的请求在服务器端被正常处理</p>
+<p><strong>204 No Content</strong></p>
+<p>表示服务器接收的请求已经成功处理，但在返回的响应报文中不含实体的主体部分，也不允许返回任何实体的主体。一般用于只需要客户端向服务器端发送信息，而对客户端不需要发送新信息内容的情况下使用。</p>
+<p><strong>206 Partial Content</strong></p>
+<p>表示客户端进行了范围请求，而服务器成功执行了这部分的 GET 请求，响应报文中包含由 Content-Range 指定范围的实体内容。</p>
+<h2 id="3XX-重定向"><a href="#3XX-重定向" class="headerlink" title="3XX 重定向"></a>3XX 重定向</h2><p><strong>301 Moved Permanently</strong></p>
+<p>永久重定向，表示请求的资源已经被分配了新的 URI，以后需要请求新的 URI。</p>
+<p><strong>302 Found</strong></p>
+<p>临时性重定向，表示请求的资源已经被分配了新的 URI，希望用户请求新的 URI，但是，该 URI可能会二次改变。</p>
+<p><strong>303 See Other</strong></p>
+<p>表示由于请求对应的资源存在另一个 URI，应使用 GET 方法定向获取请求的资源。</p>
+<p><strong>304 Not Modified</strong></p>
+<p>表示客户端发送附带条件的请求时，服务器端允许请求访问资源，但因发生请求未满足条件的情况后，返回该状态码。</p>
+<p><strong>307 Temporary Redirect</strong></p>
+<p>临时重定向，该状态码不同于之前的重定向状态码，将遵循当第一次请求为 POST 方法时，进行重定向请求时仍为 POST 方法。</p>
+<h2 id="4XX-客户端错误"><a href="#4XX-客户端错误" class="headerlink" title="4XX 客户端错误"></a>4XX 客户端错误</h2><p><strong>400 Bad Request</strong></p>
+<p>表示请求报文中存在语法错误，需要修改请求的内容后再次发送请求。（浏览器会像对待 200 OK 一样对待该状态码）</p>
+<p><strong>401 Unauthorized</strong></p>
+<p>表示发送的请求需要有通过 HTTP 认证（BASIC、DIGEST）的认证信息。<br>返回含有 401 状态码的响应必须包含一个适用于被请求资源的 WWW-Authenticate 首部以质询（Challenge）用户信息。</p>
+<p><strong>403 Forbidden</strong></p>
+<p>表示对请求资源的访问被服务器拒绝了。</p>
+<p><strong>404 Not Found</strong></p>
+<p>表示服务器上找不到请求的资源，或者被用于拒绝本次请求。</p>
+<h2 id="5XX-服务器错误"><a href="#5XX-服务器错误" class="headerlink" title="5XX 服务器错误"></a>5XX 服务器错误</h2><p><strong>500 Internal Server Error</strong></p>
+<p>表示服务器端在执行请求时发生了错误。</p>
+<p><strong>503 Service Unavailable</strong></p>
+<p>表示服务器暂时处于超负载或者正在进行停机维护，暂时无法处理请求。</p>
+]]></content>
+      <categories>
+        <category>计算机网络</category>
+      </categories>
+  </entry>
 </search>
