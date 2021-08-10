@@ -5401,7 +5401,7 @@
 <li>HTTPS协议的加密范围也比较有限，在黑客攻击、拒绝服务攻击、服务器劫持等方面几乎起不到什么作用</li>
 <li>最关键的，SSL证书的信用链体系并不安全，特别是在某些国家可以控制CA根证书的情况下，中间人攻击一样可行</li>
 </ul>
-<h2 id="HTTPS-的通信过程"><a href="#HTTPS-的通信过程" class="headerlink" title="HTTPS 的通信过程"></a>HTTPS 的通信过程</h2><p><img src="../images/ComputerNetworks/HTTPS_Process.jpg" alt="HTTPS_Process"></p>
+<h2 id="HTTPS-的通信过程"><a href="#HTTPS-的通信过程" class="headerlink" title="HTTPS 的通信过程"></a>HTTPS 的通信过程</h2><p><img src="/images/ComputerNetworks/HTTPS_Process.jpg" alt="HTTPS_Process"></p>
 ]]></content>
       <categories>
         <category>计算机网络</category>
