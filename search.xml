@@ -5451,6 +5451,8 @@
 <p><img src="/images/ComputerNetworks/statusCode.jpg" alt="statuscode"></p>
 <h2 id="1XX-正在处理"><a href="#1XX-正在处理" class="headerlink" title="1XX 正在处理"></a>1XX 正在处理</h2><p><strong>100 Continue</strong></p>
 <p>表示服务器收到了请求的初始部分，并请客户端继续发生剩余部分。</p>
+<p><strong>101 Switch Protocol</strong></p>
+<p>表示当前协议更改，比如由 HTTP 变为 WS 协议保持长连接</p>
 <h2 id="2XX-成功"><a href="#2XX-成功" class="headerlink" title="2XX 成功"></a>2XX 成功</h2><p><strong>200 OK</strong></p>
 <p>表示从客户端发来的请求在服务器端被正常处理</p>
 <p><strong>204 No Content</strong></p>
