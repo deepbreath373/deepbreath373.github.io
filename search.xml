@@ -5486,4 +5486,64 @@
         <category>计算机网络</category>
       </categories>
   </entry>
+  <entry>
+    <title>Java三种网络编程模型</title>
+    <url>/2021/08/16/2021816-Java%E4%B8%89%E7%A7%8D%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%9E%8B/</url>
+    <content><![CDATA[<p>Java 一共支持三种网络编程 I/O 模型：BIO、NIO、AIO</p>
+<span id="more"></span>
+
+<h2 id="I-O-模型"><a href="#I-O-模型" class="headerlink" title="I/O 模型"></a>I/O 模型</h2><p>I/O 模型就是用来进行数据的输出(发送)和输入(接收)，使用不同的 I/O 模型，在程序通信时发挥的性能也有所不同。</p>
+<p>Java 中共支持三种网络编程 I/O 模型，即 BIO、NIO、AIO。</p>
+<ul>
+<li><p>Java BIO：<strong>同步并阻塞（传统阻塞型）</strong>，服务器实现模式为<strong>一个连接一个线程</strong>，即每个客户端连接请求都要启动一个线程，那么就会造成不少线程的开销。<br><strong>适用于：</strong>连接数较少且固定</p>
+<p><img src="/images/Java/IO/BIO.jpg" alt="BIO"></p>
+</li>
+<li><p>Java NIO：<strong>同步非阻塞</strong>，服务器实现模式为<strong>一个线程处理多个连接</strong>，即多个客户端的请求会注册到多路复用器（selector）上，然后采用轮询的方式进行处理。</p>
+<p><strong>适用于：</strong>连接数较多且连接时间比较短</p>
+<p><img src="/images/Java/IO/NIO.jpg" alt="NIO"></p>
+</li>
+<li><p>Java AIO：<strong>异步非阻塞</strong>，AIO 引入了异步通道的概念，采用了 Proactor 模式，<strong>有效的请求才启动线程</strong>。特点是先由操作系统完成后才通知服务器端程序启动线程去处理。</p>
+<p><strong>适用于：</strong>连接数较多且连接时间较长的应用</p>
+</li>
+</ul>
+<h2 id="BIO"><a href="#BIO" class="headerlink" title="BIO"></a>BIO</h2><h2 id="NIO"><a href="#NIO" class="headerlink" title="NIO"></a>NIO</h2><h2 id="AIO"><a href="#AIO" class="headerlink" title="AIO"></a>AIO</h2><h2 id="对比"><a href="#对比" class="headerlink" title="对比"></a>对比</h2><table>
+<thead>
+<tr>
+<th></th>
+<th>BIO</th>
+<th>NIO</th>
+<th>AIO</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IO模型</td>
+<td>同步阻塞</td>
+<td>同步非阻塞</td>
+<td>异步非阻塞</td>
+</tr>
+<tr>
+<td>编程难度</td>
+<td>简单</td>
+<td>复杂</td>
+<td>复杂</td>
+</tr>
+<tr>
+<td>可靠性</td>
+<td>差</td>
+<td>好</td>
+<td>好</td>
+</tr>
+<tr>
+<td>吞吐量</td>
+<td>低</td>
+<td>高</td>
+<td>高</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>Java</category>
+        <category>网络编程</category>
+      </categories>
+  </entry>
 </search>
