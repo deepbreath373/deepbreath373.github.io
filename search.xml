@@ -5520,7 +5520,7 @@
 
 <h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><p>1）每个请求都要创建独立的与之对应的线程，虽然可用采用线程池实现线程复用。但是，当并发请求数量变大时，仍旧需要大量线程处理请求，导致系统开销过大。</p>
 <p>2）连接建立后，如果当前线程无 I/O 请求，该线程将阻塞在 Read 操作，造成资源浪费。</p>
-<h2 id="NIO"><a href="#NIO" class="headerlink" title="NIO"></a>NIO</h2><p>NIO 是现在比较常用的一种 I/O 模型，Netty 框架就是基于 NIO 所编写。并且 NIO 的知识点较多，所以我开了新的一篇来着重介绍。请移步至 ☞ </p>
+<h2 id="NIO"><a href="#NIO" class="headerlink" title="NIO"></a>NIO</h2><p>NIO 是现在比较常用的一种 I/O 模型，Netty 框架就是基于 NIO 所编写。并且 NIO 的知识点较多，所以我开了新的一篇来着重介绍。请移步至 ☞ <a href="http://deepsea-blog.top/2021/08/24/2021824-Java-NIO/">Java-NIO</a></p>
 <h2 id="AIO"><a href="#AIO" class="headerlink" title="AIO"></a>AIO</h2><h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>AIO 的<strong>基本思想</strong>是允许进程发起很多 I/O 操作，而不用阻塞或等待任何操作完成，可以立刻返回去执行其他操作。稍后或在接收到 I/O 操作完成的通知时，进程再去检索 I/O 操作的结果。</p>
 <h3 id="图解"><a href="#图解" class="headerlink" title="图解"></a>图解</h3><p><img src="/images/Java/IO/AIO.jpg" alt="AIO"></p>
 <p>可以看出 AIO 允许其他处理和 I/O 操作重叠进行，包括 I/O 操作完成的通知。</p>
