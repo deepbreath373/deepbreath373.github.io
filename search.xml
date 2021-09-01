@@ -5767,7 +5767,7 @@
 <h3 id="Reactor-模式"><a href="#Reactor-模式" class="headerlink" title="Reactor 模式"></a>Reactor 模式</h3><p>针对传统 IO 的缺点，可以提出以下解决方法：</p>
 <p>1）基于 I/O 复用模型：多个连接共用一个阻塞对象，应用程序只需要在一个阻塞对象等待，无需阻塞等待所有连接。当某个连接有新的数据可以处理时，操作系统通知应用程序，线程从阻塞状态返回，开始进行业务处理。<br>Reactor 据此产生的是：反应器模式；分发者模式（Dispatcher）；通知者模式（notifier）</p>
 <p>2）基于线程池复用线程资源：不必再为每个连接创建新的线程，而是创建一个包含一定数量线程的线程池。将连接完成后的业务处理任务分配给线程池中的线程进行处理，一个线程可以处理多个连接的业务。</p>
-<p><img src="../images/Netty/reactor.jpg" alt="reactor"></p>
+<p><img src="/images/Netty/reactor.jpg" alt="reactor"></p>
 <ul>
 <li>可以将多个请求同时传递给服务器</li>
 <li>服务器端将接收到的多个请求分派到相应的处理线程</li>
@@ -5812,7 +5812,7 @@
 <p>父线程和子线程的数据交互简单、职责明确，父线程只需要接收新连接请求、子线程负责非连接的业务请求</p>
 <p><strong>缺点：</strong></p>
 <p>编程较为复杂</p>
-<h2 id="Netty-模型"><a href="#Netty-模型" class="headerlink" title="Netty 模型"></a>Netty 模型</h2><p><img src="../images/Netty/netty_analy.jpg" alt="netty"></p>
+<h2 id="Netty-模型"><a href="#Netty-模型" class="headerlink" title="Netty 模型"></a>Netty 模型</h2><p><img src="/images/Netty/netty_analy.jpg" alt="netty"></p>
 <p>1）Netty 中有两组线程池：BossGroup 专门负责接收客户端的连接，WorkerGroup 专门负责网络的读写业务处理。这两组线程池均属于 NioEventLoopGroup。</p>
 <p>2）NioEventLoopGroup 相当于一个事件循环组，组内包含多个事件循环线程 NioEventLoop 来进行不断循环执行处理任务，并使用了 selector 监听绑定在其上的 channel。</p>
 <p>3）Boss 的 NioEventLoop 执行的步骤分为三步：<br>            轮循 accept 事件<br>            处理 accept 事件，与 client 建立连接，生成 NioSocketChannel，并将其注册到 worker 的 NioEventLoop 上的 selector<br>            处理任务队列的任务</p>
