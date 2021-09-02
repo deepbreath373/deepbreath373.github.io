@@ -20,27 +20,27 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;example.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.5.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:1,&quot;unescape&quot;:false,&quot;preload&quot;:false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="final&#x2F;finally&#x2F;finalize 的区别">
+<meta name="description" content="针对 Netty 中较为核心的类进行说明">
 <meta property="og:type" content="article">
-<meta property="og:title" content="final&#x2F;finally&#x2F;finalize">
-<meta property="og:url" content="http://example.com/2021/06/27/2021627-finalfinallyfinalize/index.html">
+<meta property="og:title" content="Netty核心模块组件">
+<meta property="og:url" content="http://example.com/2021/09/05/202195-Netty%E6%A0%B8%E5%BF%83%E6%A8%A1%E5%9D%97%E7%BB%84%E4%BB%B6/index.html">
 <meta property="og:site_name" content="深海学者">
-<meta property="og:description" content="final&#x2F;finally&#x2F;finalize 的区别">
+<meta property="og:description" content="针对 Netty 中较为核心的类进行说明">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-06-27T08:42:23.000Z">
-<meta property="article:modified_time" content="2021-07-01T07:28:58.529Z">
+<meta property="article:published_time" content="2021-09-05T07:04:33.000Z">
+<meta property="article:modified_time" content="2021-09-02T09:16:26.159Z">
 <meta property="article:author" content="QTLin">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/2021/06/27/2021627-finalfinallyfinalize/">
+<link rel="canonical" href="http://example.com/2021/09/05/202195-Netty%E6%A0%B8%E5%BF%83%E6%A8%A1%E5%9D%97%E7%BB%84%E4%BB%B6/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;2021&#x2F;06&#x2F;27&#x2F;2021627-finalfinallyfinalize&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;06&#x2F;27&#x2F;2021627-finalfinallyfinalize&#x2F;&quot;,&quot;title&quot;:&quot;final&#x2F;finally&#x2F;finalize&quot;}</script>
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;2021&#x2F;09&#x2F;05&#x2F;202195-Netty%E6%A0%B8%E5%BF%83%E6%A8%A1%E5%9D%97%E7%BB%84%E4%BB%B6&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;09&#x2F;05&#x2F;202195-Netty核心模块组件&#x2F;&quot;,&quot;title&quot;:&quot;Netty核心模块组件&quot;}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
-<title>final/finally/finalize | 深海学者</title>
+<title>Netty核心模块组件 | 深海学者</title>
   
 
 
@@ -146,7 +146,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8C%BA%E5%88%AB"><span class="nav-text">区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8Efinalize%E7%9A%84%E8%A1%A5%E5%85%85"><span class="nav-text">关于finalize的补充</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Bootstrap%E3%80%81ServerBootstrap"><span class="nav-text">Bootstrap、ServerBootstrap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Future%E3%80%81ChannelFuture"><span class="nav-text">Future、ChannelFuture</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Channel"><span class="nav-text">Channel</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Selector"><span class="nav-text">Selector</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -214,7 +214,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/27/2021627-finalfinallyfinalize/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/05/202195-Netty%E6%A0%B8%E5%BF%83%E6%A8%A1%E5%9D%97%E7%BB%84%E4%BB%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -227,7 +227,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          final/finally/finalize
+          Netty核心模块组件
         </h1>
 
         <div class="post-meta-container">
@@ -238,14 +238,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2021-06-27 16:42:23" itemprop="dateCreated datePublished" datetime="2021-06-27T16:42:23+08:00">2021-06-27</time>
+      <time title="创建时间：2021-09-05 15:04:33" itemprop="dateCreated datePublished" datetime="2021-09-05T15:04:33+08:00">2021-09-05</time>
     </span>
       <span class="post-meta-item">
         <span class="post-meta-item-icon">
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-07-01 15:28:58" itemprop="dateModified" datetime="2021-07-01T15:28:58+08:00">2021-07-01</time>
+        <time title="修改时间：2021-09-02 17:16:26" itemprop="dateModified" datetime="2021-09-02T17:16:26+08:00">2021-09-02</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -253,11 +253,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Java/%E7%9F%A5%E8%AF%86%E6%95%B4%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">知识整理</span></a>
+          <a href="/categories/Netty/" itemprop="url" rel="index"><span itemprop="name">Netty</span></a>
         </span>
     </span>
 
@@ -269,7 +265,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1k</span>
+      <span>1.5k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -287,29 +283,33 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>final/finally/finalize 的区别</p>
+        <p>针对 Netty 中较为核心的类进行说明</p>
 <span id="more"></span>
 
-<h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><ol>
-<li><strong>final 用于声明属性、方法和类：</strong><ul>
-<li>final 属性不可变，指的是<strong>引用不可变</strong>，而不关心指向对象内容的变化，被final 修饰的变量必须初始化</li>
-<li>final 方法不可被子类重写，可以实现 inline (内联)的机制</li>
-<li>final 类不可以被继承(如 String 、StringBuffer )，所有的方法不可以被重写，但其内的非 final 变量可以被修改</li>
+<h2 id="Bootstrap、ServerBootstrap"><a href="#Bootstrap、ServerBootstrap" class="headerlink" title="Bootstrap、ServerBootstrap"></a>Bootstrap、ServerBootstrap</h2><p>Bootstrap 的意思是引导，一个 Netty 应用通常由一个 Bootstrap 开始，主要作用是配置整个 Netty 程序，串联各个组件。客户端对应的是 Bootstrap，服务端则是 ServerBootstrap。</p>
+<p><strong>常用方法</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ServerBootstrap <span class="title">group</span><span class="params">(EventLoopGroup parenGroup, EventLoopGroup childGroup)</span></span>; <span class="comment">//用于服务端设置两个 EventLoop</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> B <span class="title">group</span><span class="params">(EventLoopGroup group)</span></span>; <span class="comment">//用于客户端设置一个 EventLoop</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> B <span class="title">channel</span><span class="params">(Class&lt;? extends C&gt; channelClass)</span></span>; <span class="comment">//设置一个服务端的通道实现类别</span></span><br><span class="line"><span class="keyword">public</span> &lt;T&gt; <span class="function">B <span class="title">option</span><span class="params">(ChannelOption&lt;T&gt; option, T value)</span></span>; <span class="comment">//用来给 ServerChannel 添加配置</span></span><br><span class="line"><span class="keyword">public</span> &lt;T&gt; <span class="function">ServerBootstrap <span class="title">childOption</span><span class="params">(ChannelOption&lt;T&gt; childOption, T value)</span></span>; <span class="comment">//用来给接收到的通道添加配置</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ServerBootstrap <span class="title">childHandler</span><span class="params">(ChannelHandler childHandler)</span></span>; <span class="comment">//设置业务处理类（可以是自定义的Handler）</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ChannelFuture <span class="title">bind</span><span class="params">(<span class="keyword">int</span> inetPort)</span></span>; <span class="comment">//用于服务端设置占用的端口号</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ChannelFuture <span class="title">connect</span><span class="params">(String inetHost, <span class="keyword">int</span> inetPort)</span></span>; <span class="comment">//用于客户端通过端口来连接服务端</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Future、ChannelFuture"><a href="#Future、ChannelFuture" class="headerlink" title="Future、ChannelFuture"></a>Future、ChannelFuture</h2><p>Netty 中所有的 I/O 操作都是异步的，不能立刻得知消息是否被正确处理，但是可以选择等待执行完成或者注册一个监听，通过 Future 和 ChannelFuture 来注册一个监听事件，当操作完成后就会自动触发该监听事件。</p>
+<p><strong>常用方法</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Channel <span class="title">channel</span><span class="params">()</span></span>; <span class="comment">//返回当前正在进行I/O操作的通道</span></span><br><span class="line"><span class="function">ChannelFuture <span class="title">sync</span><span class="params">()</span></span>; <span class="comment">//等待异步操作执行完毕</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Channel"><a href="#Channel" class="headerlink" title="Channel"></a>Channel</h2><ul>
+<li>Netty 网络通信的组件，能够用于执行网络 I/O 操作</li>
+<li>通过 Channel 可获得当前网络连接的通道状态和参数配置</li>
+<li>Channel 提供异步的网络 I/O 操作（如建立连接、读写、绑定端口），异步调用意味着任何 I/O 调用都可以立即返回，但不保证调用结束时操作已完成</li>
+<li>调用立即返回一个 ChannelFuture 实例，通过注册监听器到 ChannelFuture 上，可以在 I/O 操作完成时回调通知调用方</li>
+<li>支持关联 I/O 操作与对应的处理程序</li>
+<li>不同协议、不同的阻塞类型的连接都有不同的 Channel 类型与之对应，常用的 Channel 类型：<ul>
+<li>NioSocketChannel 异步的客户端 TCPSocket 连接</li>
+<li>NioServerSocketChannel 异步的服务端 TCPSocket 连接</li>
+<li>NioDatagramChannel 异步的 UDP 连接</li>
+<li>NioSctpChannel 异步的客户端 Sctp 连接</li>
+<li>NioSctpServerChannel 异步的服务端 Sctp 连接</li>
 </ul>
 </li>
-<li><strong>finally 作为异常处理的一部分</strong>，只能用在 try/catch 语句中，并且附带一个语句块，表示这段语句最终一定被执行(特殊情况不会被执行，如 try 语句前出现异常或 try 语句块中出现的异常没有被捕获)，经常被用在需要释放资源的情况下或是释放锁</li>
-<li><strong>finalize 是 Object 类的一个方法</strong>，在垃圾回收器执行时会调用被回收对象的 finalize() 方法，可以覆盖此方法来实现对其他资源的回收(一旦垃圾回收器准备好释放对象占用的空间，将首先调用该方法，并且在下一次垃圾回收动作发生时，才会真正回收对象占用的内存)，从功能上来说，finalize() 方法与 c++ 中的析构函数比较相似，但是 Java 采用的是基于垃圾回收器的自动内存管理机制，所以 finalize() 方法在本质上不同于 C++ 中的析构函数。</li>
-</ol>
-<h2 id="关于finalize的补充"><a href="#关于finalize的补充" class="headerlink" title="关于finalize的补充"></a><strong>关于finalize的补充</strong></h2><p>判定一个对象 objA 是否可回收，至少要经历两次标记过程：</p>
-<ul>
-<li>如果对象 objA 到 GC Roots 没有引用链，则进行第一次标记。</li>
-<li>进行筛选，判断此对象是否有必要执行 finalize() 方法<ul>
-<li>如果对象 objA 没有重写 finalize() 方法，或者 finalize() 方法已经被虚拟机调用过，则虚拟机视为“没有必要执行”，objA 被判定为不可触及的。</li>
-<li>如果对象 objA 重写了 finalize() 方法，且还未执行过，<strong>那么 objA 会被插入到 F-Queue 队列中，由一个虚拟机自动创建的、低优先级的 Finalizer 线程触发其 finalize() 方法执行。</strong></li>
 </ul>
-</li>
-<li><strong>finalize() 方法是对象逃脱死亡的最后机会</strong>，稍后 GC 会对 F-Queue 队列中的对象进行第二次标记。<strong>如果 objA 在 finalize() 方法中与引用链上的任何一个对象建立了联系</strong>，那么在第二次标记时，objA 会被移出“即将回收”集合。之后，对象会再次出现没有引用存在的情况。在这个情况下，finalize 方法不会被再次调用，对象会直接变成不可触及的状态，也就是说，<strong>一个对象的 finalize 方法只会被调用一次</strong>。</li>
-</ul>
+<h2 id="Selector"><a href="#Selector" class="headerlink" title="Selector"></a>Selector</h2><p>Netty 基于 Selector 对象实现 I/O 多路复用，通过 Selector 一个线程可以监听多个连接的 Channel 事件。<br>当向一个 Selector 中注册 Channel 后，Selector 内部的机制就可以自动不断地查询（Select）这些注册的 Channel 是否有已经就绪的 I/O 事件。</p>
 
     </div>
 
@@ -323,14 +323,11 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2021/06/23/2021623-%E7%AE%97%E6%B3%95%E7%BB%83%E4%B9%A0/" rel="prev" title="算法练习">
-                  <i class="fa fa-chevron-left"></i> 算法练习
+                <a href="/2021/08/28/2021828-Netty%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E8%AF%B4%E6%98%8E/" rel="prev" title="Netty架构设计说明">
+                  <i class="fa fa-chevron-left"></i> Netty架构设计说明
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2021/08/04/202184-%E4%B8%8EHTTP%E5%85%B3%E7%B3%BB%E5%AF%86%E5%88%87%E7%9A%84%E5%8D%8F%E8%AE%AEIP%E3%80%81TCP%E3%80%81DNS/" rel="next" title="与HTTP关系密切的协议:IP、TCP、DNS">
-                  与HTTP关系密切的协议:IP、TCP、DNS <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
