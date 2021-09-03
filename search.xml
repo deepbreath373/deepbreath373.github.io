@@ -5946,4 +5946,77 @@
         <category>Netty</category>
       </categories>
   </entry>
+  <entry>
+    <title>成员变量/局部变量</title>
+    <url>/2021/09/03/202193-%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F/</url>
+    <content><![CDATA[<p>成员变量与局部变量的区别</p>
+<span id="more"></span>
+
+<h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><ol>
+<li>声明的位置<ul>
+<li>局部变量：方法体 {} 中、形参、代码块 {} 中</li>
+<li>成员变量：类中方法外<ul>
+<li>类变量：有 static 修饰</li>
+<li>实例变量：没有 static 修饰</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>修饰符<ul>
+<li>局部变量：final</li>
+<li>成员变量：public、protected、private、final、static、volatile、transient</li>
+</ul>
+</li>
+<li>值存储的位置<ul>
+<li>局部变量：栈</li>
+<li>实例变量：堆</li>
+<li>类变量：方法区</li>
+</ul>
+</li>
+<li>作用域<ul>
+<li>局部变量：从声明处开始，到所属的 } 结束</li>
+<li>实例变量：在当前类中使用 this. (可省略)访问，其它类中使用 对象名. 访问</li>
+<li>类变量：在当前类中 类名. (可省略)访问，在其他类中 类名. 或 对象名. 访问</li>
+</ul>
+</li>
+<li>生命周期<ul>
+<li>局部变量：每一个线程，每一次调用执行都是新的生命周期</li>
+<li>实例变量：随着对象的创建而初始化，随着对象的回收而消亡，每一个对象的实例变量是独立的</li>
+<li>类变量：随着类的初始化而初始化，随着类的卸载而消亡，该类的所有对象的类变量是共享的</li>
+</ul>
+</li>
+</ol>
+<p><strong>当局部变量与成员变量重名时，如何区分：</strong></p>
+<ol>
+<li>局部变量与实例变量重名 实例变量前加 this.</li>
+<li>局部变量与类变量重名 类变量前加 类名.</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Java</category>
+        <category>知识整理</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>方法的参数传递机制</title>
+    <url>/2021/09/03/202193-%E6%96%B9%E6%B3%95%E7%9A%84%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92%E6%9C%BA%E5%88%B6/</url>
+    <content><![CDATA[<p>Java 中实参为方法的形参传值时，是怎么传递的？</p>
+<span id="more"></span>
+
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">1</span>;()</span><br><span class="line">        String str = <span class="string">&quot;hello&quot;</span>;</span><br><span class="line">        Integer num = <span class="number">200</span>;</span><br><span class="line">        <span class="keyword">int</span>[] arr = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>&#125;;</span><br><span class="line">        MyData my = <span class="keyword">new</span> MyData();</span><br><span class="line">        </span><br><span class="line">        change(i,str,num,arr,my);</span><br><span class="line">        </span><br><span class="line">        System.out.println(<span class="string">&quot;i = &quot;</span> + i);</span><br><span class="line">        System.out.println(<span class="string">&quot;str = &quot;</span> + str);</span><br><span class="line">        System.out.println(<span class="string">&quot;num = &quot;</span> + num);</span><br><span class="line">        System.out.println(<span class="string">&quot;arr = &quot;</span> + Arrays.toString(arr));</span><br><span class="line">        System.out.println(<span class="string">&quot;my.a = &quot;</span> + my.a);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">change</span><span class="params">(itn j, String s, Integer n, <span class="keyword">int</span>[] a, MyData m)</span></span>&#123;</span><br><span class="line">        j += <span class="number">1</span>;</span><br><span class="line">        s += <span class="string">&quot;world&quot;</span>;</span><br><span class="line">        n += <span class="number">1</span>;</span><br><span class="line">        a[<span class="number">0</span>] += <span class="number">1</span>;</span><br><span class="line">        m.a += <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyData</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">10</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>输出结果：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">i = 1</span><br><span class="line">str = hello</span><br><span class="line">num = 200</span><br><span class="line">arr = [2,2,3,4,5]</span><br><span class="line">my.a = 11</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><ol>
+<li>实参是基本数据类型：<br>传递数据值</li>
+<li>实参是引用数据类型：<br>传递地址值<br>String、包装类等对象具有不可变性</li>
+</ol>
+<p><img src="/images/Java/args.jpg" alt="args"></p>
+]]></content>
+      <categories>
+        <category>Java</category>
+        <category>知识整理</category>
+      </categories>
+  </entry>
 </search>
