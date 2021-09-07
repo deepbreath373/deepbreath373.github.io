@@ -6085,4 +6085,56 @@
         <category>知识整理</category>
       </categories>
   </entry>
+  <entry>
+    <title>LockSupport</title>
+    <url>/2021/09/06/202196-LockSupport/</url>
+    <content><![CDATA[<p>LockSupport 是用来创建锁和其他同步类的基本线程阻塞原语</p>
+<span id="more"></span>
+
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>LockSupport 类是用来创建锁和其他同步类的基本线程阻塞原语</p>
+<p>其中包含 park() 和 unpark() 方法的作用分别是阻塞线程和解除阻塞线程</p>
+<blockquote>
+<p>类似于线程唤醒机制的加强版（wait/notify）</p>
+</blockquote>
+<p><strong>为什么要使用 LockSupport ？和原来的相比有哪方面加强？</strong></p>
+<p>首先，测试 wait/notify 的缺陷。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//部分代码</span></span><br><span class="line"><span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line"><span class="comment">//    synchronized (objectlock)&#123;</span></span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            objectlock.wait();</span><br><span class="line">        &#125;<span class="keyword">catch</span>(InterruptedException e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"><span class="comment">//    &#125;</span></span><br><span class="line">&#125;,<span class="string">&quot;A&quot;</span>.start());</span><br><span class="line"><span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line"><span class="comment">//    synchronized (objectlock)&#123;</span></span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            objectlock.notify();</span><br><span class="line">        &#125;<span class="keyword">catch</span>(InterruptedException e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"><span class="comment">//    &#125;</span></span><br><span class="line">&#125;,<span class="string">&quot;B&quot;</span>.start());</span><br></pre></td></tr></table></figure>
+
+<p>如果采用非同步代码块的方式使用，会导致 IllegalMonitorStateException 异常。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">    <span class="comment">//暂停几秒</span></span><br><span class="line">    <span class="keyword">try</span>(TimeUnit.SECONDS.sleep(<span class="number">3</span>);)<span class="keyword">catch</span>(InterruptedException e)&#123;e.printStackTrace();&#125;</span><br><span class="line">    <span class="keyword">synchronized</span> (objectlock)&#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            objectlock.wait();</span><br><span class="line">        &#125;<span class="keyword">catch</span>(InterruptedException e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;,<span class="string">&quot;A&quot;</span>.start());</span><br><span class="line"><span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">    <span class="keyword">synchronized</span> (objectlock)&#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            objectlock.notify();</span><br><span class="line">        &#125;<span class="keyword">catch</span>(InterruptedException e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;,<span class="string">&quot;B&quot;</span>.start());</span><br></pre></td></tr></table></figure>
+
+<p>因为 ThreadA 休眠了 3 秒，导致 ThreadB 的 notify() 方法先执行结束，这样导致了 3 秒后，因执行 wait() 方法的 ThreadA 没有被唤醒的机会。</p>
+<hr>
+<p>再来看看 await/signal 又有什么不足呢？</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">static</span> Lock lock = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line"><span class="keyword">static</span> Condition condition = lock.newCondition();</span><br><span class="line"><span class="keyword">new</span> Thread() -&gt; &#123;</span><br><span class="line">    <span class="keyword">try</span>(TimeUnit.SECONDS.sleep(<span class="number">3</span>);)<span class="keyword">catch</span>(InterruptedException e)&#123;e.printStackTrace();&#125;</span><br><span class="line">    <span class="comment">//lock.lock();</span></span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        condition.await();</span><br><span class="line">    &#125;<span class="keyword">catch</span>(InterruptedException e)&#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">        <span class="comment">//lock.unlock();</span></span><br><span class="line">    &#125;,<span class="string">&quot;A&quot;</span>).start();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">new</span> Thread() -&gt; &#123;</span><br><span class="line">    <span class="comment">//lock.lock();</span></span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        condition.signal();</span><br><span class="line">    &#125;<span class="keyword">catch</span>(InterruptedException e)&#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">        <span class="comment">//lock.unlock();</span></span><br><span class="line">    &#125;,<span class="string">&quot;B&quot;</span>).start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果不使用 lock() 和 unlock() 方法实现同步，那么也会抛出 IllegalMonitorStateException 异常。</p>
+<p>同样，如果让 ThreadA 先休眠 3 秒，然后 ThreadB 的 signal() 方法先执行完毕，那么，ThreadA 执行完 await() 方法陷入等待之后，就不会被唤醒。</p>
+<hr>
+<p>至此，可以看出<strong>传统的两种等待/唤醒的方式具有一定的约束</strong>：<br>        1. 线程<strong>先要获得并持有锁</strong>，必须在锁块(synchronized/lock)中<br>          2. 必须按照<strong>先等待后唤醒</strong>的顺序，线程才能被成功唤醒</p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>LockSupport 中的 park() 和 unpark() 是什么？</p>
+<p><code>park() 除非许可证可用，否则禁用当前线程以进行线程调度</code></p>
+<p><code>unpark() 如果给定线程尚不可用，则为其提供许可</code></p>
+<blockquote>
+<p>LockSupport 类使用了一种名为 Permit，即许可证 的概念来做到<strong>阻塞和唤醒线程</strong>的功能，每个线程都有个 Permit。</p>
+<p>Permit 只有 0/1 两个值，累加不可以超过 1</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Thread a = <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">    <span class="keyword">try</span>(TimeUnit.SECONDS.sleep(<span class="number">3</span>);)<span class="keyword">catch</span>(InterruptedException e)&#123;e.printStackTrace();&#125;</span><br><span class="line">    <span class="comment">//被阻塞，等待发放许可证在通行</span></span><br><span class="line">    LockSupport.park();</span><br><span class="line">&#125;, <span class="string">&quot;a&quot;</span>);</span><br><span class="line">a.start();</span><br><span class="line">Thread b = <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">    <span class="comment">//给ThreadA发放许可证</span></span><br><span class="line">    LockSupport.unpark(a);</span><br><span class="line">&#125;, <span class="string">&quot;b&quot;</span>);</span><br><span class="line">b.start();</span><br></pre></td></tr></table></figure>
+
+<p>即是让 ThreadA 休眠 3 秒，ThreadB 的 unpark(a) 方法先执行，ThreadA 仍然可以正常执行。相当于 ThreadB 提前发放了许可证，那么 ThreadA 中的 park() 方法就不会生效。</p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>LockSupport是一个线程阻寒工具类，所有的方法都是静态方法，可以让线程在任意位置阻塞，阻塞之后也有对应的唤醒方法。归根结底，LockSupport 调用的 Unsafe 中的 native 代码。</p>
+<p><strong>LockSupport.java</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">park</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">//实际上是调用了Unsafe的方法</span></span><br><span class="line">    UNSAFE.park(<span class="keyword">false</span>, <span class="number">0L</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Unsafe.java</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">native</span> <span class="keyword">void</span> <span class="title">park</span><span class="params">(<span class="keyword">boolean</span> var1, <span class="keyword">long</span> var2)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>执行过程</strong></p>
+<p>LockSupport 和每个使用它的线程都有一个 Permit 关联，默认值是 0。<br>调用一次 unpark 方法 Permit 加 1。<br>调用一次 park 方法会消耗 Permit，即 Permit - 1 变为 0，此时，park 立即返回。如果再次调用 park 就会因为没有许可证导致阻塞，直到 Permit 因为 unpark 变为 1。<br>每个线程关联的 Permit 最多为 1，即使多次调用 unpark 也不会导致 Permit 超过 1。</p>
+]]></content>
+      <categories>
+        <category>Java</category>
+        <category>JUC</category>
+      </categories>
+  </entry>
 </search>
