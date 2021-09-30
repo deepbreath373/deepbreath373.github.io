@@ -2218,7 +2218,7 @@
 ]]></content>
       <categories>
         <category>Java</category>
-        <category>线程</category>
+        <category>JUC</category>
       </categories>
   </entry>
   <entry>
@@ -3178,7 +3178,7 @@
 ]]></content>
       <categories>
         <category>Java</category>
-        <category>线程</category>
+        <category>JUC</category>
       </categories>
   </entry>
   <entry>
@@ -6374,6 +6374,39 @@
       <categories>
         <category>Java</category>
         <category>知识整理</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>死锁实现及分析</title>
+    <url>/2021/09/30/2021930-%E6%AD%BB%E9%94%81%E5%AE%9E%E7%8E%B0%E5%8F%8A%E5%88%86%E6%9E%90/</url>
+    <content><![CDATA[<p>死锁是指两个或两个以上的进程在执行过程中，因争夺资源而造成的一种互相等待的现象，若无外力干涉那它们都将无法推进下去。</p>
+<span id="more"></span>
+
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p><strong>死锁是什么？</strong><br>死锁是指两个或两个以上的进程在执行过程中，<strong>因争夺资源而造成的一种互相等待的现象</strong>，若无外力干涉那它们都将无法推进下去，如果系统资源充足，进程的资源请求都能够碍到满足，死锁出现的可能性就很低，否则就会<strong>因争夺有限的资源而陷入死锁。</strong></p>
+<p><strong>产生死锁的主要原因</strong><br>1.系统资源不足<br>2.进程运行推进的顺序不当<br>3.资源分配不当</p>
+<p><strong>发生死锁的四个条件</strong><br>1.互斥条件，资源不可共享<br>2.请求和保持，一个线程持有一个资源并且等待获取另一个资源<br>3.不可抢占，当前线程持有的资源不可被其他线程获取<br>4.循环等待，线程之间相互等待</p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestJava</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        String lockA = <span class="string">&quot;lockA&quot;</span>;</span><br><span class="line">        String lockB = <span class="string">&quot;lockB&quot;</span>;</span><br><span class="line">       <span class="keyword">new</span> Thread(<span class="keyword">new</span> HoldLock(lockA, lockB),<span class="string">&quot;Thread-A&quot;</span>).start();</span><br><span class="line">       <span class="keyword">new</span> Thread(<span class="keyword">new</span> HoldLock(lockB, lockA),<span class="string">&quot;Thread-B&quot;</span>).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HoldLock</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String lockA;</span><br><span class="line">    <span class="keyword">private</span> String lockB;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">HoldLock</span> <span class="params">(String lockA, String lockB)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.lockA = lockA;</span><br><span class="line">        <span class="keyword">this</span>.lockB = lockB;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (lockA)&#123;</span><br><span class="line">            System.out.println(Thread.currentThread().getName()+<span class="string">&quot; get &quot;</span>+lockA+<span class="string">&quot;, try get &quot;</span>+lockB);</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                TimeUnit.SECONDS.sleep(<span class="number">2</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">synchronized</span> (lockB)&#123;</span><br><span class="line">                System.out.println(Thread.currentThread().getName()+<span class="string">&quot; get &quot;</span>+lockB+<span class="string">&quot;, try get &quot;</span>+lockA);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>输出结果：</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Thread-A get lockA, <span class="keyword">try</span> get lockB</span><br><span class="line">Thread-B get lockB, <span class="keyword">try</span> get lockA</span><br></pre></td></tr></table></figure>
+
+<p>两个线程互相等待并持有一个锁资源，陷入死锁状态。</p>
+<h2 id="死锁确认"><a href="#死锁确认" class="headerlink" title="死锁确认"></a>死锁确认</h2><ol>
+<li>首先使用 jps -l 命令查看当前运行中程序的进程号</li>
+</ol>
+<p><img src="/images/Java/JUC/jps.png" alt="jps"></p>
+<ol start="2">
+<li>接着使用 jstack [进程号] 命令分析对应程序</li>
+</ol>
+<p><img src="/images/Java/JUC/jstack.png" alt="jstack"></p>
+<p><img src="/images/Java/JUC/deadLock.png" alt="deadLock"></p>
+<ol start="3">
+<li>可以看出 A 和 B 线程都在互相等待对方所持有的锁，进入死锁状态</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Java</category>
+        <category>线程</category>
       </categories>
   </entry>
 </search>
