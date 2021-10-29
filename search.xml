@@ -4508,7 +4508,7 @@
 </blockquote>
 <hr>
 <p>1）许多的锁、同步器都与 AQS 有关，继承了 AQS</p>
-<p><img src="/images/Java/JUC/extends_AQS.png" alt="CLH"></p>
+<p><img src="/images/Java/JUC/Extends_AQS.png" alt="CLH"></p>
 <p>2）ReentrantLock</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReentrantLock</span> <span class="keyword">implements</span> <span class="title">Lock</span>, <span class="title">java</span>.<span class="title">io</span>.<span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">abstract</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Sync</span> <span class="keyword">extends</span> <span class="title">AbstractQueuedSynchronizer</span> </span>&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
