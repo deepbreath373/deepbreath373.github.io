@@ -1560,7 +1560,7 @@
     <content><![CDATA[<p>对 Spring 进行简单介绍以及 IoC 和 AOP 的解读</p>
 <span id="more"></span>
 
-<h2 id="Spring的体系结构"><a href="#Spring的体系结构" class="headerlink" title="Spring的体系结构"></a>Spring的体系结构</h2><p><img src="/images/Spring/Spring_framework.png" alt="image-20200717074956359"></p>
+<h2 id="Spring的体系结构"><a href="#Spring的体系结构" class="headerlink" title="Spring的体系结构"></a>Spring的体系结构</h2><p><img src="/images/Spring/spring_framework.png" alt="image-20200717074956359"></p>
 <p>Spring 是分层的 Java SE/EE 应用 full-stack 轻量级开源框架，以 <strong>IoC（Inverse Of Control：反转控制）和 AOP（Aspect Oriented Programming：面向切面编程）</strong>为内核，提供了展现层 Spring MVC 和持久层 Spring JDBC 以及业务层事务管理等众多的企业级应用技术，还能整合开源世界众多著名的第三方框架和类库，逐渐成为使用最多的 Java EE 企业应用开源框架。</p>
 <h2 id="程序的耦合"><a href="#程序的耦合" class="headerlink" title="程序的耦合"></a>程序的耦合</h2><p>说到 Spring 就得提到耦合这一概念，Spring 的使用可以降低程序的耦合性，使得程序的独立性更强。</p>
 <p>耦合性(Coupling)，也叫耦合度，是对模块间关联程度的度量。耦合的强弱取决于模块间接口的复杂性、调用模块的方式以及通过界面传送数据的多少。模块间的耦合度是指模块之间的依赖关系，包括控制关系、调用关系、数据传递关系。模块间联系越多，其耦合性越强，同时表明其独立性越差( 降低耦合性，可以提高其独立性)。</p>
@@ -1610,7 +1610,7 @@
 
 <p>输出结果：</p>
 <p><img src="/images/Spring/result.png" alt="img"></p>
-<h3 id="依赖注入（DI）"><a href="#依赖注入（DI）" class="headerlink" title="依赖注入（DI）"></a>依赖注入（DI）</h3><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>ioc 只是降低了程序的耦合，并不能完全消除耦合性。例如，在业务层调用持久层的方法，仍然存在着依赖关系。所以，就可以使用依赖注入，<strong>让 Spring 帮我们把持久层对象传入业务层</strong>。不用自己去实例化持久层对象。</p>
+<h3 id="依赖注入（DI）"><a href="#依赖注入（DI）" class="headerlink" title="依赖注入（DI）"></a>依赖注入（DI）</h3><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>IOC 只是降低了程序的耦合，并不能完全消除耦 IOC 合性。例如，在业务层调用持久层的方法，仍然存在着依赖关系。所以，就可以使用依赖注入，<strong>让 Spring 帮我们把持久层对象传入业务层</strong>。不用自己去实例化持久层对象。</p>
 <h3 id="构造函数注入"><a href="#构造函数注入" class="headerlink" title="构造函数注入"></a>构造函数注入</h3><h4 id="注入基本数据类型"><a href="#注入基本数据类型" class="headerlink" title="注入基本数据类型"></a>注入基本数据类型</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AccountService</span> <span class="title">Impl</span> <span class="keyword">implements</span> <span class="title">IAccountService</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> Integer age;</span><br><span class="line">    <span class="keyword">private</span> Date birthday;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AccountServiceImpl</span> <span class="params">(String name, Integer age, Date birthday)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">        <span class="keyword">this</span>.birthday = birthday;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <ul>
