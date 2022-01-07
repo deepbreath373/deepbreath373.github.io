@@ -6454,19 +6454,4 @@
         <category>计算机网络</category>
       </categories>
   </entry>
-  <entry>
-    <title>SpringCloudConfig通过SSH方式连接Github</title>
-    <url>/2022/01/06/202216-SpringCloudConfig%E9%80%9A%E8%BF%87SSH%E6%96%B9%E5%BC%8F%E8%BF%9E%E6%8E%A5Github/</url>
-    <content><![CDATA[<p>SpringCloudConfig通过SSH方式连接Github</p>
-<span id="more"></span>
-
-<p>1.在本地的gitbash中执行<code>ssh-keygen -m PEM -t rsa -b 4096</code>生成RSA密钥</p>
-<p>2.找到当前主机的.ssh目录中的id_rsa.pub公钥文件</p>
-<p>3.使用公钥文件去GitHub生成对应的key</p>
-<p>4.在yml配置中添加privatekey属性，属性值为.ssh/id_rsa</p>
-]]></content>
-      <categories>
-        <category>SpringCloudConfig</category>
-      </categories>
-  </entry>
 </search>
