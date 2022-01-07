@@ -6454,4 +6454,75 @@
         <category>计算机网络</category>
       </categories>
   </entry>
+  <entry>
+    <title>Redis的删除策略及淘汰机制</title>
+    <url>/2021/10/14/20211014-Redis%E7%9A%84%E5%88%A0%E9%99%A4%E7%AD%96%E7%95%A5%E5%8F%8A%E6%B7%98%E6%B1%B0%E6%9C%BA%E5%88%B6/</url>
+    <content><![CDATA[<p>Redis 使用惰性删除+定期删除来清除大部分过期的 Key，再辅以内存淘汰机制来解决漏网之鱼。</p>
+<span id="more"></span>
+
+<h2 id="Redis的删除策略"><a href="#Redis的删除策略" class="headerlink" title="Redis的删除策略"></a>Redis的删除策略</h2><ul>
+<li>惰性删除<br>惰性删除<strong>只在你要获取某个 Key 的时候</strong>，Redis 就会对该 Key 进行检测，如果没有过期，则正常将值返回给你；如果已经过期了，那么 Redis 会删除该 Key 不返回。这样减少了对 CPU 的压力，但是可能会造成需要不常用的过期 Key 没有被删除。</li>
+<li>定期删除<br>定期删除是指 Redis <strong>每隔 100 ms 就随机抽取一些设置了过期时间的 Key</strong> ，去检测它们是否已经过期，如果过期则进行删除。在 <code>redis.conf</code> 中通过配置 <code>hz 10</code> 的值来决定 Redis 1s 执行多少次定期删除，配置 <code>maxmemory-samples</code> 决定每次定期删除中抽取的 Key 的数量。通过随机抽取部分 Key 来检测，避免了全部检测导致的 CPU 负载过高。</li>
+</ul>
+<p>“惰性删除+定期删除“就能保证过期的 Key 最终一定会被删除掉，但是会存在一些很长一段时间也没被访问的 Key ，并且也被定期删除所遗漏。那么，就会导致这些过期的 Key 长时间占有内存，浪费了资源。于是，Redis 使用了<strong>内存淘汰机制</strong>来解决这个问题。</p>
+<h2 id="Redis的内存淘汰机制"><a href="#Redis的内存淘汰机制" class="headerlink" title="Redis的内存淘汰机制"></a>Redis的内存淘汰机制</h2><p><strong>Redis 提供了 8 种数据淘汰机制（两个 lfu 是4.0之后新增的）：</strong></p>
+<ol>
+<li><strong>volatile-lru(least recently used)<strong>：从已设置过期时间的 Key 中挑选</strong>最近最少使用</strong>的淘汰</li>
+<li><strong>volatile-ttl(time to live)<strong>：从已设置过期时间的 Key 中挑选</strong>将要过期</strong>的淘汰</li>
+<li><strong>volatile-random</strong>：从已设置过期时间的 Key 中<strong>任意选择</strong>淘汰</li>
+<li><strong>volatile-lfu(least frequently used)<strong>：从已设置过期时间的 Key 中挑选</strong>最不经常使用（使用次数最少）</strong>的淘汰</li>
+<li>**allkeys-lru(least recently used)**：在键空间中，移除最近最少使用的 key（这个是最常用的）</li>
+<li>**allkeys-lfu(least frequently used)**：在键空间中，移除最不经常使用（使用次数最少）的 Key</li>
+<li><strong>allkeys-random</strong>：从 Key 中任意选择数据淘汰</li>
+<li><strong>no-eviction</strong>：禁止驱逐数据，也就是说当内存不足以容纳新写入数据时，新写入操作会报错。</li>
+</ol>
+<hr>
+<ul>
+<li>什么时候执行？<br>当占用内存大于 <code>redis.conf</code> 中 <code>maxmemory</code> 所设置的值时，会执行内存淘汰策略</li>
+<li>内存淘汰机制的配置<br>通过<code>redis.conf</code> 中的 <code>maxmemory-policy</code> 进行内存淘汰机制的选择，默认是使用 <code>no-eviction</code> 机制。</li>
+<li>执行过程<ul>
+<li>客户端执行了一条指令，需要向 Redis 中增加数据</li>
+<li>Redis 检查内存使用情况，如果内存超过 <code>maxmemory</code> ，就会按照配置的 <code>maxmemory-policy</code> 删除符合条件的 Key</li>
+<li>再次执行数据的增加</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Redis</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>一致性Hash原理</title>
+    <url>/2021/10/26/20211026-%E4%B8%80%E8%87%B4%E6%80%A7Hash%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<p>利用一致性 Hash 实现负载均衡</p>
+<span id="more"></span>
+
+<h2 id="普通Hash出现的问题"><a href="#普通Hash出现的问题" class="headerlink" title="普通Hash出现的问题"></a>普通Hash出现的问题</h2><p>为了保证 Redis 的高并发、高可用，我们通常采用搭建 Redis 集群并且采用主从复制、读写分离的方法。当缓存的数量超过一定值的时候，就需要对现有的 Redis 集群进行分库分表的操作。但是，如果采用随机存储的方式，我们存储的数据可能存储在任何一组 Redis 中，当需要查询的时候，不得不遍历所有的 Redis 服务器才能得到想要的数据。因此，可以采用对存储的数据进行 Hash 、取模的方式，来确定存储在哪一组 Redis 服务器中。</p>
+<img src="/images/Algorithm/RedisHash.jpg" style="zoom:50%;" />
+
+<p>上图中，采取 <code>hash(data)%3</code> 的方式定位了 Redis 服务器的存储位置，在下次取值的时候也可以采用同样的计算方法就能快速定位数据所在的 Redis 服务器。</p>
+<p>使用 Hash 取模的方法，虽然避免了遍历 Redis 服务器取值的问题，但是，如果 Redis 服务器发生了变动，数量进行了增加或减少，那么所有缓存的位置就会发生变化，即 Hash 取模的计算结果都发生了改动。</p>
+<p>为了避免上述情况的发生，就有了一致性 Hash 算法的出现。</p>
+<h2 id="一致性Hash算法原理"><a href="#一致性Hash算法原理" class="headerlink" title="一致性Hash算法原理"></a>一致性Hash算法原理</h2><p>一致性 Hash 算法也是通过取模的方式来确定数据的存储位置，但是，有别于上述所用的对服务器数量进行取模，一致性 Hash 采用的是对 <strong>2 的 32 次方</strong>取模。在该算法中，将 Hash 空间比作一个以 0 开始，以 2 的 32 次方减一结束的圆环。</p>
+<p><img src="/images/Algorithm/Hash1.jpg"></p>
+<p>将每个服务器使用服务器的 IP 或者主机名作为关键字进行 Hash ，得到一个 Hash 值作为该服务器在圆环上的位置。</p>
+<p><img src="/images/Algorithm/Hash2.jpg"></p>
+<p>而数据的存储也是用相同的 Hash 函数来计算对应的 Hash 值，借此来确定数据在圆环上的位置，接着从其位置顺时针查找，将查找到的首个服务器作为其存储的服务器。</p>
+<p><img src="/images/Algorithm/Hash3.jpg"></p>
+<h2 id="一致性Hash算法的容错性和可扩展性"><a href="#一致性Hash算法的容错性和可扩展性" class="headerlink" title="一致性Hash算法的容错性和可扩展性"></a>一致性Hash算法的容错性和可扩展性</h2><p>假设服务器 B 宕机，那么原本存储在服务器 B 的数据 b 就会被重新定位，定位到其顺时针最近的服务器 C 上，而原本的服务器 A 和服务器 B 不用发生任何改变。</p>
+<p><img src="/images/Algorithm/Hash4.jpg"></p>
+<p>而在环上新增一个服务器，也只会导致部分数据发生重定位。</p>
+<p><img src="/images/Algorithm/Hash6.jpg"></p>
+<p>可以发现，不论是服务器的增加还是减少，所影响的数据只是少部分，因此，该算法拥有不错的容错性和可扩展性。</p>
+<h2 id="数据倾斜问题"><a href="#数据倾斜问题" class="headerlink" title="数据倾斜问题"></a>数据倾斜问题</h2><p>在服务节点较少的情况下，可能导致节点集中在环的某一侧，而导致的<strong>数据倾斜问题</strong>，即大部分数据的缓存都落在了某一台服务器上。</p>
+<p><img src="/images/Algorithm/Hash5.jpg"></p>
+<p>大量的数据集中存储在了服务器 A 上，而服务器 B 只有少量的数据存储。为了解决该问题，一致性 Hash 算法引入了<strong>虚拟节点机制</strong>，即对每个服务器节点进行多次 Hash ，每个位置都放置一个服务节点，称为虚拟节点。</p>
+<p><img src="/images/Algorithm/Hash7.jpg"></p>
+<p>数据的存储方式不变，只需要增加一步虚拟节点到实际服务器节点的映射即可。这样，即使服务器节点较少，也可以通过虚拟节点的方式使得数据分布的均匀。</p>
+]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+  </entry>
 </search>
