@@ -6417,4 +6417,56 @@
         <category>搜索技术</category>
       </categories>
   </entry>
+  <entry>
+    <title>正向代理和反向代理</title>
+    <url>/2021/10/07/2021107-%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86%E5%92%8C%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/</url>
+    <content><![CDATA[<p>正向代理：代理客户端    反向代理：代理服务端</p>
+<span id="more"></span>
+
+<h2 id="什么是代理"><a href="#什么是代理" class="headerlink" title="什么是代理"></a>什么是代理</h2><p>代理就是一个代表、一个渠道，由其他事物代替原事物进行操作。</p>
+<p>此时涉及到三个角色，一个是被代理角色，一个是代理角色，另一个是目标角色。被代理角色通过代理角色来对目标角色进行访问，完成自己想要的操作，这个过程称为代理操作过程。例如，去电脑城买电脑，那么客人就是被代理角色、电脑城是代理角色、而厂家就是目标角色，客人通过电脑城买到了厂家的电脑就是这么一个代理过程。</p>
+<h2 id="正向代理"><a href="#正向代理" class="headerlink" title="正向代理"></a>正向代理</h2><p>在访问一些不对外开放的资源的时候，就需要用到代理的方式实现，首先让客户端与代理服务器进行连接，然后客户端将自己的请求发送到代理服务器，由代理服务器代为向目标服务器发送请求，在代理服务器得到服务端返回的资源后，再将资源返回给客户端。</p>
+<p>正向代理的特点就是客户端明确要访问的服务器地址，而服务器只知道请求来自哪个代理服务器，而不知道来自哪个客户端，正向代理隐藏了客户端的信息。</p>
+<p><img src="/images/ComputerNetworks/Proxy1.png"></p>
+<p><strong>正向代理的用途</strong></p>
+<ul>
+<li>可以通过代理访问不对外开放的资源</li>
+<li>可以将一些数据存储在代理服务器，加快访问速度</li>
+<li>对客户进行访问授权，上网认证</li>
+<li>代理可以记录客户端的访问记录</li>
+</ul>
+<blockquote>
+<p>正向代理代理的是客户端，代客户端向服务端发送请求。</p>
+</blockquote>
+<h2 id="反向代理"><a href="#反向代理" class="headerlink" title="反向代理"></a>反向代理</h2><p>当单服务器已经不能满足大量的访问请求时，都会采用服务器集群的方式来分担服务器的压力，提升网站的性能。但是，客户端怎么来决定访问哪一台服务器来请求资源呢？这时就用上了反向代理，利用反向代理服务器（例如 Nginx）来为服务器做到负载均衡。该代理服务器负责接收用户的请求，然后负责将大量的用户请求按照一定地策略分发给各个服务器，以此来减轻单个服务器的访问压力。</p>
+<p>反向代理的特点就是客户端并不知道自己请求的是哪一台服务器，全由代理服务器进行请求分发。</p>
+<p><img src="/images/ComputerNetworks/Proxy2.png"></p>
+<p><strong>反向代理的用途</strong></p>
+<ul>
+<li>负载均衡，通过反向代理优化网站的访问压力</li>
+<li>保证内网安全，将反向代理作为公网访问地址，服务器则时内网</li>
+</ul>
+<blockquote>
+<p>反向代理，代理的是服务端，代替服务端接收用户请求。</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>计算机网络</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>SpringCloudConfig通过SSH方式连接Github</title>
+    <url>/2022/01/06/202216-SpringCloudConfig%E9%80%9A%E8%BF%87SSH%E6%96%B9%E5%BC%8F%E8%BF%9E%E6%8E%A5Github/</url>
+    <content><![CDATA[<p>SpringCloudConfig通过SSH方式连接Github</p>
+<span id="more"></span>
+
+<p>1.在本地的gitbash中执行<code>ssh-keygen -m PEM -t rsa -b 4096</code>生成RSA密钥</p>
+<p>2.找到当前主机的.ssh目录中的id_rsa.pub公钥文件</p>
+<p>3.使用公钥文件去GitHub生成对应的key</p>
+<p>4.在yml配置中添加privatekey属性，属性值为.ssh/id_rsa</p>
+]]></content>
+      <categories>
+        <category>SpringCloudConfig</category>
+      </categories>
+  </entry>
 </search>
