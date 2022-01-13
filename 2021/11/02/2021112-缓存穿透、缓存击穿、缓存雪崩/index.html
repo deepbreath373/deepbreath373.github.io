@@ -20,29 +20,27 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;example.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.5.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:1,&quot;unescape&quot;:false,&quot;preload&quot;:false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="1System.out.println(&quot;Hello World!&quot;);">
+<meta name="description" content="有关 Redis 缓存存在的问题">
 <meta property="og:type" content="article">
-<meta property="og:title" content="博客搭建第一天">
-<meta property="og:url" content="http://example.com/2020/05/07/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AC%AC%E4%B8%80%E5%A4%A9/index.html">
+<meta property="og:title" content="缓存穿透、缓存击穿、缓存雪崩">
+<meta property="og:url" content="http://example.com/2021/11/02/2021112-%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F%E3%80%81%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF%E3%80%81%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9/index.html">
 <meta property="og:site_name" content="深海学者">
-<meta property="og:description" content="1System.out.println(&quot;Hello World!&quot;);">
+<meta property="og:description" content="有关 Redis 缓存存在的问题">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/images/Frist.gif">
-<meta property="article:published_time" content="2020-05-07T13:22:00.000Z">
-<meta property="article:modified_time" content="2021-06-06T00:58:05.850Z">
+<meta property="article:published_time" content="2021-11-01T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-01-08T07:43:35.074Z">
 <meta property="article:author" content="QTLin">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/images/Frist.gif">
 
 
-<link rel="canonical" href="http://example.com/2020/05/07/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AC%AC%E4%B8%80%E5%A4%A9/">
+<link rel="canonical" href="http://example.com/2021/11/02/2021112-%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F%E3%80%81%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF%E3%80%81%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;2020&#x2F;05&#x2F;07&#x2F;%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AC%AC%E4%B8%80%E5%A4%A9&#x2F;&quot;,&quot;path&quot;:&quot;2020&#x2F;05&#x2F;07&#x2F;博客搭建第一天&#x2F;&quot;,&quot;title&quot;:&quot;博客搭建第一天&quot;}</script>
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;2021&#x2F;11&#x2F;02&#x2F;2021112-%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F%E3%80%81%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF%E3%80%81%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;11&#x2F;02&#x2F;2021112-缓存穿透、缓存击穿、缓存雪崩&#x2F;&quot;,&quot;title&quot;:&quot;缓存穿透、缓存击穿、缓存雪崩&quot;}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
-<title>博客搭建第一天 | 深海学者</title>
+<title>缓存穿透、缓存击穿、缓存雪崩 | 深海学者</title>
   
 
 
@@ -135,7 +133,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -148,6 +146,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F"><span class="nav-text">缓存穿透</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF"><span class="nav-text">缓存击穿</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9"><span class="nav-text">缓存雪崩</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -215,7 +214,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/05/07/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AC%AC%E4%B8%80%E5%A4%A9/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/02/2021112-%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F%E3%80%81%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF%E3%80%81%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -228,7 +227,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          博客搭建第一天
+          缓存穿透、缓存击穿、缓存雪崩
         </h1>
 
         <div class="post-meta-container">
@@ -239,14 +238,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2020-05-07 21:22:00" itemprop="dateCreated datePublished" datetime="2020-05-07T21:22:00+08:00">2020-05-07</time>
+      <time title="创建时间：2021-11-02 00:00:00" itemprop="dateCreated datePublished" datetime="2021-11-02T00:00:00+08:00">2021-11-02</time>
     </span>
       <span class="post-meta-item">
         <span class="post-meta-item-icon">
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-06-06 08:58:05" itemprop="dateModified" datetime="2021-06-06T08:58:05+08:00">2021-06-06</time>
+        <time title="修改时间：2022-01-08 15:43:35" itemprop="dateModified" datetime="2022-01-08T15:43:35+08:00">2022-01-08</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -254,7 +253,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E9%9A%8F%E5%BF%83/" itemprop="url" rel="index"><span itemprop="name">随心</span></a>
+          <a href="/categories/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a>
         </span>
     </span>
 
@@ -266,7 +265,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>45</span>
+      <span>1.2k</span>
     </span>
 </div>
 
@@ -277,9 +276,37 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(<span class="string">&quot;Hello World!&quot;</span>);</span><br></pre></td></tr></table></figure>
+        <p>有关 Redis 缓存存在的问题</p>
+<span id="more"></span>
 
-<p><img src="/images/Frist.gif"></p>
+<h2 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h2><p><strong>描述：</strong></p>
+<p>缓存穿透是指<strong>缓存和数据库</strong>中都没有要查找的数据，而用户不断地发起请求就导致在缓存和数据库上进行了无用的查询，导致数据库的压力增加。</p>
+<p><strong>解决方案：</strong></p>
+<ol>
+<li>可以在用户发起请求时对请求进行<strong>校验</strong>，如果不合法，可以直接拒绝请求，避免本次请求落在数据库上。</li>
+<li>从缓存和数据库中都没有读取到的数据，可以暂时在 Redis 中设置一个<strong>空值的 Key</strong> 来应对下次同样的请求。这样就可以直接返回一个空值，但是不能避免每次不同 Key 值的请求。</li>
+<li>利用<strong>布隆过滤器</strong>将所有可能存在的请求的值放在该过滤器中，当用户发起请求时，首先校验请求是否存在于布隆过滤器中，如果不存在，拒绝本次请求；否则，在进行正常的查询操作。</li>
+</ol>
+<blockquote>
+<p>布隆过滤器：对给定元素进行哈希计算，根据得到的值将元素存放在对应的位置，但是可能出现不同元素得到相同哈希值的情况，所以过滤器可能出现误判（布隆过滤器说该元素存在，可能不存在，但是，如果说不存在，那么肯定不存在）</p>
+</blockquote>
+<h2 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h2><p><strong>描述：</strong></p>
+<p>缓存击穿与缓存穿透不同之处在于，要查询的数据在 Redis 中没有，但是在数据库中存在（一般是缓存到期问题）。这时如果大量的并发请求抵达，导致大量的请求直接落在了数据库上，可能导致数据库宕机。</p>
+<p><strong>解决方案：</strong></p>
+<ol>
+<li><p>增加热点数据的过期时间，甚至设置成永不过期，避免热点数据在大量请求时出现过期的情况。</p>
+</li>
+<li><p>增加双重检验锁来限制请求查询数据库的次数。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">String data = stringRedisTemplate.boudValueOps(<span class="string">&quot;data&quot;</span>).get();</span><br><span class="line"><span class="keyword">if</span>(data != <span class="keyword">null</span>)&#123;</span><br><span class="line">    <span class="comment">//如果缓存中存在数据直接返回</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">//缓存中不存在数据，尝试从数据库查询</span></span><br><span class="line">    <span class="keyword">synchronized</span>(<span class="keyword">this</span>)&#123;</span><br><span class="line">        <span class="comment">//再次判断是否有其他线程已经成功从数据库查询，并设置到缓存中去</span></span><br><span class="line">        String data = stringRedisTemplate.boudValueOps(<span class="string">&quot;data&quot;</span>).get();</span><br><span class="line">        <span class="keyword">if</span>(data == <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="comment">//从数据库查询，并设置到缓存中去</span></span><br><span class="line">            data = getDataFromDB();</span><br><span class="line">            stringRedisTemplate.boudValueOps(<span class="string">&quot;data&quot;</span>).set();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">//缓存中已经存在数据</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> data;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h2><p><strong>描述：</strong></p>
+<p>缓存雪崩是指缓存中大量的数据在同一时间段到期，而导致大量的请求进入数据库进行查询。与缓存击穿不同的是，缓存击穿是指的同一条数据，而缓存雪崩是指的不同的数据。</p>
+<p><strong>解决方案：</strong></p>
+<ol>
+<li>缓存数据时尽量避免设置同一时刻过期，将过期时间进行随机设置。</li>
+<li>如果是分布式部署，可以将不同的热点数据分散在不同的服务器下。</li>
+<li>设置热点数据永不过期。</li>
+</ol>
 
     </div>
 
@@ -293,11 +320,11 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
+                <a href="/2021/10/26/20211026-%E4%B8%80%E8%87%B4%E6%80%A7Hash%E5%8E%9F%E7%90%86/" rel="prev" title="一致性Hash原理">
+                  <i class="fa fa-chevron-left"></i> 一致性Hash原理
+                </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2020/05/08/202058-%E3%80%90%E8%BD%AC%E8%BD%BD%E3%80%91Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E5%A4%A7%E7%BA%B2/" rel="next" title="【转载】Java基础知识大纲">
-                  【转载】Java基础知识大纲 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>

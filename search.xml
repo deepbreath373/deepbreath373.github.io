@@ -6525,4 +6525,43 @@
         <category>算法</category>
       </categories>
   </entry>
+  <entry>
+    <title>缓存穿透、缓存击穿、缓存雪崩</title>
+    <url>/2021/11/02/2021112-%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F%E3%80%81%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF%E3%80%81%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9/</url>
+    <content><![CDATA[<p>有关 Redis 缓存存在的问题</p>
+<span id="more"></span>
+
+<h2 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h2><p><strong>描述：</strong></p>
+<p>缓存穿透是指<strong>缓存和数据库</strong>中都没有要查找的数据，而用户不断地发起请求就导致在缓存和数据库上进行了无用的查询，导致数据库的压力增加。</p>
+<p><strong>解决方案：</strong></p>
+<ol>
+<li>可以在用户发起请求时对请求进行<strong>校验</strong>，如果不合法，可以直接拒绝请求，避免本次请求落在数据库上。</li>
+<li>从缓存和数据库中都没有读取到的数据，可以暂时在 Redis 中设置一个<strong>空值的 Key</strong> 来应对下次同样的请求。这样就可以直接返回一个空值，但是不能避免每次不同 Key 值的请求。</li>
+<li>利用<strong>布隆过滤器</strong>将所有可能存在的请求的值放在该过滤器中，当用户发起请求时，首先校验请求是否存在于布隆过滤器中，如果不存在，拒绝本次请求；否则，在进行正常的查询操作。</li>
+</ol>
+<blockquote>
+<p>布隆过滤器：对给定元素进行哈希计算，根据得到的值将元素存放在对应的位置，但是可能出现不同元素得到相同哈希值的情况，所以过滤器可能出现误判（布隆过滤器说该元素存在，可能不存在，但是，如果说不存在，那么肯定不存在）</p>
+</blockquote>
+<h2 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h2><p><strong>描述：</strong></p>
+<p>缓存击穿与缓存穿透不同之处在于，要查询的数据在 Redis 中没有，但是在数据库中存在（一般是缓存到期问题）。这时如果大量的并发请求抵达，导致大量的请求直接落在了数据库上，可能导致数据库宕机。</p>
+<p><strong>解决方案：</strong></p>
+<ol>
+<li><p>增加热点数据的过期时间，甚至设置成永不过期，避免热点数据在大量请求时出现过期的情况。</p>
+</li>
+<li><p>增加双重检验锁来限制请求查询数据库的次数。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">String data = stringRedisTemplate.boudValueOps(<span class="string">&quot;data&quot;</span>).get();</span><br><span class="line"><span class="keyword">if</span>(data != <span class="keyword">null</span>)&#123;</span><br><span class="line">    <span class="comment">//如果缓存中存在数据直接返回</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">//缓存中不存在数据，尝试从数据库查询</span></span><br><span class="line">    <span class="keyword">synchronized</span>(<span class="keyword">this</span>)&#123;</span><br><span class="line">        <span class="comment">//再次判断是否有其他线程已经成功从数据库查询，并设置到缓存中去</span></span><br><span class="line">        String data = stringRedisTemplate.boudValueOps(<span class="string">&quot;data&quot;</span>).get();</span><br><span class="line">        <span class="keyword">if</span>(data == <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="comment">//从数据库查询，并设置到缓存中去</span></span><br><span class="line">            data = getDataFromDB();</span><br><span class="line">            stringRedisTemplate.boudValueOps(<span class="string">&quot;data&quot;</span>).set();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">//缓存中已经存在数据</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> data;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h2><p><strong>描述：</strong></p>
+<p>缓存雪崩是指缓存中大量的数据在同一时间段到期，而导致大量的请求进入数据库进行查询。与缓存击穿不同的是，缓存击穿是指的同一条数据，而缓存雪崩是指的不同的数据。</p>
+<p><strong>解决方案：</strong></p>
+<ol>
+<li>缓存数据时尽量避免设置同一时刻过期，将过期时间进行随机设置。</li>
+<li>如果是分布式部署，可以将不同的热点数据分散在不同的服务器下。</li>
+<li>设置热点数据永不过期。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Redis</category>
+      </categories>
+  </entry>
 </search>
