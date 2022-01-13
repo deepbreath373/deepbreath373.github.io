@@ -5779,7 +5779,7 @@
 <td>字节流、字符流</td>
 </tr>
 </tbody></table>
-<h2 id="结构简图"><a href="#结构简图" class="headerlink" title="结构简图"></a>结构简图</h2><p><img src="/images/Java/IO/BIO.jpg" alt="NIO"></p>
+<h2 id="结构简图"><a href="#结构简图" class="headerlink" title="结构简图"></a>结构简图</h2><p><img src="/images/Java/IO/NIO.jpg" alt="NIO"></p>
 <ul>
 <li>每个 Channel 对应一个 Buffer</li>
 <li>一个 Selector 可以有多个 Channel 注册到上面</li>
