@@ -6711,7 +6711,7 @@
   </entry>
   <entry>
     <title>TCP的可靠性传输</title>
-    <url>/2022/02/13/2022213-TCP%E7%9A%84%E5%8F%AF%E9%9D%A0%E6%80%A7%E4%BC%A0%E8%BE%93/</url>
+    <url>/2022/12/13/20221213-TCP%E7%9A%84%E5%8F%AF%E9%9D%A0%E6%80%A7%E4%BC%A0%E8%BE%93/</url>
     <content><![CDATA[<p>TCP 利用了重传机制、滑动窗口、流量控制、拥塞控制来保证传输的可靠性</p>
 <span id="more"></span>
 
