@@ -6866,4 +6866,100 @@
         <category>操作系统</category>
       </categories>
   </entry>
+  <entry>
+    <title>网络通信模型</title>
+    <url>/2022/02/11/2022211-%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E6%A8%A1%E5%9E%8B/</url>
+    <content><![CDATA[<p>客户端与服务器在网络中通信的不同方式</p>
+<span id="more"></span>
+
+<h2 id="Socket-模型"><a href="#Socket-模型" class="headerlink" title="Socket 模型"></a>Socket 模型</h2><p>基于 TCP 的 Socket 模型：</p>
+<ol>
+<li>服务端⾸先调用 <strong>socket()</strong> 函数，创建⽹络协议为 IPv4，以及传输协议为 TCP 的 Socket ，接着调用 <strong>bind()</strong> 函数，给这个 Socket 绑定⼀个 IP 地址和端⼝。</li>
+<li>然后调用 <strong>listen()</strong> 函数对端口进行监听，进入监听状态。</li>
+<li>最后使用 <strong>accept()</strong> 函数来阻塞获取客户端连接。</li>
+<li>客户端创建好 Socket 之后，调用 <strong>connect()</strong> 函数发起连接。</li>
+<li>三次握手…</li>
+</ol>
+<h2 id="多进程模型"><a href="#多进程模型" class="headerlink" title="多进程模型"></a>多进程模型</h2><p>服务器的主进程负责监听客户的连接，⼀旦与客户端连接完成， accept() 函数就会返回⼀个「已连接Socket」，这时就<strong>通过 fork() 函数创建⼀个⼦进程</strong>，实际上就把⽗进程所有相关的东⻄都复制⼀份，包括⽂件描述符、内存地址空间、程序计数器、执行的代码等。</p>
+<p>正因为⼦进程会复制⽗进程的⽂件描述符，于是就可以<strong>直接使用「已连接 Socket 」和客户端通信了。</strong></p>
+<p>另外，当「⼦进程」退出时，实际上内核里还会保留该进程的⼀些信息，也是会占用内存的，如果不做好“回收”⼯作，就会变成<strong>僵尸进程</strong>，随着僵⼫进程越多，会慢慢耗尽我们的系统资源。  可以在⼦进程退出后回收资源，分别是调用 wait() 和 waitpid() 函数进行处理。</p>
+<p>但是，每个连接都创建一个进程，会导致大量的资源使用，并且进程的切换也极为耗费性能。</p>
+<h2 id="多线程模型"><a href="#多线程模型" class="headerlink" title="多线程模型"></a>多线程模型</h2><p>当服务器与客户端 TCP 完成连接后，通过 pthread_create() 函数创建线程，然后将「已连接 Socket」的⽂件描述符传递给线程函数，接着在线程里和客户端进行通信，从而达到并发处理的目的。  </p>
+<p>使用线程池的⽅式来避免线程的频繁创建和销毁，所谓的线程池，就是提前创建若干个线程，这样当由新连接建⽴时，将这个已连接的 Socket 放⼊到⼀个队列里，然后线程池里的线程负责从队列中取出已连接 Socket 进程处理。  </p>
+<blockquote>
+<p>需要注意的是，这个队列是全局的，每个线程都会操作，为了避免多线程竞争，线程在操作这个队列前要加锁。  </p>
+</blockquote>
+<p>虽然，线程的创建和切换的损耗比进程要小，但是大量连接的情况下，产生了数量庞大的线程也并不好管理。</p>
+<h2 id="I-O-多路复用"><a href="#I-O-多路复用" class="headerlink" title="I/O 多路复用"></a>I/O 多路复用</h2><p>I/O 多路复用技术就是使用一个进程/线程来维护多个连接。</p>
+<p>⼀个进程虽然任⼀时刻只能处理⼀个请求，但是处理每个请求的事件时，耗时控制在 1 毫秒以内，这样 1秒内就可以处理上千个请求，把时间拉⻓来看，多个请求复⽤了⼀个进程，这就是多路复⽤，这种思想很类似⼀个 CPU 并发多个进程，所以也叫做时分多路复⽤。</p>
+<h3 id="select-poll"><a href="#select-poll" class="headerlink" title="select/poll"></a>select/poll</h3><p>select 实现多路复⽤的⽅式是，<strong>将已连接的 Socket 都放到⼀个⽂件描述符集合</strong>，然后调⽤ select 函数将⽂件描述符集合<strong>拷⻉到内核⾥</strong>，让内核来检查是否有⽹络事件产⽣，检查的⽅式很粗暴，就是通过<strong>遍历</strong>⽂件描述符集合的⽅式，当检查到有事件产⽣后，<strong>将此 Socket 标记为可读或可写</strong>， 接着再把整个⽂件描述符集合<strong>拷⻉回⽤户态⾥</strong>，然后⽤户态还需要再通过<strong>遍历</strong>的⽅法找到可读或可写的 Socket，然后再<strong>对其处理。</strong></p>
+<p>所以，对于 select 这种⽅式，需要进⾏ <strong>2 次「遍历」⽂件描述符集合</strong>，⼀次是在内核态⾥，⼀个次是在⽤户态⾥ ，⽽且还会发⽣ <strong>2 次「拷⻉」⽂件描述符集合</strong>，先从⽤户空间传⼊内核空间，由内核修改后，再传出到⽤户空间中。</p>
+<p>select 使⽤<strong>固定⻓度的 BitsMap</strong>，表示⽂件描述符集合，⽽且所⽀持的⽂件描述符的个数是有限制的，在Linux 系统中，由内核中的 FD_SETSIZE 限制， 默认最⼤值为 1024 ，只能监听 0~1023 的⽂件描述符。</p>
+<p>poll 不再⽤ BitsMap 来存储所关注的⽂件描述符，取⽽代之⽤<strong>动态数组</strong>，以<strong>链表</strong>形式来组织，<strong>突破了select 的⽂件描述符个数限制</strong>，当然还会受到系统⽂件描述符限制。</p>
+<p>但是 poll 和 select 并没有太⼤的本质区别， 都是使⽤「线性结构」存储进程关注的 Socket 集合，因此都需要遍历⽂件描述符集合来找到可读或可写的 Socket，时间复杂度为 O(n)，⽽且也需要在⽤户态与内核态之间拷⻉⽂件描述符集合，这种⽅式随着并发数上来，性能的损耗会呈指数级增⻓。</p>
+<h2 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h2><p>epoll 的<strong>特点</strong>：</p>
+<ul>
+<li>每次只要把需要监控的 Socket 通过 <strong>epoll_ctl()</strong> 函数加入内核中的红黑树，而不是像 select/poll 去移动整个文件描述符数组。</li>
+<li>epoll 使用事件驱动机制，内核维护了一个链表来记录就绪事件，当某个 Socket 有事件发生的时候，通过回调函数将其加入到链表中，调用 <strong>epoll_wait()</strong> 获取有事件发生的文件描述符个数。</li>
+</ul>
+<p>epoll 的两种<strong>事件触发模式</strong>：</p>
+<ul>
+<li><strong>边缘触发（ET）：</strong>使⽤边缘触发模式时，当被监控的 Socket 描述符上有可读事件发⽣时， 服务器端<strong>只会从 epoll_wait 中苏醒⼀次</strong>，即使进程没有调⽤ read 函数从内核读取数据，也依然只苏醒⼀次，因此我们程序要<strong>保证⼀次性将内核缓冲区的数据读取完；</strong></li>
+<li><strong>水平触发（LT）：</strong>使⽤⽔平触发模式时，当被监控的 Socket 上有可读事件发⽣时， 服务器端<strong>不断地从 epoll_wait 中苏醒</strong>，<strong>直到内核缓冲区数据被 read 函数读完才结束</strong>，⽬的是告诉我们有数据需要读取；  </li>
+</ul>
+]]></content>
+      <categories>
+        <category>操作系统</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>零拷贝</title>
+    <url>/2022/02/01/202221-%E9%9B%B6%E6%8B%B7%E8%B4%9D/</url>
+    <content><![CDATA[<p>使用零拷贝技术减少用户态与内核态的切换，提升数据拷贝性能</p>
+<span id="more"></span>
+
+<h2 id="传统的文件传输"><a href="#传统的文件传输" class="headerlink" title="传统的文件传输"></a>传统的文件传输</h2><p>文件传输：将磁盘上的文件读取出来，然后利用网络协议发送出去。</p>
+<p><strong>传统的 I/O 工作方式：</strong></p>
+<ul>
+<li>read: Disk—<strong>DMA Copy</strong>—&gt;Kernel Cache—<strong>CPU Copy</strong>—&gt;User Cache</li>
+<li>write: User Cache—<strong>CPU Copy</strong>—&gt;Socket Cache—<strong>DMA Copy</strong>—&gt;NIC</li>
+</ul>
+<p><strong>四次用户态和内核态切换、四次数据拷贝：</strong></p>
+<ol>
+<li>用户态切换成内核态来<strong>读取磁盘信息到内核缓冲区</strong>—&gt;DMA Copy</li>
+<li>内核态切换成用户态来<strong>读取到用户缓存区</strong>—&gt;CPU Copy</li>
+<li>用户态切换到内核态<strong>写入到 Socket 缓冲区</strong>—&gt;CPU Copy</li>
+<li>内核态切换回用户态<strong>执行剩余业务逻辑</strong>—&gt;DMA Copy</li>
+</ol>
+<p><strong>问题：</strong></p>
+<p>用户态并没有对读取的数据进行加工处理，所以用户缓冲区是没有必要的，不需要再次将数据拷贝到用户缓冲区。</p>
+<blockquote>
+<p>因此，零拷贝适用于用户不再对数据进行加工的情况。</p>
+</blockquote>
+<h2 id="零拷贝实现"><a href="#零拷贝实现" class="headerlink" title="零拷贝实现"></a>零拷贝实现</h2><h3 id="mmap-write"><a href="#mmap-write" class="headerlink" title="mmap+write"></a>mmap+write</h3><p><strong>共享缓冲区：</strong>mmap() 系统调⽤函数会直接把内核缓冲区⾥的数据「映射」到⽤户空间，这样，操作系统内核与⽤户空间就不需要再进⾏任何的数据拷⻉操作。  </p>
+<p>使用 mmap() 减少了与用户缓冲区的 2 次拷贝操作，转为内核中内核缓冲区与 Socket 缓存区的 1 次拷贝操作。</p>
+<p>共：3 次数据拷贝，mmap()+write() 4 次上下文切换。</p>
+<h3 id="sendfile"><a href="#sendfile" class="headerlink" title="sendfile"></a>sendfile</h3><p>sendfile() 替代了 read()/write() 的两个系统调用，以及实现把内核缓冲区的数据直接拷贝到 Socket 缓冲区</p>
+<p>共：sendfile() 3 次数据拷贝，2 次上下文切换</p>
+<h3 id="SG-DMA"><a href="#SG-DMA" class="headerlink" title="SG-DMA"></a>SG-DMA</h3><ol>
+<li>通过 DMA 将磁盘文件拷贝到内核缓冲区</li>
+<li>将缓冲区描述符和数据长度传到 socket 缓冲区，网卡的 SG-DMA 直接将内核缓存区的数据拷贝到网卡的缓冲区，减少了 1 次拷贝。</li>
+</ol>
+<p>共：DMA+SG-DMA= 2 次数据拷贝，sendfile() 2 次上下文切换。</p>
+<h2 id="PageCache"><a href="#PageCache" class="headerlink" title="PageCache"></a>PageCache</h2><p>文件传输中的第一步，将磁盘文件拷贝到<strong>内核缓冲区</strong>，即**磁盘高速缓存(PageCache)**。</p>
+<p><strong>缓存</strong>：依据<strong>局部性原理</strong>将部分可能被再次访问的数据，提前缓存到 PageCache 中去，空间不足时淘汰最久未被访问的缓存。</p>
+<p><strong>预读</strong>：提前将本次需要读取的<strong>数据之后的部分</strong>读入 PageCache ，避免多次读取磁盘中的数据，带来性能损耗。</p>
+<p><strong>如果文件过大怎么办？</strong></p>
+<p>如果文件过大，可能会导致 PageCache 被占满，而一些小的文件无法利用到该缓存来提升读写速度。因此，大文件就不能采用零拷贝以及使用缓存的技术。</p>
+<p>采用<strong>异步 I/O + 直接 I/O</strong>的方式：</p>
+<ul>
+<li>异步 I/O ：避免了用户的长时间堵塞</li>
+<li>直接 I/O ：绕过了 PageCache 避免将缓冲区打满</li>
+</ul>
+<p>综上：小文件使用【零拷贝技术】；大文件使用【异步 I/O + 直接 I/O 】。</p>
+]]></content>
+      <categories>
+        <category>操作系统</category>
+      </categories>
+  </entry>
 </search>
