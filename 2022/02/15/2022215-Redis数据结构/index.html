@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/koroneko.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/koroneko.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/koroneko.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;example.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.5.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:1,&quot;unescape&quot;:false,&quot;preload&quot;:false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="本文分析了 Redis 底层采用了哪些数据结构来实现数据的存储">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis数据结构">
+<meta property="og:url" content="http://example.com/2022/02/15/2022215-Redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/index.html">
+<meta property="og:site_name" content="深海学者">
+<meta property="og:description" content="本文分析了 Redis 底层采用了哪些数据结构来实现数据的存储">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-02-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-02-16T01:15:50.558Z">
+<meta property="article:author" content="QTLin">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/02/15/2022215-Redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;2022&#x2F;02&#x2F;15&#x2F;2022215-Redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84&#x2F;&quot;,&quot;path&quot;:&quot;2022&#x2F;02&#x2F;15&#x2F;2022215-Redis数据结构&#x2F;&quot;,&quot;title&quot;:&quot;Redis数据结构&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>Redis数据结构 | 深海学者</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">深海学者</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">More Knowledge!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SDS"><span class="nav-text">SDS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%93%BE%E8%A1%A8"><span class="nav-text">链表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%8B%E7%BC%A9%E9%93%BE%E8%A1%A8"><span class="nav-text">压缩链表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%93%88%E5%B8%8C%E8%A1%A8"><span class="nav-text">哈希表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E6%95%B0%E9%9B%86%E5%90%88"><span class="nav-text">整数集合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%B3%E8%A1%A8"><span class="nav-text">跳表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#quicklist"><span class="nav-text">quicklist</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#listpack"><span class="nav-text">listpack</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">QTLin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">85</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/deepbreath373" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;deepbreath373" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:qitao_lin@163.com" title="E-Mail → mailto:qitao_lin@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/15/2022215-Redis%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="QTLin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="深海学者">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Redis数据结构
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-02-15 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-15T00:00:00+08:00">2022-02-15</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-02-16 09:15:50" itemprop="dateModified" datetime="2022-02-16T09:15:50+08:00">2022-02-16</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.4k</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>本文分析了 Redis 底层采用了哪些数据结构来实现数据的存储</p>
+<span id="more"></span>
+
+<h2 id="SDS"><a href="#SDS" class="headerlink" title="SDS"></a>SDS</h2><p>Redis 使用了 C 语言进行编写，那么，<strong>为什么不使用 C 语言中的字符数组作为字符串的实现？</strong>而是采用额外创建的数据结构简单动态字符串（SDS）实现。</p>
+<p>C 语言的字符数组不足之处：</p>
+<ul>
+<li>获取字符串长度采用遍历的方式，时间复杂度 O(n)</li>
+<li>字符串的结尾使用 “\0” 标识，导致无法存储包含该字符的数据</li>
+<li>字符串操作函数不高效且不安全，存在缓冲区溢出的风险</li>
+</ul>
+<p><strong>SDS 结构设计：</strong></p>
+<table>
+<thead>
+<tr>
+<th>变量</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>len</td>
+<td>记录了字符串的长度</td>
+</tr>
+<tr>
+<td>alloc</td>
+<td>分配给字符数组的空间长度</td>
+</tr>
+<tr>
+<td>flags</td>
+<td>表示不同类型的 SDS ：sdshdr5/8/16/32/64</td>
+</tr>
+<tr>
+<td>buf[]</td>
+<td>字符数组，保存实际数据</td>
+</tr>
+</tbody></table>
+<p><strong>优点：</strong></p>
+<ul>
+<li>O(1) 复杂度获取字符串长度</li>
+<li>二进制安全，不使用 “\0” 来作为结尾标识</li>
+<li>因为有 alloc 所以可以通过 alloc - len 获取剩余空间，避免缓冲区溢出</li>
+<li>设计了不同类型的 SDS 避免空间的浪费</li>
+</ul>
+<h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><p>链表中的每个节点都是 listNode ：其中包含了前指针 prev，后指针 next，节点值 value。</p>
+<p>再使用 list 将每个 listNode 连接起来，形成双向链表：头节点 head，尾节点 tail，节点值复制函数 dup()，节点值释放函数 free()，节点值比较函数 match()，节点数量 len。</p>
+<p><strong>优点：</strong></p>
+<ul>
+<li>获取前驱节点、后继节点的复杂度 O(1)</li>
+<li>获取头节点、为节点的复杂度 O(1)</li>
+<li>获取链表节点数量 O(1)</li>
+<li>链表节点可以保存不同类型的值</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>节点之间的内存不是连续的，无法很好地利用 CPU 缓存</li>
+<li>节点包含了除数据以外的头信息，开销较大</li>
+</ul>
+<h2 id="压缩链表"><a href="#压缩链表" class="headerlink" title="压缩链表"></a>压缩链表</h2><p>ziplist 是 Redis 为了节约内存而开发的，是<strong>由连续内存块组成的顺序型数据结构</strong>。</p>
+<table>
+<thead>
+<tr>
+<th>表头</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>zlbytes</td>
+<td>记录占用的内存字节数</td>
+</tr>
+<tr>
+<td>zltail</td>
+<td>记录列表尾的偏移量</td>
+</tr>
+<tr>
+<td>zllen</td>
+<td>记录包含的节点数量</td>
+</tr>
+<tr>
+<td>entry</td>
+<td>保存实际数据</td>
+</tr>
+<tr>
+<td>zlend</td>
+<td>标记压缩链表结束点</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>entry</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>prevlen</td>
+<td>记录前一个节点的长度</td>
+</tr>
+<tr>
+<td>encoding</td>
+<td>记录数据的类型和长度</td>
+</tr>
+<tr>
+<td>data</td>
+<td>记录实际的数据</td>
+</tr>
+</tbody></table>
+<p><strong>优点：</strong></p>
+<p>使用了连续的空间内存作为数据存储方式，节省了内存的开销，同时可以利用 CPU 缓存提升性能。</p>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>不能保存过多的元素，不然查询效率会降低</li>
+<li>连锁更新问题<ul>
+<li>因为每个 entry 保存了上一个 entry 的 len，所以当上一个 entry 发生更新时，会导致之后所有 entry 中的 prevlen 的值发生变化。</li>
+</ul>
+</li>
+</ul>
+<h2 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h2><p>哈希表采用 <strong>key-value</strong> 的方式保存数据，能够实现 O(1) 的数据查找。</p>
+<p>Redis 采用了<strong>链式哈希</strong>的方式解决哈希冲突。</p>
+<p>为了实现 Rehash 来扩展哈希表的大小，从一开始，Redis 就创建了两张哈希表。Rehash 之前，每次的数据存储都是发生在哈希表 1，发生 Rehash 的时候才会用上哈希表 2。</p>
+<ol>
+<li>给「哈希表 2」 <strong>分配空间</strong>，⼀般会⽐「哈希表 1」 ⼤ 2 倍；</li>
+<li>将「哈希表 1 」的<strong>数据迁移</strong>到「哈希表 2」 中；</li>
+<li>迁移完成后，「哈希表 1 」的<strong>空间会被释放</strong>，并把「哈希表 2」 设置为「哈希表 1」，然后在「哈希表 2」 新创建⼀个空⽩的哈希表，为下次 rehash 做准备。  </li>
+</ol>
+<p>为了避免两个哈希表之间的数据拷贝导致 Redis 长时间阻塞，采用了另一种渐进式 Rehash 的方式。</p>
+<ol>
+<li>给「哈希表 2」 分配空间；</li>
+<li>在 rehash 进⾏期间，每次哈希表元素进⾏新增、删除、查找或者更新操作时， Redis 除了会执⾏对应的操作之外，还会顺序将「哈希表 1 」中索引位置上的所有 key-value 迁移到「哈希表 2」 上；</li>
+<li>随着处理客户端发起的哈希表操作请求数量越多，最终在某个时间嗲呢，会把「哈希表 1 」的所有key-value 迁移到「哈希表 2」，从⽽完成 rehash 操作。  </li>
+</ol>
+<p><strong>Rehash 的触发条件：</strong></p>
+<p>负载因子=哈希表<strong>已保存节点的数量（包括链表）/哈希表大小</strong></p>
+<ul>
+<li>负载因子 &gt;= 1 ：会在没有执行 RDB 快照 / AOF 重写的时候进行</li>
+<li>负载因子 &gt;=5 ：强制执行</li>
+</ul>
+<h2 id="整数集合"><a href="#整数集合" class="headerlink" title="整数集合"></a>整数集合</h2><p>整数集合也是使用了一块连续的地址空间。</p>
+<table>
+<thead>
+<tr>
+<th>变量</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>encoding</td>
+<td>编码方式</td>
+</tr>
+<tr>
+<td>length</td>
+<td>包含的元素数量</td>
+</tr>
+<tr>
+<td>contents[]</td>
+<td>保存元素的数组</td>
+</tr>
+</tbody></table>
+<p><strong>升级规则：</strong></p>
+<p>如果新加入元素的类型(int32_t)比集合中现有元素的类型(int16_t)都要长时，发生升级。按照新元素的类型扩展 contents 数组的空间大小，然后将新元素放入集合。避免了一开始使用过大的数据类型，导致的内存浪费。</p>
+<blockquote>
+<p>不支持降级操作</p>
+</blockquote>
+<h2 id="跳表"><a href="#跳表" class="headerlink" title="跳表"></a>跳表</h2><p>zset 使用压缩链表/跳表实现，但是 zset 在使用跳表实现的时候，采用了哈希表+跳表的实现。</p>
+<p>哈希表：支持以常数复杂度获取元素的权重，高效的单点查询<br>跳表：高效的范围查询</p>
+<p><strong>跳表是在链表基础上改进过来的，实现了⼀种「多层」的有序链表。</strong></p>
+<table>
+<thead>
+<tr>
+<th>跳表结构</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ele</td>
+<td>对象元素值</td>
+</tr>
+<tr>
+<td>score</td>
+<td>元素权重值</td>
+</tr>
+<tr>
+<td>backward</td>
+<td>后向指针</td>
+</tr>
+<tr>
+<td>level[]</td>
+<td>保存每层的前向指针和跨度</td>
+</tr>
+</tbody></table>
+<p>Redis 采⽤⼀种巧妙的⽅法是，跳表在创建节点的时候，<strong>随机⽣成每个节点的层数</strong>，并没有严格维持相邻两层的节点数量⽐例为 2 : 1 的情况。<br>具体的做法是， 跳表在创建节点时候，会⽣成范围为[0-1]的⼀个随机数，如果这个随机数⼩于 0.25（相当于概率 25%），那么层数就增加 1 层，然后继续⽣成下⼀个随机数，直到随机数的结果⼤于 0.25 结束，最终确定该节点的层数。  </p>
+<h2 id="quicklist"><a href="#quicklist" class="headerlink" title="quicklist"></a>quicklist</h2><p>Redis 3.2 之后将 list 对象原先使用双向链表/压缩链表的底层改变，使用 quicklist 作为新的实现。</p>
+<p>quicklist 实际上就是<strong>双向链表+压缩链表</strong>的结合：⼀个 quicklist 就是⼀个链表，⽽链表中的每个元素⼜是⼀个压缩列表。</p>
+<p>通过控制每个链表节点中的压缩列表的⼤⼩或者元素个数，来规避连锁更新的问题。因为压缩列表元素越少或越⼩，连锁更新带来的影响就越⼩，从⽽提供了更好的访问性能。  </p>
+<h2 id="listpack"><a href="#listpack" class="headerlink" title="listpack"></a>listpack</h2><p>替代压缩列表，它最⼤特点是 listpack 中<strong>每个节点不再包含前⼀个节点的⻓度了</strong>，压缩列表每个节点正因为需要保存前⼀个节点的⻓度字段，就会有连锁更新的隐患。  </p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/02/11/2022211-%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E6%A8%A1%E5%9E%8B/" rel="prev" title="网络通信模型">
+                  <i class="fa fa-chevron-left"></i> 网络通信模型
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">QTLin</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">376k</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
