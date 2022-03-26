@@ -6897,7 +6897,7 @@
 <p>select 使⽤<strong>固定⻓度的 BitsMap</strong>，表示⽂件描述符集合，⽽且所⽀持的⽂件描述符的个数是有限制的，在Linux 系统中，由内核中的 FD_SETSIZE 限制， 默认最⼤值为 1024 ，只能监听 0~1023 的⽂件描述符。</p>
 <p>poll 不再⽤ BitsMap 来存储所关注的⽂件描述符，取⽽代之⽤<strong>动态数组</strong>，以<strong>链表</strong>形式来组织，<strong>突破了select 的⽂件描述符个数限制</strong>，当然还会受到系统⽂件描述符限制。</p>
 <p>但是 poll 和 select 并没有太⼤的本质区别， 都是使⽤「线性结构」存储进程关注的 Socket 集合，因此都需要遍历⽂件描述符集合来找到可读或可写的 Socket，时间复杂度为 O(n)，⽽且也需要在⽤户态与内核态之间拷⻉⽂件描述符集合，这种⽅式随着并发数上来，性能的损耗会呈指数级增⻓。</p>
-<h2 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h2><p>epoll 的<strong>特点</strong>：</p>
+<h3 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h3><p>epoll 的<strong>特点</strong>：</p>
 <ul>
 <li>每次只要把需要监控的 Socket 通过 <strong>epoll_ctl()</strong> 函数加入内核中的红黑树，而不是像 select/poll 去移动整个文件描述符数组。</li>
 <li>epoll 使用事件驱动机制，内核维护了一个链表来记录就绪事件，当某个 Socket 有事件发生的时候，通过回调函数将其加入到链表中，调用 <strong>epoll_wait()</strong> 获取有事件发生的文件描述符个数。</li>
@@ -7092,7 +7092,7 @@
 <ol>
 <li>给「哈希表 2」 分配空间；</li>
 <li>在 rehash 进⾏期间，每次哈希表元素进⾏新增、删除、查找或者更新操作时， Redis 除了会执⾏对应的操作之外，还会顺序将「哈希表 1 」中索引位置上的所有 key-value 迁移到「哈希表 2」 上；</li>
-<li>随着处理客户端发起的哈希表操作请求数量越多，最终在某个时间嗲呢，会把「哈希表 1 」的所有key-value 迁移到「哈希表 2」，从⽽完成 rehash 操作。  </li>
+<li>随着处理客户端发起的哈希表操作请求数量越多，最终在某个时间点呢，会把「哈希表 1 」的所有key-value 迁移到「哈希表 2」，从⽽完成 rehash 操作。  </li>
 </ol>
 <p><strong>Rehash 的触发条件：</strong></p>
 <p>负载因子=哈希表<strong>已保存节点的数量（包括链表）/哈希表大小</strong></p>
