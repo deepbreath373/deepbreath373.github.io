@@ -7089,4 +7089,80 @@
         <category>Redis</category>
       </categories>
   </entry>
+  <entry>
+    <title>Git的基本使用</title>
+    <url>/2022/03/03/202233-Git%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<p>Git 是一个免费的、开源的分布式版本控制系统</p>
+<span id="more"></span>
+
+<h2 id="Git-概述"><a href="#Git-概述" class="headerlink" title="Git 概述"></a>Git 概述</h2><p>Git 是一个免费的、开源的分布式版本控制系统，可以快速高效地处理从小型到大型的各种项目。</p>
+<p>像 Git 这种分布式版本控制工具，客户端提取的不是最新版本的文件快照，而是<strong>把代码仓库完整地镜像下来（本地库）</strong>。这样任何一处协同工作用的文件发生故障，事后都可以用其他客户端的本地仓库进行恢复。因为每个客户端的每一次文件提取操作，实际上都是一次对整个文件仓库的完整备份。  </p>
+<p>Git 有三种代码托管中心（基于网络服务器的远程代码仓库），一般简称为<strong>远程库：</strong>基于局域网的 GitLab、基于互联网的 GitHub、Gitee。</p>
+<p><strong>工作机制：</strong></p>
+<img src="/images/Git/WorkFlow.jpg" alt="workflow" style="zoom: 200%;" />
+
+<h2 id="Git-常用命令"><a href="#Git-常用命令" class="headerlink" title="Git 常用命令"></a>Git 常用命令</h2><h3 id="设置用户签名"><a href="#设置用户签名" class="headerlink" title="设置用户签名"></a>设置用户签名</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git config --global user.name username</span><br><span class="line">git config --global user.email example@example.com</span><br></pre></td></tr></table></figure>
+
+<p>签名的作用是为了<strong>区分不同操作者的身份</strong>，在每一个提交信息中都能够看到每次提交是由哪个用户发起的。</p>
+<p>Git 首次安装<strong>必须设置</strong>一下用户签名，否则无法提交代码。</p>
+<h3 id="初始化本地仓库"><a href="#初始化本地仓库" class="headerlink" title="初始化本地仓库"></a>初始化本地仓库</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></figure>
+
+<p>在需要进行 Git 管理的文件夹中，执行该 Git 命令，会生成一个隐藏的 .git 文件，代表本次初始化完成。</p>
+<p>.git 文件中包含了 HEAD（记录当前指向的分支）、以分支名命名的文件（记录了当前分支指向的版本号）等信息。</p>
+<h3 id="查看本地库状态"><a href="#查看本地库状态" class="headerlink" title="查看本地库状态"></a>查看本地库状态</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></figure>
+
+<p>用于查看当前文件夹中的文件状态，如果有文件<strong>尚未添加到暂存区</strong>，则文件名为<strong>红色</strong>；如果已添加到暂存区而<strong>尚未提交到本地库</strong>，则是<strong>绿色</strong>；没有上述状态文件，则不显示。</p>
+<h3 id="添加暂存区"><a href="#添加暂存区" class="headerlink" title="添加暂存区"></a>添加暂存区</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git add 文件名</span><br></pre></td></tr></table></figure>
+
+<p>将文件添加到暂存区，但还未提交到本地库，不会生成一个历史版本。</p>
+<h3 id="提交本地库"><a href="#提交本地库" class="headerlink" title="提交本地库"></a>提交本地库</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git commit -m &quot;日志信息&quot; 文件名</span><br></pre></td></tr></table></figure>
+
+<p>将暂存区中的文件提交到本地库，此时会生成一个对应的历史版本，并记录了版本的提交者。</p>
+<h3 id="查看历史版本"><a href="#查看历史版本" class="headerlink" title="查看历史版本"></a>查看历史版本</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git reflog #查看版本信息</span><br><span class="line">git log #查看详细版本信息</span><br></pre></td></tr></table></figure>
+
+<p>可以看到历代版本的版本号、日志信息、提交者等。</p>
+<h3 id="版本穿梭"><a href="#版本穿梭" class="headerlink" title="版本穿梭"></a>版本穿梭</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git reset --hard 版本号</span><br></pre></td></tr></table></figure>
+
+<p>可以根据版本号切换版本，同时本地的文件也会切换到对应的版本。</p>
+<p>版本的切换就是通过改变 master 指针来实现的。</p>
+<img src="/images/Git/version_change.jpg" alt="version_change" style="zoom:67%;" />
+
+<h2 id="Git-分支操作"><a href="#Git-分支操作" class="headerlink" title="Git 分支操作"></a>Git 分支操作</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>在企业中，一个产品一般分为三个运行环境：dev(开发)、test(测试)、prod(生产) 。</p>
+<p>采用三个环境就是为了避免开发、测试、生产环境中的问题互相影响，在开发中即使出现大的 bug 也不会影响到已经上线的产品正常运作。</p>
+<p>分支也是类似的，一般情况下，我们不会直接在 master 分支上进行修改，而是为每个任务创建单独分支。使用分支意味着程序员可以把自己的工作<strong>从开发主线上分离开来</strong>， 开发自己分支的时候，不会影响主线分支的运行。  </p>
+<h3 id="查看分支"><a href="#查看分支" class="headerlink" title="查看分支"></a>查看分支</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git branch -v</span><br></pre></td></tr></table></figure>
+
+<p>该命令会显示所有的分支，并且会在当前分支的前面使用 * 进行标记。</p>
+<h2 id="创建分支"><a href="#创建分支" class="headerlink" title="创建分支"></a>创建分支</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git branch 分支名</span><br></pre></td></tr></table></figure>
+
+<p>新创建的分支会将主分支的内容进行复制。</p>
+<h2 id="切换分支"><a href="#切换分支" class="headerlink" title="切换分支"></a>切换分支</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git checkout 分支名</span><br></pre></td></tr></table></figure>
+
+<p>切换到别的分支后，在此分支上对文件的修改不会影响到其他的分支。</p>
+<p>分支的切换就是 HEAD 指针指向的改变。</p>
+<img src="../images/Git/branch_change.jpg" alt="branch_change" style="zoom:67%;" />
+
+<h2 id="合并分支"><a href="#合并分支" class="headerlink" title="合并分支"></a>合并分支</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git merge 目标分支名 #将目标分支合并到当前分支</span><br></pre></td></tr></table></figure>
+
+<p>如果发生合并冲突，会在当前分支名的后面显示 MERGING）。</p>
+<p><strong>冲突产生的原因：</strong>合并分支时，两个分支在同一个文件的同一个位置有两套完全不同的修改。 Git 无法替我们决定使用哪一个。必须人为决定新代码内容。  </p>
+<p><strong>冲突的解决：</strong></p>
+<ol>
+<li><p>使用 <code>git status</code> 查看冲突发生的位置。</p>
+</li>
+<li><p>打开发生冲突的文件，针对冲突的内容进行修改。</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;&lt;&lt;&lt;&lt;&lt;&lt;HEAD</span><br><span class="line">当前分支代码</span><br><span class="line">=======</span><br><span class="line">合并过来的代码</span><br><span class="line">&gt;&gt;&gt;&gt;&gt;&gt;&gt;OtherBranch</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>添加到暂存区 <code>git add filename</code></li>
+<li>执行提交 <code>git commit -m &quot;log&quot;</code>，此时使用命令时不能带具体的文件名。</li>
+<li>MERGING 状态消失，冲突解决。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Git</category>
+      </categories>
+  </entry>
 </search>
