@@ -7187,7 +7187,7 @@
 <p><img src="/images/Java/Future/cf1.png" alt="image-20220807162600782"></p>
 <p>如果发生子线程发生异常，会修改任务状态为异常，get 方法终止等待并抛出异常。</p>
 <p><img src="/images/Java/Future/cf2.png" alt="image-20220807162846222"></p>
-<h2 id="2-CompletableFuture-supplyAsync-runAsync"><a href="#2-CompletableFuture-supplyAsync-runAsync" class="headerlink" title="2.CompletableFuture.supplyAsync/runAsync"></a>2.CompletableFuture.supplyAsync/runAsync</h2><p>两个方法都可以指定异步任务的 Executor 实现，如果不指定，默认使用 ForkJoinPool.commonPool()。</p>
+<h3 id="2-CompletableFuture-supplyAsync-runAsync"><a href="#2-CompletableFuture-supplyAsync-runAsync" class="headerlink" title="2.CompletableFuture.supplyAsync/runAsync"></a>2.CompletableFuture.supplyAsync/runAsync</h3><p>两个方法都可以指定异步任务的 Executor 实现，如果不指定，默认使用 ForkJoinPool.commonPool()。</p>
 <ul>
 <li>supplyAsync 表示创建带返回值的异步任务。</li>
 </ul>
