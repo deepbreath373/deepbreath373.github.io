@@ -20,15 +20,15 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;example.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.5.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:1,&quot;unescape&quot;:false,&quot;preload&quot;:false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="Supplier 接口是 Java 8 以后用来配合 lambda 表达式和函数式接口编程组合使用的一个接口。">
+<meta name="description" content="Supplier 接口是 Java 8 以后用来配合 Lambda 表达式和函数式接口编程组合使用的一个接口。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java8-Supplier&#x2F;Consumer">
 <meta property="og:url" content="http://example.com/2022/08/01/202281-Java8-SupplierConsumer/index.html">
 <meta property="og:site_name" content="深海学者">
-<meta property="og:description" content="Supplier 接口是 Java 8 以后用来配合 lambda 表达式和函数式接口编程组合使用的一个接口。">
+<meta property="og:description" content="Supplier 接口是 Java 8 以后用来配合 Lambda 表达式和函数式接口编程组合使用的一个接口。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-07-31T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-08-13T09:15:06.332Z">
+<meta property="article:modified_time" content="2022-08-13T09:16:39.780Z">
 <meta property="article:author" content="QTLin">
 <meta name="twitter:card" content="summary">
 
@@ -245,7 +245,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2022-08-13 17:15:06" itemprop="dateModified" datetime="2022-08-13T17:15:06+08:00">2022-08-13</time>
+        <time title="修改时间：2022-08-13 17:16:39" itemprop="dateModified" datetime="2022-08-13T17:16:39+08:00">2022-08-13</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -276,16 +276,16 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>Supplier 接口是 Java 8 以后用来配合 lambda 表达式和函数式接口编程组合使用的一个接口。</p>
+        <p>Supplier 接口是 Java 8 以后用来配合 Lambda 表达式和函数式接口编程组合使用的一个接口。</p>
 <span id="more"></span>
 
-<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p><code>Supplier&lt;T&gt;</code> 函数式接口代表提供者，只有一个 get 方法， 可以通过 lambda 表达式、方法引用或默认构造函数来实例化。</p>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p><code>Supplier&lt;T&gt;</code> 函数式接口代表提供者，只有一个 get 方法， 可以通过 Lambda 表达式、方法引用或默认构造函数来实例化。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FunctionalInterface</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Supplier</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function">T <span class="title">get</span><span class="params">()</span></span>;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
 
 <p>可以看到有一个注解 @FunctionalInterface，这是一个函数式接口的声明，该注解不是必须的，只是起到一个检查的作用。如果被注解的接口非函数式接口，编译器就会报错。</p>
 <p>Java 还提供了返回特定类型的 Supplier ：BooleanSupplier、IntSupplier、LongSupplier、DoubleSupplier，我们也可以根据需要的类型自定义功能接口。</p>
 <h2 id="简单使用"><a href="#简单使用" class="headerlink" title="简单使用"></a>简单使用</h2><ul>
-<li><p>使用 lambda 表达式实例化 Supplier</p>
+<li><p>使用 Lambda 表达式实例化 Supplier</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Supplier&lt;String&gt; s = () -&gt; <span class="string">&quot;Hello World!&quot;</span>;</span><br><span class="line">System.out.println(s.get()); <span class="comment">//Hello World!</span></span><br></pre></td></tr></table></figure></li>
 <li><p>使用方法引用实例化 Supplier</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Supplier&lt;String&gt; s = Person::getAge;</span><br><span class="line">System.out.println(s.get()); <span class="comment">//18</span></span><br></pre></td></tr></table></figure></li>
@@ -294,20 +294,20 @@
 <li><p>自定义 Supplier</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">MySupplier</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function">T <span class="title">supply</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line">MySupplier&lt;String&gt; s = () -&gt; <span class="string">&quot;Hello World&quot;</span>;</span><br><span class="line">System.out.println(s.supply()); <span class="comment">//Hello World</span></span><br></pre></td></tr></table></figure></li>
 </ul>
-<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><p>因为 Supplier 是一个函数式接口，可以作为 lambda 表达式或方法引用的赋值目标，在编写某些接口的时候，使用 Supplier 作为参数，可以让接口的调用者采用 lambda 表达式的方式传参，定义自己需要的返回类型。</p>
+<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><p>因为 Supplier 是一个函数式接口，可以作为 Lambda 表达式或方法引用的赋值目标，在编写某些接口的时候，使用 Supplier 作为参数，可以让接口的调用者采用 Lambda 表达式的方式传参，定义自己需要的返回类型。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Vehicle</span></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">drive</span><span class="params">()</span></span>&#123; </span><br><span class="line">    System.out.println(<span class="string">&quot;Driving vehicle ...&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span> <span class="keyword">extends</span> <span class="title">Vehicle</span></span>&#123;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">drive</span><span class="params">()</span></span>&#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;Driving car...&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SupplierDemo</span> </span>&#123;   </span><br><span class="line">  <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">driveVehicle</span><span class="params">(Supplier&lt;? extends Vehicle&gt; supplier)</span></span>&#123;</span><br><span class="line">    Vehicle vehicle = supplier.get();</span><br><span class="line">    vehicle.drive();   </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">  <span class="comment">//Using Lambda expression</span></span><br><span class="line">  driveVehicle(()-&gt; <span class="keyword">new</span> Vehicle());</span><br><span class="line">  driveVehicle(()-&gt; <span class="keyword">new</span> Car());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="Consumer"><a href="#Consumer" class="headerlink" title="Consumer"></a>Consumer</h2><p><code>Java</code> <code>Supplier</code>和<code>Consumer</code>都是功能接口。</p>
 <p><code>Supplier</code>表示结果的提供者，该结果返回一个对象且不接受任何参数，而<code>Consumer</code>表示一个操作，其接受单个输入参数且不返回任何结果。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Consumer</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">accept</span><span class="params">(T t)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>同样，Consumer 可以结合 lambda 表达式或者方法引用。</p>
+<p>同样，Consumer 可以结合 Lambda 表达式或者方法引用。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Arrays.asList(<span class="string">&quot;a&quot;</span>,<span class="string">&quot;b&quot;</span>,<span class="string">&quot;c&quot;</span>).forEach(e -&gt; System.out.println(e));</span><br><span class="line">Arrays.asList(<span class="string">&quot;a&quot;</span>,<span class="string">&quot;b&quot;</span>,<span class="string">&quot;c&quot;</span>).forEach(System.out::println);</span><br></pre></td></tr></table></figure>
 
-<p>其中的 forEach 方法就是接收一个 Consumer 参数，我们作为 forEach 接口的调用方就可以，利用 lambda 表达式或者方法引用进行接口调用。</p>
+<p>其中的 forEach 方法就是接收一个 Consumer 参数，我们作为 forEach 接口的调用方就可以，利用 Lambda 表达式或者方法引用进行接口调用。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">forEach</span><span class="params">(Consumer&lt;? <span class="keyword">super</span> T&gt; action)</span> </span>&#123;</span><br><span class="line">    Objects.requireNonNull(action);</span><br><span class="line">    <span class="keyword">for</span> (T t : <span class="keyword">this</span>) &#123;</span><br><span class="line">        action.accept(t);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Supplier 单独使用并没有什么意义，感觉需要结合 lambda 表达式、Stream、Collectors 进行使用。同时，Supplier 的使用似乎是面对接口的调用者，而不是接口的实现者。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Supplier 单独使用并没有什么意义，感觉需要结合 Lambda 表达式、Stream、Collectors 进行使用。同时，Supplier 的使用似乎是面对接口的调用者，而不是接口的实现者。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;Integer, String&gt; map = list.stream().collect(Collectors.toMap(Person::getId, Person::getName));</span><br></pre></td></tr></table></figure>
 
 <p>结合了各个特性写出来的代码，就十分优雅。</p>
