@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/koroneko.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/koroneko.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/koroneko.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;example.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.5.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:1,&quot;unescape&quot;:false,&quot;preload&quot;:false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Supplier 接口是 Java 8 以后用来配合 lambda 表达式和函数式接口编程组合使用的一个接口。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java8-Supplier&#x2F;Consumer">
+<meta property="og:url" content="http://example.com/2022/08/01/202281-Java8-SupplierConsumer/index.html">
+<meta property="og:site_name" content="深海学者">
+<meta property="og:description" content="Supplier 接口是 Java 8 以后用来配合 lambda 表达式和函数式接口编程组合使用的一个接口。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-07-31T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-08-13T09:15:06.332Z">
+<meta property="article:author" content="QTLin">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/08/01/202281-Java8-SupplierConsumer/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;2022&#x2F;08&#x2F;01&#x2F;202281-Java8-SupplierConsumer&#x2F;&quot;,&quot;path&quot;:&quot;2022&#x2F;08&#x2F;01&#x2F;202281-Java8-SupplierConsumer&#x2F;&quot;,&quot;title&quot;:&quot;Java8-Supplier&#x2F;Consumer&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>Java8-Supplier/Consumer | 深海学者</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">深海学者</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">More Knowledge!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%B4%E6%98%8E"><span class="nav-text">说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8"><span class="nav-text">简单使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E7%94%A8"><span class="nav-text">应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Consumer"><span class="nav-text">Consumer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-text">References</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">QTLin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/deepbreath373" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;deepbreath373" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:qitao_lin@163.com" title="E-Mail → mailto:qitao_lin@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/01/202281-Java8-SupplierConsumer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="QTLin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="深海学者">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java8-Supplier/Consumer
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-08-01 00:00:00" itemprop="dateCreated datePublished" datetime="2022-08-01T00:00:00+08:00">2022-08-01</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-08-13 17:15:06" itemprop="dateModified" datetime="2022-08-13T17:15:06+08:00">2022-08-13</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.5k</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>Supplier 接口是 Java 8 以后用来配合 lambda 表达式和函数式接口编程组合使用的一个接口。</p>
+<span id="more"></span>
+
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p><code>Supplier&lt;T&gt;</code> 函数式接口代表提供者，只有一个 get 方法， 可以通过 lambda 表达式、方法引用或默认构造函数来实例化。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FunctionalInterface</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Supplier</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function">T <span class="title">get</span><span class="params">()</span></span>;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+<p>可以看到有一个注解 @FunctionalInterface，这是一个函数式接口的声明，该注解不是必须的，只是起到一个检查的作用。如果被注解的接口非函数式接口，编译器就会报错。</p>
+<p>Java 还提供了返回特定类型的 Supplier ：BooleanSupplier、IntSupplier、LongSupplier、DoubleSupplier，我们也可以根据需要的类型自定义功能接口。</p>
+<h2 id="简单使用"><a href="#简单使用" class="headerlink" title="简单使用"></a>简单使用</h2><ul>
+<li><p>使用 lambda 表达式实例化 Supplier</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Supplier&lt;String&gt; s = () -&gt; <span class="string">&quot;Hello World!&quot;</span>;</span><br><span class="line">System.out.println(s.get()); <span class="comment">//Hello World!</span></span><br></pre></td></tr></table></figure></li>
+<li><p>使用方法引用实例化 Supplier</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Supplier&lt;String&gt; s = Person::getAge;</span><br><span class="line">System.out.println(s.get()); <span class="comment">//18</span></span><br></pre></td></tr></table></figure></li>
+<li><p>使用默认构造函数实例化 Supplier</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Supplier&lt;Person&gt; s = Person::<span class="keyword">new</span>;</span><br><span class="line">Person person = s.get();</span><br></pre></td></tr></table></figure></li>
+<li><p>自定义 Supplier</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">MySupplier</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function">T <span class="title">supply</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line">MySupplier&lt;String&gt; s = () -&gt; <span class="string">&quot;Hello World&quot;</span>;</span><br><span class="line">System.out.println(s.supply()); <span class="comment">//Hello World</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><p>因为 Supplier 是一个函数式接口，可以作为 lambda 表达式或方法引用的赋值目标，在编写某些接口的时候，使用 Supplier 作为参数，可以让接口的调用者采用 lambda 表达式的方式传参，定义自己需要的返回类型。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Vehicle</span></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">drive</span><span class="params">()</span></span>&#123; </span><br><span class="line">    System.out.println(<span class="string">&quot;Driving vehicle ...&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span> <span class="keyword">extends</span> <span class="title">Vehicle</span></span>&#123;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">drive</span><span class="params">()</span></span>&#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;Driving car...&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SupplierDemo</span> </span>&#123;   </span><br><span class="line">  <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">driveVehicle</span><span class="params">(Supplier&lt;? extends Vehicle&gt; supplier)</span></span>&#123;</span><br><span class="line">    Vehicle vehicle = supplier.get();</span><br><span class="line">    vehicle.drive();   </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">  <span class="comment">//Using Lambda expression</span></span><br><span class="line">  driveVehicle(()-&gt; <span class="keyword">new</span> Vehicle());</span><br><span class="line">  driveVehicle(()-&gt; <span class="keyword">new</span> Car());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Consumer"><a href="#Consumer" class="headerlink" title="Consumer"></a>Consumer</h2><p><code>Java</code> <code>Supplier</code>和<code>Consumer</code>都是功能接口。</p>
+<p><code>Supplier</code>表示结果的提供者，该结果返回一个对象且不接受任何参数，而<code>Consumer</code>表示一个操作，其接受单个输入参数且不返回任何结果。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Consumer</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">accept</span><span class="params">(T t)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同样，Consumer 可以结合 lambda 表达式或者方法引用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Arrays.asList(<span class="string">&quot;a&quot;</span>,<span class="string">&quot;b&quot;</span>,<span class="string">&quot;c&quot;</span>).forEach(e -&gt; System.out.println(e));</span><br><span class="line">Arrays.asList(<span class="string">&quot;a&quot;</span>,<span class="string">&quot;b&quot;</span>,<span class="string">&quot;c&quot;</span>).forEach(System.out::println);</span><br></pre></td></tr></table></figure>
+
+<p>其中的 forEach 方法就是接收一个 Consumer 参数，我们作为 forEach 接口的调用方就可以，利用 lambda 表达式或者方法引用进行接口调用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">forEach</span><span class="params">(Consumer&lt;? <span class="keyword">super</span> T&gt; action)</span> </span>&#123;</span><br><span class="line">    Objects.requireNonNull(action);</span><br><span class="line">    <span class="keyword">for</span> (T t : <span class="keyword">this</span>) &#123;</span><br><span class="line">        action.accept(t);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Supplier 单独使用并没有什么意义，感觉需要结合 lambda 表达式、Stream、Collectors 进行使用。同时，Supplier 的使用似乎是面对接口的调用者，而不是接口的实现者。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;Integer, String&gt; map = list.stream().collect(Collectors.toMap(Person::getId, Person::getName));</span><br></pre></td></tr></table></figure>
+
+<p>结合了各个特性写出来的代码，就十分优雅。</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/517363259">【Java8 新特性 3】java8 supplier</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_31635851/article/details/116497765">【Java 8 新特性】Java Supplier示例</a></p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/33960921/what-is-the-advantage-of-using-supplier-in-java">What is the advantage of using Supplier in Java?</a></p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/28417262/when-and-why-would-you-use-javas-supplier-and-consumer-interfaces">When and why would you use Java’s Supplier and Consumer interfaces?</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/07/23/2022723-CompletableFuture%E7%9A%84%E8%AF%B4%E6%98%8E/" rel="prev" title="CompletableFuture的说明">
+                  <i class="fa fa-chevron-left"></i> CompletableFuture的说明
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">QTLin</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">399k</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
