@@ -7315,4 +7315,109 @@
         <category>Java</category>
       </categories>
   </entry>
+  <entry>
+    <title>Stream的使用说明</title>
+    <url>/2022/08/07/202287-Stream%E7%9A%84%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/</url>
+    <content><![CDATA[<p>Stream 的翻译是流，是 Java 8 的一个新特性，可以用于对集合、数组等数据结构进行计算。</p>
+<span id="more"></span>
+
+<h2 id="如何生成流？"><a href="#如何生成流？" class="headerlink" title="如何生成流？"></a>如何生成流？</h2><ul>
+<li><p>通过集合生成</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List&lt;Integer&gt; list = Arrays.asList(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>);</span><br><span class="line">Stream&lt;Integer&gt; stream = list.stream();</span><br></pre></td></tr></table></figure></li>
+<li><p>通过数组生成</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>[] arr = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>&#125;;</span><br><span class="line">IntStream stream = Arrays.stream(arr);</span><br></pre></td></tr></table></figure>
+
+<p>通过 Arrays.stream 方法生成的流是数值流<code>IntStream</code>，可以避免计算过程的拆装箱。</p>
+<p>Stream API 提供了 mapToInt、mapToDouble、mapToLong 三种方式将对象流<code>Stream</code>，转换成对应的数值流。</p>
+</li>
+<li><p>通过值产生</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Stream&lt;Integer&gt; stream = Stream.of(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>);</span><br><span class="line">Stream&lt;Object&gt; stream = Stream.empty();</span><br></pre></td></tr></table></figure></li>
+<li><p>通过文件生成</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Stream&lt;String&gt; lines = Files.lines(Paths.get(<span class="string">&quot;data.txt&quot;</span>), Charset.defaultCharset());</span><br></pre></td></tr></table></figure>
+
+<p>通过 Files.line 方法得到一个流，并且得到的每个流是给定文件中的一行。</p>
+</li>
+<li><p>通过函数生成</p>
+<ul>
+<li><p>iterate</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Stream&lt;Integer&gt; stream = Stream.iterate(<span class="number">0</span>, n -&gt; n + <span class="number">2</span>).limit(<span class="number">5</span>);</span><br></pre></td></tr></table></figure>
+
+<p>iterate 方法接收两个参数，一个为初始化值，一个是要进行的函数操作。因为 iterate 生成的流是无限的，所以使用 limit 的方法对返回结果进行截断。</p>
+</li>
+<li><p>generate</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Stream&lt;Double&gt; stream = Stream.generate(Math::random).limit(<span class="number">5</span>);</span><br></pre></td></tr></table></figure>
+
+<p>generate 方法接受一个 Supplier 类型的参数，为流提供值。同时生成的流也是无限流，所以通过 limit 进行截断。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="流的操作类型"><a href="#流的操作类型" class="headerlink" title="流的操作类型"></a>流的操作类型</h2><h3 id="中间操作"><a href="#中间操作" class="headerlink" title="中间操作"></a>中间操作</h3><p>一个流可以后面跟随零个或多个中间操作，用来对数据进行加工，并将加功后的数据传递给下一个操作。类似于工厂的流水线，“数据”经过一个个“中间操作”加工、传递。这类操作都是惰性的，仅仅调用这些方法，并没有真正开始流的遍历，真正的遍历需要等到终端操作时。</p>
+<h4 id="filter-筛选"><a href="#filter-筛选" class="headerlink" title="filter 筛选"></a>filter 筛选</h4><p>通过使用 filter 方法进行条件筛选，filter 方法的参数作为一个判断条件，保留条件判断为 true 的元素并返回。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List&lt;Integer&gt; list = Arrays.asList(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>);</span><br><span class="line">Stream&lt;Integer&gt; stream = list.stream().filter(i -&gt; i &gt; <span class="number">3</span>);</span><br><span class="line"><span class="comment">//4,5,6</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="distinct-去重"><a href="#distinct-去重" class="headerlink" title="distinct 去重"></a>distinct 去重</h4><p>通过 distinct 方法快速去除重复的元素。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List&lt;Integer&gt; list = Arrays.asList(<span class="number">1</span>,<span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">6</span>);</span><br><span class="line">Stream&lt;Integer&gt; stream = list.stream().distinct();</span><br><span class="line"><span class="comment">//1,3,4,6</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="limit-返回指定流个数"><a href="#limit-返回指定流个数" class="headerlink" title="limit 返回指定流个数"></a>limit 返回指定流个数</h4><p>通过 limit 限定返回流的个数，limit &gt;= 0 否则抛出异常。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List&lt;Integer&gt; list = Arrays.asList(<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>);</span><br><span class="line">Stream&lt;Integer&gt; stream = list.stream().limit(<span class="number">3</span>);</span><br><span class="line"><span class="comment">//1,2,2</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="skip-跳过流中的元素"><a href="#skip-跳过流中的元素" class="headerlink" title="skip 跳过流中的元素"></a>skip 跳过流中的元素</h4><p>通过 skip 可以跳过流中的前几个元素，skip &gt;= 0 否则抛出异常。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List&lt;Integer&gt; list = Arrays.asList(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>);</span><br><span class="line">Stream&lt;Integer&gt; stream = list.stream().skip(<span class="number">3</span>);</span><br><span class="line"><span class="comment">//4,5</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="map-流映射"><a href="#map-流映射" class="headerlink" title="map 流映射"></a>map 流映射</h4><p>将接收的元素映射成另外一个元素，例如：String -&gt; Integer</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List&lt;String&gt; list = Arrays.asList(<span class="string">&quot;Java8&quot;</span>,<span class="string">&quot;Lambda&quot;</span>,<span class="string">&quot;Stream&quot;</span>);</span><br><span class="line">List&lt;Integer&gt; collect = list.stream().map(String::length).collect(Collectors.toList());</span><br><span class="line"><span class="comment">//5,6,6</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="flatMap-流转换"><a href="#flatMap-流转换" class="headerlink" title="flatMap 流转换"></a>flatMap 流转换</h4><p>将一个流中的每一个值都转换成另一个流。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List&lt;String&gt; wordList = Arrays.asList(<span class="string">&quot;Java 8&quot;</span>, <span class="string">&quot;Lambdas&quot;</span>, <span class="string">&quot;In&quot;</span>, <span class="string">&quot;Action&quot;</span>);</span><br><span class="line">List&lt;String&gt; strList = wordList.stream()</span><br><span class="line">        .map(w -&gt; w.split(<span class="string">&quot; &quot;</span>))</span><br><span class="line">        .flatMap(Arrays::stream)</span><br><span class="line">        .distinct()</span><br><span class="line">        .collect(Collectors.toList());</span><br><span class="line"><span class="comment">//[Java, 8, Lambdas, In, Action]</span></span><br></pre></td></tr></table></figure>
+
+<p>map(w -&gt; w.split(“ “)) 的返回值为 Stream&lt;String[]&gt;，想获取 Stream，可以通过flatMap方法完成 Stream -&gt;Stream 的转换。</p>
+<h4 id="allMatch-anyMatch-noneMatch"><a href="#allMatch-anyMatch-noneMatch" class="headerlink" title="allMatch/anyMatch/noneMatch"></a>allMatch/anyMatch/noneMatch</h4><ul>
+<li><p>allMatch 匹配所有元素</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List&lt;Integer&gt; integerList = Arrays.asList(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (integerList.stream().allMatch(i -&gt; i &gt; <span class="number">3</span>)) &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;所有元素值都大于3&quot;</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;并非所有元素值都大于3&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>anyMatch 匹配任意一个元素</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List&lt;Integer&gt; integerList = Arrays.asList(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (integerList.stream().anyMatch(i -&gt; i &gt; <span class="number">3</span>)) &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;存在值大于3的元素&quot;</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;不存在值大于3的元素&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>noneMatch 全部不匹配</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List&lt;Integer&gt; integerList = Arrays.asList(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (integerList.stream().noneMatch(i -&gt; i &gt; <span class="number">3</span>)) &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;值都小于3的元素&quot;</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;值不都小于3的元素&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="终端操作"><a href="#终端操作" class="headerlink" title="终端操作"></a>终端操作</h3><p>一个流有且仅有一个终端操作，当这个操作执行完成后，流就被关闭了。</p>
+<h4 id="count-统计流中元素个数"><a href="#count-统计流中元素个数" class="headerlink" title="count 统计流中元素个数"></a>count 统计流中元素个数</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List&lt;Integer&gt; integerList = Arrays.asList(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>);</span><br><span class="line">Long result = integerList.stream().count();</span><br><span class="line"><span class="comment">//5</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="findFirst-查找第一个"><a href="#findFirst-查找第一个" class="headerlink" title="findFirst 查找第一个"></a>findFirst 查找第一个</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List&lt;Integer&gt; integerList = Arrays.asList(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>);</span><br><span class="line">Optional&lt;Integer&gt; result = integerList.stream().filter(i -&gt; i &gt; <span class="number">3</span>).findFirst();</span><br><span class="line">System.out.println(result.orElse(-<span class="number">1</span>));</span><br><span class="line"><span class="comment">//4</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="findAny-随机查找一个"><a href="#findAny-随机查找一个" class="headerlink" title="findAny 随机查找一个"></a>findAny 随机查找一个</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List&lt;Integer&gt; integerList = Arrays.asList(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>);</span><br><span class="line">Optional&lt;Integer&gt; result = integerList.stream().filter(i -&gt; i &gt; <span class="number">3</span>).findAny();</span><br><span class="line">System.out.println(result.orElse(-<span class="number">1</span>));</span><br><span class="line"><span class="comment">//4</span></span><br></pre></td></tr></table></figure>
+
+<p>findAny 虽然是随机找一个符合条件的，但是也是当找到第一个满足的元素时就返回了。</p>
+<blockquote>
+<p>提供 findAny 方法是为了更好的利用并行流，findFirst 方法在并行上限制更多。</p>
+</blockquote>
+<h4 id="reduce-将流中的元素组合"><a href="#reduce-将流中的元素组合" class="headerlink" title="reduce 将流中的元素组合"></a>reduce 将流中的元素组合</h4><ul>
+<li><p>求和：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List&lt;Integer&gt; list = Arrays.asList(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>);</span><br><span class="line"><span class="keyword">int</span> sum = list.stream().reduce(<span class="number">0</span>, Integer::sum);</span><br><span class="line"><span class="keyword">int</span> sum2 = list.stream().reduce(<span class="number">0</span>, (a,b)-&gt;(a+b));</span><br><span class="line"><span class="comment">//15</span></span><br></pre></td></tr></table></figure>
+
+<p>reduce 接收两个参数，一个是初始值，一个是  <code>java.util.function.BinaryOperator</code> ，调用者可以传入 Lambda 或者方法引用来定义结合方式。</p>
+</li>
+<li><p>取最值</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List&lt;String&gt; stringList = Arrays.asList(<span class="string">&quot;Java 8&quot;</span>, <span class="string">&quot;Lambdas&quot;</span>, <span class="string">&quot;In&quot;</span>, <span class="string">&quot;Action&quot;</span>);</span><br><span class="line"></span><br><span class="line">Optional&lt;Integer&gt; min = stringList.stream()</span><br><span class="line">        .map(String::length)</span><br><span class="line">        .reduce(Integer::min);</span><br><span class="line"><span class="comment">//Optional[2]</span></span><br><span class="line">Optional&lt;Integer&gt; max = stringList.stream()</span><br><span class="line">        .map(String::length)</span><br><span class="line">        .reduce(Integer::max);</span><br><span class="line"><span class="comment">//Optional[7]</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="min-max-获取最值"><a href="#min-max-获取最值" class="headerlink" title="min/max 获取最值"></a>min/max 获取最值</h4><ul>
+<li><p>法一：参数为 Comparator&lt;?superT&gt;comparator</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List&lt;String&gt; stringList = Arrays.asList(<span class="string">&quot;Java 8&quot;</span>, <span class="string">&quot;Lambdas&quot;</span>, <span class="string">&quot;In&quot;</span>, <span class="string">&quot;Action&quot;</span>);</span><br><span class="line"></span><br><span class="line">Optional&lt;Integer&gt; min = stringList.stream()</span><br><span class="line">        .map(String::length)</span><br><span class="line">        .min(Integer::compareTo);</span><br><span class="line"></span><br><span class="line">Optional&lt;Integer&gt; max = stringList.stream()</span><br><span class="line">        .map(String::length)</span><br><span class="line">        .max(Integer::compareTo);</span><br></pre></td></tr></table></figure></li>
+<li><p>法二</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List&lt;String&gt; stringList = Arrays.asList(<span class="string">&quot;Java 8&quot;</span>, <span class="string">&quot;Lambdas&quot;</span>, <span class="string">&quot;In&quot;</span>, <span class="string">&quot;Action&quot;</span>);</span><br><span class="line"></span><br><span class="line">OptionalInt</span><br><span class="line">        min = stringList.stream()</span><br><span class="line">        .mapToInt(String::length)</span><br><span class="line">        .min();</span><br><span class="line"></span><br><span class="line">OptionalInt</span><br><span class="line">        max = stringList.stream()</span><br><span class="line">        .mapToInt(String::length)</span><br><span class="line">        .max();</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="summarizingxxx-求各种值"><a href="#summarizingxxx-求各种值" class="headerlink" title="summarizingxxx 求各种值"></a>summarizingxxx 求各种值</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List&lt;String&gt; stringList = Arrays.asList(<span class="string">&quot;Java 8&quot;</span>, <span class="string">&quot;Lambdas&quot;</span>, <span class="string">&quot;In&quot;</span>, <span class="string">&quot;Action&quot;</span>);</span><br><span class="line"></span><br><span class="line">IntSummaryStatistics intSummaryStatistics = stringList.stream()</span><br><span class="line">        .collect(summarizingInt(String::length));</span><br><span class="line"></span><br><span class="line"><span class="keyword">double</span> average = intSummaryStatistics.getAverage(); <span class="comment">// 获取平均值</span></span><br><span class="line"><span class="keyword">int</span> min = intSummaryStatistics.getMin();            <span class="comment">// 获取最小值</span></span><br><span class="line"><span class="keyword">int</span> max = intSummaryStatistics.getMax();            <span class="comment">// 获取最大值</span></span><br><span class="line"><span class="keyword">long</span> sum = intSummaryStatistics.getSum();           <span class="comment">// 获取总和</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="forEach-遍历"><a href="#forEach-遍历" class="headerlink" title="forEach 遍历"></a>forEach 遍历</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List&lt;Integer&gt; list = Arrays.asList(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>);</span><br><span class="line">list.stream().forEach(e -&gt; System.out.println(e));</span><br></pre></td></tr></table></figure>
+
+<h4 id="collect-返回集合"><a href="#collect-返回集合" class="headerlink" title="collect 返回集合"></a>collect 返回集合</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List&lt;String&gt; list = Arrays.asList(<span class="string">&quot;Java8&quot;</span>, <span class="string">&quot;Lambda&quot;</span>, <span class="string">&quot;In&quot;</span>, <span class="string">&quot;Action&quot;</span>);</span><br><span class="line">List&lt;Integer&gt; intList = stringList.stream()</span><br><span class="line">        .map(String::length)</span><br><span class="line">        .collect(toList());</span><br><span class="line"></span><br><span class="line">Set&lt;Integer&gt; intSet = stringList.stream()</span><br><span class="line">        .map(String::length)</span><br><span class="line">        .collect(toSet());</span><br></pre></td></tr></table></figure>
+
+<p>流的使用把对元素的迭代遍历，放在了内部，大大减少了代码量。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//非流方式</span></span><br><span class="line">List&lt;Integer&gt; intList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">Set&lt;Integer&gt; intSet = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span> (String item : stringList) &#123;</span><br><span class="line">    intList.add(item.length());</span><br><span class="line">    intSet.add(item.length());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+  </entry>
 </search>
