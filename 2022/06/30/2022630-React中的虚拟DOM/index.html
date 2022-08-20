@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/koroneko.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/koroneko.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/koroneko.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;example.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.5.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:1,&quot;unescape&quot;:false,&quot;preload&quot;:false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="React 通过虚拟 DOM，让开发人员的关注点“从如何更新 DOM”，到“想让视图处于什么状态”；通过 Diff 算法高效更新渲染真实 DOM。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React中的虚拟DOM和Diff算法">
+<meta property="og:url" content="http://example.com/2022/06/30/2022630-React%E4%B8%AD%E7%9A%84%E8%99%9A%E6%8B%9FDOM/index.html">
+<meta property="og:site_name" content="深海学者">
+<meta property="og:description" content="React 通过虚拟 DOM，让开发人员的关注点“从如何更新 DOM”，到“想让视图处于什么状态”；通过 Diff 算法高效更新渲染真实 DOM。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="c:/Users/西沉/AppData/Roaming/Typora/typora-user-images/image-20220818223150063.png">
+<meta property="og:image" content="http://example.com/2022/06/30/images/React/treediff.png">
+<meta property="og:image" content="http://example.com/2022/06/30/images/React/treediff2.png">
+<meta property="og:image" content="http://example.com/2022/06/30/images/React/componentdiff.png">
+<meta property="og:image" content="http://example.com/2022/06/30/images/React/elementdiff.png">
+<meta property="og:image" content="http://example.com/2022/06/30/images/React/elediff2.png">
+<meta property="article:published_time" content="2022-06-29T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-08-20T02:12:11.455Z">
+<meta property="article:author" content="QTLin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:/Users/西沉/AppData/Roaming/Typora/typora-user-images/image-20220818223150063.png">
+
+
+<link rel="canonical" href="http://example.com/2022/06/30/2022630-React%E4%B8%AD%E7%9A%84%E8%99%9A%E6%8B%9FDOM/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;2022&#x2F;06&#x2F;30&#x2F;2022630-React%E4%B8%AD%E7%9A%84%E8%99%9A%E6%8B%9FDOM&#x2F;&quot;,&quot;path&quot;:&quot;2022&#x2F;06&#x2F;30&#x2F;2022630-React中的虚拟DOM&#x2F;&quot;,&quot;title&quot;:&quot;React中的虚拟DOM和Diff算法&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>React中的虚拟DOM和Diff算法 | 深海学者</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">深海学者</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">More Knowledge!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%99%9A%E6%8B%9FDOM"><span class="nav-text">虚拟DOM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F-DOM-%E7%9A%84%E6%9E%84%E6%88%90"><span class="nav-text">虚拟 DOM 的构成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%99%9A%E6%8B%9FDOM%E6%B8%B2%E6%9F%93%E8%BF%87%E7%A8%8B"><span class="nav-text">虚拟DOM渲染过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Diff-%E7%AE%97%E6%B3%95"><span class="nav-text">Diff 算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0-1"><span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#React-Diff"><span class="nav-text">React Diff</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#tree-diff"><span class="nav-text">tree diff</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#component-diff"><span class="nav-text">component diff</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#element-diff"><span class="nav-text">element diff</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-text">References</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">QTLin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">88</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/deepbreath373" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;deepbreath373" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:qitao_lin@163.com" title="E-Mail → mailto:qitao_lin@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/30/2022630-React%E4%B8%AD%E7%9A%84%E8%99%9A%E6%8B%9FDOM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="QTLin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="深海学者">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          React中的虚拟DOM和Diff算法
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-06-30 00:00:00" itemprop="dateCreated datePublished" datetime="2022-06-30T00:00:00+08:00">2022-06-30</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-08-20 10:12:11" itemprop="dateModified" datetime="2022-08-20T10:12:11+08:00">2022-08-20</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.6k</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>React 通过虚拟 DOM，让开发人员的关注点“从如何更新 DOM”，到“想让视图处于什么状态”；通过 Diff 算法高效更新渲染真实 DOM。</p>
+<span id="more"></span>
+
+<h2 id="虚拟DOM"><a href="#虚拟DOM" class="headerlink" title="虚拟DOM"></a>虚拟DOM</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>原生的 JavaScript 应用程序中，我们需要直接对 DOM 进行手动的创建和更改，而 DOM 元素通过监听我们的事件和应用程序进行通讯。</p>
+<p>而 React 会将你的代码转换成一个 JavaScript 对象，再由这个对象转换成真实 DOM，其中的 JavaScript 对象就是虚拟 DOM。</p>
+<p>原本的 HTML 代码：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;title&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">span</span>&gt;</span>Hello ConardLi<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span>&gt;</span>苹果<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span>&gt;</span>橘子<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>React 存储的 JS 代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">const VirtualDom = &#123;</span><br><span class="line">  type: &#x27;div&#x27;,</span><br><span class="line">  props: &#123; class: &#x27;title&#x27; &#125;,</span><br><span class="line">  children: [</span><br><span class="line">    &#123;</span><br><span class="line">      type: &#x27;span&#x27;,</span><br><span class="line">      children: &#x27;Hello ConardLi&#x27;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      type: &#x27;ul&#x27;,</span><br><span class="line">      children: [</span><br><span class="line">        &#123; type: &#x27;li&#x27;, children: &#x27;苹果&#x27; &#125;,</span><br><span class="line">        &#123; type: &#x27;li&#x27;, children: &#x27;橘子&#x27; &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当我们创建或更新元素的时候，React 先对 VirtualDom 进行修改，再将 VirtualDom 渲染成真实 DOM。事件的监听也是如此，只需要对 VirtualDom 进行事件监听，React 会替我们对真实 DOM 进行相关响应。</p>
+<p><strong>那么为什么采用虚拟 DOM 的方式呢？</strong></p>
+<ul>
+<li>提高开发效率<ul>
+<li>传统的 JS 应用，我们在编码时的关注点在<strong>如何更新 DOM</strong></li>
+<li>现在的 React 应用，你只需要告诉 React 视图所需要的状态，<strong>React 通过虚拟 DOM 确保和该状态匹配，最后再由 React 完成属性操作、事件处理、DOM 更新</strong></li>
+<li>我们就可以将关注点放在处理业务逻辑上，而不是操作 DOM 上</li>
+</ul>
+</li>
+<li>优化 DOM 渲染<ul>
+<li>对于首次渲染来说，虚拟 DOM 同样需要进行全量的渲染，甚至因为一些计算的产生，消耗更多的内存。</li>
+<li>对于后续渲染来说，React <strong>利用 Diff 算法提前计算</strong>好了较优的更新和渲染 DOM 的方案，比我们自己直接操作 DOM 要更加高效。</li>
+</ul>
+</li>
+<li>跨浏览器兼容<ul>
+<li>React 基于虚拟 DOM 自己实现了一套事件机制，摆脱了各浏览器的事件兼容性问题。</li>
+</ul>
+</li>
+<li>跨平台兼容<ul>
+<li>以 React Native 为例，React 可以根据虚拟 DOM 可以画出不同平台的 UI 层。</li>
+</ul>
+</li>
+</ul>
+<h3 id="虚拟-DOM-的构成"><a href="#虚拟-DOM-的构成" class="headerlink" title="虚拟 DOM 的构成"></a><strong>虚拟 DOM 的构成</strong></h3><p>在分析虚拟 DOM 的构成之前，先说说 React 中的 JSX 语法。</p>
+<p>React 引入了 JSX 语法，让我们可以直接在 React 中编写我们熟悉的 HTML 标签。</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// JSX</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Hello</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="title">render</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span>Hello React!<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>再经由 Babel 帮助我们完成 JSX 到 React.createElement() 的方法调用。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class Hello extends Component &#123;</span><br><span class="line">    render() &#123;</span><br><span class="line">        return React.createElement(&#x27;div&#x27;, null, &#x27;Hello React!&#x27;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>总的来说，引入 JSX 也是为了提高开发人员的开发效率，降低学习成本。</p>
+<blockquote>
+<p>不论是哪种写法，最终就会生成对应的 JS 对象，即虚拟 DOM。</p>
+</blockquote>
+<p>把如下的 JSX 代码进行打印，就可以看到虚拟 DOM 的结构。</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;div className=<span class="string">&quot;title&quot;</span>&gt;</span><br><span class="line">      <span class="xml"><span class="tag">&lt;<span class="name">span</span>&gt;</span>Hello ConardLi<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span></span><br><span class="line">      <span class="xml"><span class="tag">&lt;<span class="name">ul</span>&gt;</span></span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;<span class="name">li</span>&gt;</span>苹果<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span></span><br><span class="line"><span class="xml">        <span class="tag">&lt;<span class="name">li</span>&gt;</span>橘子<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span></span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+
+<p>虚拟 DOM 的本质就是 JS 对象。</p>
+<p><img src="C:\Users\西沉\AppData\Roaming\Typora\typora-user-images\image-20220818223150063.png" alt="image-20220818223150063"></p>
+<ul>
+<li>type：元素的类型，可以是原生html类型（字符串），或者自定义组件（函数或class）</li>
+<li>key：组件的唯一标识，用于Diff算法，下面会详细介绍</li>
+<li>ref：用于访问原生dom节点</li>
+<li>props：传入组件的props，chidren是props中的一个属性，它存储了当前组件的孩子节点，可以是数组（多个孩子节点）或对象（只有一个孩子节点）</li>
+<li>owner：当前正在构建的Component所属的Component</li>
+<li>self：（非生产环境）指定当前位于哪个组件实例</li>
+<li>_source：（非生产环境）指定调试代码来自的文件(fileName)和代码行数(lineNumber)</li>
+</ul>
+<h3 id="虚拟DOM渲染过程"><a href="#虚拟DOM渲染过程" class="headerlink" title="虚拟DOM渲染过程"></a>虚拟DOM渲染过程</h3><ul>
+<li><p>使用<code>React.createElement</code>或<code>JSX</code>编写<code>React</code>组件，实际上所有的<code>JSX</code>代码最后都会转换成<code>React.createElement(...)</code>，<code>Babel</code>帮助我们完成了这个转换的过程。</p>
+</li>
+<li><p><code>createElement</code>函数对<code>key</code>和<code>ref</code>等特殊的<code>props</code>进行处理，并获取<code>defaultProps</code>对默认<code>props</code>进行赋值，并且对传入的孩子节点进行处理，最终构造成一个<code>ReactElement</code>对象（所谓的虚拟<code>DOM</code>）。</p>
+</li>
+<li><p><code>ReactDOM.render</code>将生成好的虚拟<code>DOM</code>渲染到指定容器上，其中采用了批处理、事务等机制并且对特定浏览器进行了性能优化，最终转换为真实<code>DOM</code>。</p>
+</li>
+</ul>
+<h2 id="Diff-算法"><a href="#Diff-算法" class="headerlink" title="Diff 算法"></a>Diff 算法</h2><h3 id="概述-1"><a href="#概述-1" class="headerlink" title="概述"></a>概述</h3><p>前边说到 React 的虚拟 DOM 帮助我们计算好了最佳的渲染方案，这就是依靠了 Diff 算法的效果。虚拟 DOM 和 Diff 算法的结合，让用户可以不必顾虑性能问题而自由的刷新页面，让开发者无需关心如何修改真实 DOM 而仅关注业务逻辑即可。</p>
+<p>Diff 算法的出现，帮助我们计算出了每次虚拟 DOM 中真正变化的部分，并只对相应的真实 DOM 部分进行操作，保证了每次操作更新页面的高效渲染。</p>
+<p><strong>传统的 Diff 算法</strong></p>
+<p>Diff 算法的<strong>目的</strong>是计算一棵树形结构转换成另一棵树形结构的最少操作。传统的 Diff 算法通过<strong>循环递归</strong>对每个结点进行比较，算法复杂度为 O(n^3) ，其中 n 是树的结点总数。可以看出来，传统的 Diff 算法效率并不高，不适合用于频繁更新渲染的前端页面。</p>
+<p><strong>React Diff</strong></p>
+<p>React 针对传统的 Diff 算法进行改进，时间复杂度由原来的 O(n^3) 降为了 O(n) ，大大提升了算法效率。</p>
+<h3 id="React-Diff"><a href="#React-Diff" class="headerlink" title="React Diff"></a>React Diff</h3><p>React 制定了三条 Diff 策略，用来进行算法优化：</p>
+<ol>
+<li>Web UI 中 DOM 节点跨层级的移动操作较少，可以忽略不计。</li>
+<li>拥有相同类的两个组件将会生成相似的树形结构，拥有不同类的两个组件将会生成不同的树形结构。</li>
+<li>对于同一层级的一组子节点，它们可以通过唯一 id 进行区分。</li>
+</ol>
+<p>基于上述三条策略，React 分别对 tree diff、component diff 以及 element diff 进行优化。</p>
+<h4 id="tree-diff"><a href="#tree-diff" class="headerlink" title="tree diff"></a><strong>tree diff</strong></h4><p>基于策略一，React 对树的算法比较，将只针对同一层的节点进行比较。</p>
+<p>React 通过 updateDepth 对虚拟 DOM 进行层级控制，只针对同色方框内的 DOM 节点进行比较，即同一个父节点下的所有子节点。当发现节点已经不存在，会将该节点及其子节点完全删除，不再进一步比较。</p>
+<p>这样一次树的遍历即可完成对整个 DOM 树的比较。</p>
+<p><img src="../images/React/treediff.png" alt="treediff"></p>
+<p><strong>如果出现了 DOM 节点跨层级的移动，React Diff 怎么操作呢？</strong></p>
+<p>假设 A 节点整个移动到 D 节点下，对于 React 来说，是 R 节点的子节点 A 消失了，于是进行了删除整个 A 子树的操作；以及 D 节点增加了一个子节点 A，于是进行了创建整个 A 子树的操作。</p>
+<p><img src="../images/React/treediff2.png" alt="treediff2"></p>
+<p>就会变成 <strong>create A -&gt; create B -&gt; create C -&gt; delete A</strong>，导致大量的删除和创建发生。因此，官方也建议不要进行跨层级的 DOM 节点操作。</p>
+<h4 id="component-diff"><a href="#component-diff" class="headerlink" title="component diff"></a>component diff</h4><p>基于策略二，React 是组件化构建应用的，根据组件的类型采用不同的方式更新 DOM。</p>
+<ul>
+<li>如果是同一类型的组件，按照原策略比较虚拟 DOM 树。</li>
+<li>如果不是同类型，React 判断该组件为 Dirty Component，将替换整个组件下的所有子节点。</li>
+<li>对于同一类型的组件，可能其中的虚拟 DOM 没有任何变化，用户可以通过 shouldComponentUpdate() 来判断组件是否进行 Diff 判断。</li>
+</ul>
+<p>当 component D 改变为 component G 时，即使这两个 component 结构相似，一旦 React 判断 D 和 G 是不同类型的组件，就不会比较二者的结构，而是直接删除 component D，重新创建 component G 以及其子节点。</p>
+<p><img src="../images/React/componentdiff.png" alt="copdiff"></p>
+<h4 id="element-diff"><a href="#element-diff" class="headerlink" title="element diff"></a>element diff</h4><p>基于策略三，React 针对节点的比较，提供了三种操作：</p>
+<ul>
+<li><p><strong>INSERT_MARKUP</strong>（插入）：新的 component 类型不在老的集合中，是一个全新的节点，需要执行插入操作。</p>
+</li>
+<li><p><strong>MOVE_EXISTING</strong>（移动）：在老集合中有新 component 类型，且 element 是可更新的类型，React 通过移动来复用以前的 DOM 节点。</p>
+</li>
+<li><p><strong>REMOVE_NODE</strong>（删除）：对应的 element 不可以直接复用和更新，或者老 component 不在新集合中，就需要执行删除操作。</p>
+</li>
+</ul>
+<p>为了便于判断新集合中是否存在老集合中的子节点，React 为每个节点添加唯一 key 来进行区分。</p>
+<p>新老集合进行 diff 对比，通过 key 发现都是相同的节点，这样 React 就不需要进行创建和删除节点的操作，而是只需要对老集合中的节点进行移动即可。</p>
+<p><img src="../images/React/elementdiff.png" alt="elediff"></p>
+<p><strong>React 中每个节点都只能右向移动，为什么这么说呢？</strong></p>
+<p>在 React 中如果找到新老集合相同的节点，则会进行位置的判断，当 oldIndex &lt; newIndex 才会进行老节点的移动。</p>
+<ul>
+<li>A 节点：oldIndex = 0, newIndex = 1, 满足 oldIndex &lt; newIndex, 因此 A 节点右移。</li>
+<li>B 节点：oldIndex = 1, newIndex = 0, 不满足 oldIndex &lt; newIndex, 因此 B 节点保持不变。</li>
+</ul>
+<p>不过，如果是下图这种情况，如果把 D 节点左移即可完成 DOM 更新，但是，按照 React 的策略会将 A、B、C 三节点右移，产生大量的移动操作。</p>
+<p><img src="../images/React/elediff2.png" alt="elediff2"></p>
+<p><strong>所以，我们要尽量减少类似将最后一个节点移动至首部的操作。</strong></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>React 利用<strong>虚拟 DOM 和 Diff 算法相结合</strong>的方式，让开发者只需要关注业务逻辑，由 React 去计算出最优的真实 DOM 渲染方式。</p>
+<p>虚拟 DOM：结合 JSX 语法，让我们可以在代码中使用熟悉的 HTML 标签，再借助 Babel 转换成为一个 JS 对象，即虚拟 DOM。</p>
+<p>React Diff：React 制定的三个策略，将原本高复杂度的算法降为线性复杂度，大大提升了渲染真实 DOM 的效率。</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903824683958286#heading-9">【React深入】深入分析虚拟DOM的渲染原理和特性</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/20346379?refer=purerender">React 源码剖析系列 － 不可思议的 react diff</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/03/03/202233-Git%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" rel="prev" title="Git的基本使用">
+                  <i class="fa fa-chevron-left"></i> Git的基本使用
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/07/23/2022723-CompletableFuture%E7%9A%84%E8%AF%B4%E6%98%8E/" rel="next" title="CompletableFuture的说明">
+                  CompletableFuture的说明 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">QTLin</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">410k</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
