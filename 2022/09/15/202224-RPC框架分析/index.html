@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/koroneko.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/koroneko.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/koroneko.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;example.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.5.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:1,&quot;unescape&quot;:false,&quot;preload&quot;:false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="手写RPC框架优化点 插件化 Zookeeper + Bus 健康检测（心跳&#x2F;可用率） 路由策略（灰度发布） 异常重试（幂等性） 优雅关闭（关闭之前设置“挡板”不再接受新的请求，处理完已经接收的请求） 优雅启动（启动预热，让一些代码通过 JVM 预编译成机器码；负载均衡缓慢增加权重比例）  CompletableFuture 实现异步调用客户端原本采用同步连接等待服务端的连接和数据传输 123">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RPC框架分析">
+<meta property="og:url" content="http://example.com/2022/09/15/202224-RPC%E6%A1%86%E6%9E%B6%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="深海学者">
+<meta property="og:description" content="手写RPC框架优化点 插件化 Zookeeper + Bus 健康检测（心跳&#x2F;可用率） 路由策略（灰度发布） 异常重试（幂等性） 优雅关闭（关闭之前设置“挡板”不再接受新的请求，处理完已经接收的请求） 优雅启动（启动预热，让一些代码通过 JVM 预编译成机器码；负载均衡缓慢增加权重比例）  CompletableFuture 实现异步调用客户端原本采用同步连接等待服务端的连接和数据传输 123">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2022/09/15/images/RPC/CompletableFuture.png">
+<meta property="og:image" content="http://example.com/2022/09/15/images/RPC/spi.png">
+<meta property="article:published_time" content="2022-09-15T02:10:37.983Z">
+<meta property="article:modified_time" content="2022-09-15T02:32:44.678Z">
+<meta property="article:author" content="QTLin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/09/15/images/RPC/CompletableFuture.png">
+
+
+<link rel="canonical" href="http://example.com/2022/09/15/202224-RPC%E6%A1%86%E6%9E%B6%E5%88%86%E6%9E%90/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;2022&#x2F;09&#x2F;15&#x2F;202224-RPC%E6%A1%86%E6%9E%B6%E5%88%86%E6%9E%90&#x2F;&quot;,&quot;path&quot;:&quot;2022&#x2F;09&#x2F;15&#x2F;202224-RPC框架分析&#x2F;&quot;,&quot;title&quot;:&quot;RPC框架分析&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>RPC框架分析 | 深海学者</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">深海学者</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">More Knowledge!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%8B%E5%86%99RPC%E6%A1%86%E6%9E%B6%E4%BC%98%E5%8C%96%E7%82%B9"><span class="nav-text">手写RPC框架优化点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CompletableFuture-%E5%AE%9E%E7%8E%B0%E5%BC%82%E6%AD%A5%E8%B0%83%E7%94%A8"><span class="nav-text">CompletableFuture 实现异步调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%8F%E8%AE%AE%E8%A7%A3%E6%9E%90"><span class="nav-text">协议解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E8%87%B4%E6%80%A7-Hash-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="nav-text">一致性 Hash 负载均衡</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SPI-%E5%AE%9E%E7%8E%B0-RPC-%E6%8F%92%E4%BB%B6%E5%8C%96"><span class="nav-text">SPI 实现 RPC 插件化</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">QTLin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/deepbreath373" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;deepbreath373" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:qitao_lin@163.com" title="E-Mail → mailto:qitao_lin@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/15/202224-RPC%E6%A1%86%E6%9E%B6%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="QTLin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="深海学者">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          RPC框架分析
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-09-15 10:10:37 / 修改时间：10:32:44" itemprop="dateCreated datePublished" datetime="2022-09-15T10:10:37+08:00">2022-09-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RPC/" itemprop="url" rel="index"><span itemprop="name">RPC</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.7k</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <span id="more"></span>
+
+<h2 id="手写RPC框架优化点"><a href="#手写RPC框架优化点" class="headerlink" title="手写RPC框架优化点"></a>手写RPC框架优化点</h2><ul>
+<li>插件化</li>
+<li>Zookeeper + Bus</li>
+<li>健康检测（心跳/可用率）</li>
+<li>路由策略（灰度发布）</li>
+<li>异常重试（幂等性）</li>
+<li>优雅关闭（关闭之前设置“挡板”不再接受新的请求，处理完已经接收的请求）</li>
+<li>优雅启动（启动预热，让一些代码通过 JVM 预编译成机器码；负载均衡缓慢增加权重比例）</li>
+</ul>
+<h2 id="CompletableFuture-实现异步调用"><a href="#CompletableFuture-实现异步调用" class="headerlink" title="CompletableFuture 实现异步调用"></a>CompletableFuture 实现异步调用</h2><p>客户端原本采用同步连接等待服务端的连接和数据传输</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 绑定端口，同步等待绑定成功</span></span><br><span class="line">ChannelFuture f = b.bind(host, PORT).sync();</span><br><span class="line"><span class="comment">// 等待服务端监听端口关闭</span></span><br><span class="line">f.channel().closeFuture().sync();</span><br></pre></td></tr></table></figure>
+
+<p>现在引入 CompletableFuture 之后可以采用异步连接的方式，并且也可以异步接收数据。只需要将消息 ID 与 Future 的映射关系存储起来，等到需要数据的时候，根据消息 ID 就可以得到对应的 Future 对象，从中获取到需要的数据。</p>
+<p><img src="../images/RPC/CompletableFuture.png" alt="CompletableFuture"></p>
+<p><strong>异步获取连接后的Channel：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Channel <span class="title">doConnect</span><span class="params">(InetSocketAddress inetSocketAddress)</span> </span>&#123;</span><br><span class="line">    CompletableFuture&lt;Channel&gt; completableFuture = <span class="keyword">new</span> CompletableFuture&lt;&gt;();</span><br><span class="line">    <span class="comment">// 发起和服务端的连接，注册异步监听器</span></span><br><span class="line">    bootstrap.connect(inetSocketAddress).addListener((ChannelFutureListener) future -&gt; &#123;</span><br><span class="line">        <span class="keyword">if</span> (future.isSuccess()) &#123;</span><br><span class="line">            log.info(<span class="string">&quot;The client has connected [&#123;&#125;] successful!&quot;</span>, inetSocketAddress.toString());</span><br><span class="line">            <span class="comment">//如果连接成功，调用complete方法，相当于存储了本次连接的channel</span></span><br><span class="line">            completableFuture.complete(future.channel());</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="comment">//获取Future对象中存储的channel</span></span><br><span class="line">    <span class="keyword">return</span> completableFuture.get();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>小结：</strong></p>
+<ul>
+<li>是否选择阻塞的控制权交给了调用rpc方法的线程，而不是发送请求的eventLoop里面的线程，通信线程消耗不起，然后完全可以做异步处理。</li>
+<li>阻塞推迟到动态代理中。如果有多个调用rpc的channel，都是用的一个eventloop，所以线程只会阻塞到业务线程自己的动态代理的completableFuture.get())方法中，不会由于一个线程调用而阻塞其他线程发起调用。</li>
+</ul>
+<h2 id="协议解析"><a href="#协议解析" class="headerlink" title="协议解析"></a>协议解析</h2><p>利用 LengthFieldBasedFrameDecoder 设定针对协议的参数，可以解决 TCP 传输过程中的粘包与拆包问题。</p>
+<h2 id="一致性-Hash-负载均衡"><a href="#一致性-Hash-负载均衡" class="headerlink" title="一致性 Hash 负载均衡"></a>一致性 Hash 负载均衡</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConsistentHashLoadBalance</span> <span class="keyword">extends</span> <span class="title">AbstractLoadBalance</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>使用 CHashMap 保存某个服务地址和其所有服务节点（虚拟节点）的映射关系</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> ConcurrentHashMap&lt;String, ConsistentHashSelector&gt; selectors = <span class="keyword">new</span> ConcurrentHashMap&lt;&gt;();</span><br></pre></td></tr></table></figure></li>
+<li><p>使用内部类 <code>ConsistentHashSelector</code> 负责虚拟节点的初始化、对于服务节点的选择</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">ConsistentHashSelector(List&lt;String&gt; invokers, <span class="keyword">int</span> replicaNumber, <span class="keyword">int</span> identityHashCode) &#123;</span><br><span class="line">    <span class="keyword">this</span>.virtualInvokers = <span class="keyword">new</span> TreeMap&lt;&gt;();</span><br><span class="line">    <span class="keyword">this</span>.identityHashCode = identityHashCode;</span><br><span class="line">	<span class="comment">// 为传入的每个服务创建其对应的服务节点（虚拟出160个均匀分散在圆环上）</span></span><br><span class="line">    <span class="keyword">for</span> (String invoker : invokers) &#123;</span><br><span class="line">        <span class="comment">// 外循环160/4次，内循环4次，共160个节点</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; replicaNumber / <span class="number">4</span>; i++) &#123;</span><br><span class="line">            <span class="comment">// i是每个副本节点的序号，生成对应的MD5字节数组</span></span><br><span class="line">            <span class="keyword">byte</span>[] digest = md5(invoker + i);</span><br><span class="line">            <span class="comment">// 对digest部分字节进行4次hash运算，得到四个不同的long</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> h = <span class="number">0</span>; h &lt; <span class="number">4</span>; h++) &#123;</span><br><span class="line">                <span class="comment">// h = 0 时，取 digest 中下标为 0 ~ 3 的4个字节进行位运算</span></span><br><span class="line">                <span class="comment">// h = 1 时，取 digest 中下标为 4 ~ 7 的4个字节进行位运算</span></span><br><span class="line">                <span class="comment">// h = 2, h = 3 时过程同上</span></span><br><span class="line">                <span class="keyword">long</span> m = hash(digest, h);</span><br><span class="line">                <span class="comment">// 将生成的hash码与服务节点的映射关系存入TreeMap</span></span><br><span class="line">                virtualInvokers.put(m, invoker);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>在 <code>doSelect()</code> 方法中选出服务名称对应的服务节点</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> String <span class="title">doSelect</span><span class="params">(List&lt;String&gt; serviceAddresses, RpcRequest rpcRequest)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> identityHashCode = System.identityHashCode(serviceAddresses);</span><br><span class="line">        <span class="comment">// build rpc service name by rpcRequest</span></span><br><span class="line">        String rpcServiceName = rpcRequest.getRpcServiceName();</span><br><span class="line">        ConsistentHashSelector selector = selectors.get(rpcServiceName);</span><br><span class="line">        <span class="comment">// 如果CHashMap中没有该服务，说明其服务节点还未创建，需要为其创建新的服务节点</span></span><br><span class="line">        <span class="keyword">if</span> (selector == <span class="keyword">null</span> || selector.identityHashCode != identityHashCode) &#123;</span><br><span class="line">            selectors.put(rpcServiceName, <span class="keyword">new</span> ConsistentHashSelector(serviceAddresses, <span class="number">160</span>, identityHashCode));</span><br><span class="line">            selector = selectors.get(rpcServiceName);</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="comment">//调用Selector的select方法进行节点选择，选择节点所用的值是服务名称+请求参数</span></span><br><span class="line">        <span class="keyword">return</span> selector.select(rpcServiceName + Arrays.stream(rpcRequest.getParameters()));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>为什么采用服务名称+请求参数作为 Key 来进行 hash 选择？</p>
+<p>因为如果只采用服务名称进行选择，那么，即使是不同的客户端发起调用，只要是调用同一个服务，那么它生成的 <code>md5(rpcServiceKey)</code> 就都相同，最终都请求到同一个服务节点上，不能达到负载均衡的效果。如果多加入一个请求参数，那么，多个调用方的参数不一定相同，就可以将它们分配到不同的服务节点。</p>
+</blockquote>
+</li>
+<li><p><code>select()/selectForKey(long hashcode)</code> 借助 TreeMap 实现服务节点的快速查找</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">select</span><span class="params">(String rpcServiceKey)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 同样根据服务名称+请求参数计算hash值</span></span><br><span class="line">    <span class="keyword">byte</span>[] digest = md5(rpcServiceKey);</span><br><span class="line">    <span class="keyword">return</span> selectForKey(hash(digest, <span class="number">0</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">selectForKey</span><span class="params">(<span class="keyword">long</span> hashCode)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 将计算的hash值作为key去查找大于等该hash值的第一个节点作为服务节点</span></span><br><span class="line">    Map.Entry&lt;Long, String&gt; entry = virtualInvokers.tailMap(hashCode, <span class="keyword">true</span>).firstEntry();</span><br><span class="line">	<span class="comment">// 如果找到最后都没有找到（即该hash值已经大于所有服务节点），就返回首个服务节点</span></span><br><span class="line">    <span class="keyword">if</span> (entry == <span class="keyword">null</span>) &#123;</span><br><span class="line">        entry = virtualInvokers.firstEntry();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> entry.getValue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="SPI-实现-RPC-插件化"><a href="#SPI-实现-RPC-插件化" class="headerlink" title="SPI 实现 RPC 插件化"></a>SPI 实现 RPC 插件化</h2><blockquote>
+<p>EL: ExtensionLoader</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExtensionLoader.getExtensionLoader(LoadBalance.class).getExtension(<span class="string">&quot;loadBalance&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>说明</strong></p>
+<p>负载均衡的实现有多种方式，如果想要通过配置的方式来切换负载均衡的策略，就是通过 SPI 来实现，达到一个插件化可替换的效果。</p>
+<p>通过修改配置中具体的负载均衡类的包名，来切换使用的策略：</p>
+<p><img src="../images/RPC/spi.png" alt="image-20220915093043367"></p>
+<ol>
+<li>ExtensionLoader.getExtensionLoader(Class&lt;S&gt; type)<br>判断当前本地的 CHashMap 中是否已经存有对应的 EL，否则创建一个与之对应的 EL 存放在 Map 中。</li>
+<li>getExtension(String name)<br>根据 name 匹配配置文件中的 key 值，同样通过 Map 进行缓存，如果未命中，进行 createExtension(name)</li>
+<li>createExtension(String name)<br>主要是调用 getExtensionClasses() 来获取 class 对象，并做一个 Map 的缓存存放。</li>
+<li>getExtensionClasses()<br>调用 loadDirectory(classes) 反射获取 class 对象。</li>
+<li>loadDirectory(Map&lt;String, Class&lt;?&gt;&gt; extensionClasses)<br>根据传入的 LoadBalance.class 的 getName 方法获取全限定类名，通过类加载器(ExtensionLoader.class.getClassLoader()) getResourse 反射获取到配置文件的 Enumeration&lt;URL&gt; 对象。每个 URL 对象对应了我们的配置文件。</li>
+<li>loadResourse(Map&lt;String, Class&lt;?&gt;&gt; extensionClasses, ClassLoader classLoader, URL resourceUrl)<br>针对 URL 对象创建 BufferedReader 读取每一行配置，得到 String 对象，根据 “=” 进行 kv 键值对拆分。<br>借助 ClassLoader.loadClass(value) 得到全限定类名对应的 Class ，这样就获取到了配置文件对应的 LoadBalance 。</li>
+<li>层层返回后，ExtensionLoader.getExtensionLoader(LoadBalance.class).getExtension(“loadBalance”); 就得到了配置文件中对应的 LoadBalance 实现类。</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/08/20/2022820-%E8%AF%B4%E8%AF%B4JOLT/" rel="prev" title="说说JOLT">
+                  <i class="fa fa-chevron-left"></i> 说说JOLT
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/07/22/2023722-%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B/" rel="next" title="虚拟线程">
+                  虚拟线程 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">QTLin</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">437k</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

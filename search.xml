@@ -7762,4 +7762,108 @@
         <category>Java</category>
       </categories>
   </entry>
+  <entry>
+    <title>RPC框架分析</title>
+    <url>/2022/09/15/202224-RPC%E6%A1%86%E6%9E%B6%E5%88%86%E6%9E%90/</url>
+    <content><![CDATA[<span id="more"></span>
+
+<h2 id="手写RPC框架优化点"><a href="#手写RPC框架优化点" class="headerlink" title="手写RPC框架优化点"></a>手写RPC框架优化点</h2><ul>
+<li>插件化</li>
+<li>Zookeeper + Bus</li>
+<li>健康检测（心跳/可用率）</li>
+<li>路由策略（灰度发布）</li>
+<li>异常重试（幂等性）</li>
+<li>优雅关闭（关闭之前设置“挡板”不再接受新的请求，处理完已经接收的请求）</li>
+<li>优雅启动（启动预热，让一些代码通过 JVM 预编译成机器码；负载均衡缓慢增加权重比例）</li>
+</ul>
+<h2 id="CompletableFuture-实现异步调用"><a href="#CompletableFuture-实现异步调用" class="headerlink" title="CompletableFuture 实现异步调用"></a>CompletableFuture 实现异步调用</h2><p>客户端原本采用同步连接等待服务端的连接和数据传输</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 绑定端口，同步等待绑定成功</span></span><br><span class="line">ChannelFuture f = b.bind(host, PORT).sync();</span><br><span class="line"><span class="comment">// 等待服务端监听端口关闭</span></span><br><span class="line">f.channel().closeFuture().sync();</span><br></pre></td></tr></table></figure>
+
+<p>现在引入 CompletableFuture 之后可以采用异步连接的方式，并且也可以异步接收数据。只需要将消息 ID 与 Future 的映射关系存储起来，等到需要数据的时候，根据消息 ID 就可以得到对应的 Future 对象，从中获取到需要的数据。</p>
+<p><img src="../images/RPC/CompletableFuture.png" alt="CompletableFuture"></p>
+<p><strong>异步获取连接后的Channel：</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Channel <span class="title">doConnect</span><span class="params">(InetSocketAddress inetSocketAddress)</span> </span>&#123;</span><br><span class="line">    CompletableFuture&lt;Channel&gt; completableFuture = <span class="keyword">new</span> CompletableFuture&lt;&gt;();</span><br><span class="line">    <span class="comment">// 发起和服务端的连接，注册异步监听器</span></span><br><span class="line">    bootstrap.connect(inetSocketAddress).addListener((ChannelFutureListener) future -&gt; &#123;</span><br><span class="line">        <span class="keyword">if</span> (future.isSuccess()) &#123;</span><br><span class="line">            log.info(<span class="string">&quot;The client has connected [&#123;&#125;] successful!&quot;</span>, inetSocketAddress.toString());</span><br><span class="line">            <span class="comment">//如果连接成功，调用complete方法，相当于存储了本次连接的channel</span></span><br><span class="line">            completableFuture.complete(future.channel());</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="comment">//获取Future对象中存储的channel</span></span><br><span class="line">    <span class="keyword">return</span> completableFuture.get();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>小结：</strong></p>
+<ul>
+<li>是否选择阻塞的控制权交给了调用rpc方法的线程，而不是发送请求的eventLoop里面的线程，通信线程消耗不起，然后完全可以做异步处理。</li>
+<li>阻塞推迟到动态代理中。如果有多个调用rpc的channel，都是用的一个eventloop，所以线程只会阻塞到业务线程自己的动态代理的completableFuture.get())方法中，不会由于一个线程调用而阻塞其他线程发起调用。</li>
+</ul>
+<h2 id="协议解析"><a href="#协议解析" class="headerlink" title="协议解析"></a>协议解析</h2><p>利用 LengthFieldBasedFrameDecoder 设定针对协议的参数，可以解决 TCP 传输过程中的粘包与拆包问题。</p>
+<h2 id="一致性-Hash-负载均衡"><a href="#一致性-Hash-负载均衡" class="headerlink" title="一致性 Hash 负载均衡"></a>一致性 Hash 负载均衡</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConsistentHashLoadBalance</span> <span class="keyword">extends</span> <span class="title">AbstractLoadBalance</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>使用 CHashMap 保存某个服务地址和其所有服务节点（虚拟节点）的映射关系</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> ConcurrentHashMap&lt;String, ConsistentHashSelector&gt; selectors = <span class="keyword">new</span> ConcurrentHashMap&lt;&gt;();</span><br></pre></td></tr></table></figure></li>
+<li><p>使用内部类 <code>ConsistentHashSelector</code> 负责虚拟节点的初始化、对于服务节点的选择</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">ConsistentHashSelector(List&lt;String&gt; invokers, <span class="keyword">int</span> replicaNumber, <span class="keyword">int</span> identityHashCode) &#123;</span><br><span class="line">    <span class="keyword">this</span>.virtualInvokers = <span class="keyword">new</span> TreeMap&lt;&gt;();</span><br><span class="line">    <span class="keyword">this</span>.identityHashCode = identityHashCode;</span><br><span class="line">	<span class="comment">// 为传入的每个服务创建其对应的服务节点（虚拟出160个均匀分散在圆环上）</span></span><br><span class="line">    <span class="keyword">for</span> (String invoker : invokers) &#123;</span><br><span class="line">        <span class="comment">// 外循环160/4次，内循环4次，共160个节点</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; replicaNumber / <span class="number">4</span>; i++) &#123;</span><br><span class="line">            <span class="comment">// i是每个副本节点的序号，生成对应的MD5字节数组</span></span><br><span class="line">            <span class="keyword">byte</span>[] digest = md5(invoker + i);</span><br><span class="line">            <span class="comment">// 对digest部分字节进行4次hash运算，得到四个不同的long</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> h = <span class="number">0</span>; h &lt; <span class="number">4</span>; h++) &#123;</span><br><span class="line">                <span class="comment">// h = 0 时，取 digest 中下标为 0 ~ 3 的4个字节进行位运算</span></span><br><span class="line">                <span class="comment">// h = 1 时，取 digest 中下标为 4 ~ 7 的4个字节进行位运算</span></span><br><span class="line">                <span class="comment">// h = 2, h = 3 时过程同上</span></span><br><span class="line">                <span class="keyword">long</span> m = hash(digest, h);</span><br><span class="line">                <span class="comment">// 将生成的hash码与服务节点的映射关系存入TreeMap</span></span><br><span class="line">                virtualInvokers.put(m, invoker);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>在 <code>doSelect()</code> 方法中选出服务名称对应的服务节点</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> String <span class="title">doSelect</span><span class="params">(List&lt;String&gt; serviceAddresses, RpcRequest rpcRequest)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> identityHashCode = System.identityHashCode(serviceAddresses);</span><br><span class="line">        <span class="comment">// build rpc service name by rpcRequest</span></span><br><span class="line">        String rpcServiceName = rpcRequest.getRpcServiceName();</span><br><span class="line">        ConsistentHashSelector selector = selectors.get(rpcServiceName);</span><br><span class="line">        <span class="comment">// 如果CHashMap中没有该服务，说明其服务节点还未创建，需要为其创建新的服务节点</span></span><br><span class="line">        <span class="keyword">if</span> (selector == <span class="keyword">null</span> || selector.identityHashCode != identityHashCode) &#123;</span><br><span class="line">            selectors.put(rpcServiceName, <span class="keyword">new</span> ConsistentHashSelector(serviceAddresses, <span class="number">160</span>, identityHashCode));</span><br><span class="line">            selector = selectors.get(rpcServiceName);</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="comment">//调用Selector的select方法进行节点选择，选择节点所用的值是服务名称+请求参数</span></span><br><span class="line">        <span class="keyword">return</span> selector.select(rpcServiceName + Arrays.stream(rpcRequest.getParameters()));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>为什么采用服务名称+请求参数作为 Key 来进行 hash 选择？</p>
+<p>因为如果只采用服务名称进行选择，那么，即使是不同的客户端发起调用，只要是调用同一个服务，那么它生成的 <code>md5(rpcServiceKey)</code> 就都相同，最终都请求到同一个服务节点上，不能达到负载均衡的效果。如果多加入一个请求参数，那么，多个调用方的参数不一定相同，就可以将它们分配到不同的服务节点。</p>
+</blockquote>
+</li>
+<li><p><code>select()/selectForKey(long hashcode)</code> 借助 TreeMap 实现服务节点的快速查找</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">select</span><span class="params">(String rpcServiceKey)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 同样根据服务名称+请求参数计算hash值</span></span><br><span class="line">    <span class="keyword">byte</span>[] digest = md5(rpcServiceKey);</span><br><span class="line">    <span class="keyword">return</span> selectForKey(hash(digest, <span class="number">0</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">selectForKey</span><span class="params">(<span class="keyword">long</span> hashCode)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 将计算的hash值作为key去查找大于等该hash值的第一个节点作为服务节点</span></span><br><span class="line">    Map.Entry&lt;Long, String&gt; entry = virtualInvokers.tailMap(hashCode, <span class="keyword">true</span>).firstEntry();</span><br><span class="line">	<span class="comment">// 如果找到最后都没有找到（即该hash值已经大于所有服务节点），就返回首个服务节点</span></span><br><span class="line">    <span class="keyword">if</span> (entry == <span class="keyword">null</span>) &#123;</span><br><span class="line">        entry = virtualInvokers.firstEntry();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> entry.getValue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="SPI-实现-RPC-插件化"><a href="#SPI-实现-RPC-插件化" class="headerlink" title="SPI 实现 RPC 插件化"></a>SPI 实现 RPC 插件化</h2><blockquote>
+<p>EL: ExtensionLoader</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">ExtensionLoader.getExtensionLoader(LoadBalance.class).getExtension(<span class="string">&quot;loadBalance&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>说明</strong></p>
+<p>负载均衡的实现有多种方式，如果想要通过配置的方式来切换负载均衡的策略，就是通过 SPI 来实现，达到一个插件化可替换的效果。</p>
+<p>通过修改配置中具体的负载均衡类的包名，来切换使用的策略：</p>
+<p><img src="../images/RPC/spi.png" alt="image-20220915093043367"></p>
+<ol>
+<li>ExtensionLoader.getExtensionLoader(Class&lt;S&gt; type)<br>判断当前本地的 CHashMap 中是否已经存有对应的 EL，否则创建一个与之对应的 EL 存放在 Map 中。</li>
+<li>getExtension(String name)<br>根据 name 匹配配置文件中的 key 值，同样通过 Map 进行缓存，如果未命中，进行 createExtension(name)</li>
+<li>createExtension(String name)<br>主要是调用 getExtensionClasses() 来获取 class 对象，并做一个 Map 的缓存存放。</li>
+<li>getExtensionClasses()<br>调用 loadDirectory(classes) 反射获取 class 对象。</li>
+<li>loadDirectory(Map&lt;String, Class&lt;?&gt;&gt; extensionClasses)<br>根据传入的 LoadBalance.class 的 getName 方法获取全限定类名，通过类加载器(ExtensionLoader.class.getClassLoader()) getResourse 反射获取到配置文件的 Enumeration&lt;URL&gt; 对象。每个 URL 对象对应了我们的配置文件。</li>
+<li>loadResourse(Map&lt;String, Class&lt;?&gt;&gt; extensionClasses, ClassLoader classLoader, URL resourceUrl)<br>针对 URL 对象创建 BufferedReader 读取每一行配置，得到 String 对象，根据 “=” 进行 kv 键值对拆分。<br>借助 ClassLoader.loadClass(value) 得到全限定类名对应的 Class ，这样就获取到了配置文件对应的 LoadBalance 。</li>
+<li>层层返回后，ExtensionLoader.getExtensionLoader(LoadBalance.class).getExtension(“loadBalance”); 就得到了配置文件中对应的 LoadBalance 实现类。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>RPC</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>虚拟线程</title>
+    <url>/2023/07/22/2023722-%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B/</url>
+    <content><![CDATA[<p>虚拟线程是 java.lang.Thread 的另一种实现，它们将栈帧存储在了 Java 垃圾收集堆上，而不是由操作系统分配的整块内存中。</p>
+<span id="more"></span>
+
+<h2 id="产生背景"><a href="#产生背景" class="headerlink" title="产生背景"></a>产生背景</h2><p>在目前的开发当中，针对每个请求的处理方法一般分为两种。</p>
+<ul>
+<li>同步：采用同步处理的方式，逐个对请求进行处理，这将导致请求数量庞大的情况下，耗时严重。</li>
+<li>异步：采用异步处理的方式，则是通过一个请求一个线程的模型，或是借助线程池提交异步任务进行处理。但线程池的线程数量是有限的，仍旧存在线程被打满、新请求进入队列的情况。</li>
+</ul>
+<p>针对上述情况，我们可以采用 <a href="https://deepbreath373.github.io/2021/08/24/2021824-Java-NIO">NIO</a> 解决同步处理下请求阻塞的问题，但如果是已经成型的项目，改造起来难度较大。此时，就需要介绍一下本篇的重点内容——虚拟线程。</p>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>虚拟线程是 java.lang.Thread 的另一种实现，它们将栈帧存储在了 Java 垃圾收集堆上，而不是由操作系统分配的整块内存中。<strong>即虚拟线程是由 JVM ，而不是操作系统进行管理。</strong>操作系统只知道平台线程，它们依然是调度单元。为了在虚拟线程中运行代码，Java 运行时通过将其<strong>挂载在某个平台线程</strong>（叫做载体线程（carrier））上来安排它的运行。</p>
+<blockquote>
+<p>平台线程：就是对底层操作系统线程的包装，即我们平时接触的普通线程，每个平台线程对应了一个操作系统的线程，因此该线程资源是有限的。</p>
+</blockquote>
+<p>挂载一个虚拟线程意味着将所需的栈帧暂时从堆复制到载体线程的栈中，并在挂载时借用载体线程的栈。</p>
+<p>当在虚拟线程中运行的代码因为 IO、锁或者其他资源的可用性而阻塞时，它可以<strong>从载体线程上卸载</strong>，变更过的栈帧会被复制回堆中，将载体线程释放出来做其他的事情（比如运行另外的虚拟线程）。</p>
+<p>因此可以见得，虚拟线程的虚拟二字与虚拟内存所指无异，虚拟内存通过映射的方式，让应用觉得自己在访问整个内存地址空间；虚拟线程则是通过<strong>挂载和卸载</strong>的方式，将平台线程“共享”，让应用觉得是在创建一个“普通线程”。</p>
+<p><img src="/images/Java/VirThread.png" alt="VT"></p>
+<ul>
+<li>虚拟线程和系统线程并非 1:1 的关系</li>
+<li>主要是通过挂载和卸载操作支撑</li>
+</ul>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span> (<span class="keyword">var</span> executor = Executors.newVirtualThreadPerTaskExecutor()) &#123;</span><br><span class="line">    <span class="comment">// 提交任务给虚拟线程</span></span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="comment">// 关闭</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>虚拟线程在计算上并不会比平台线程要快，也无法调度超过平台线程的数量的虚拟线程，二者均受限于可用的 CPU 核心数量。因此，对于 CPU 密集型的工作，虚拟线程和平台线程并没有太大差别。而在处理 I/O 密集型工作时，服务器花在网络、文件或数据库 I/O 上的时间远大于计算。如果，将这些操作均放在平台线程运行，那么会导致该线程因为 I/O 或其他资源的可用性处于阻塞状态。但虚拟线程在处理这些任务时，会将自己从平台线程卸载下来，让出线程资源给其他的虚拟线程进行挂载。</p>
+<p>因此虚拟线程的优势主要体现在处理 I/O 密集型的工作。</p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+  </entry>
 </search>
